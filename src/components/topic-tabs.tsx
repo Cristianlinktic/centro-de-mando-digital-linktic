@@ -413,7 +413,7 @@ export function TopicTabs({
 
       <TabsContent value="contenido" className="mt-4 space-y-8 fade-in">
         <div className="text-sm text-muted-foreground">
-            Ideas de contenido orgánico por plataforma para las cuentas del CNE Colombia.
+            Ideas de contenido orgánico por plataforma para las cuentas de LinkTIC.
         </div>
         {(["instagram", "facebook", "x", "tiktok"] as const).map((plat) => {
             const info = platformInfo[plat];
@@ -638,7 +638,7 @@ export function TopicTabs({
       <TabsContent value="pauta" className="mt-4 space-y-4 fade-in">
         <div className="flex justify-between items-center mb-2">
             <div className="text-sm text-muted-foreground">
-                Ideas de piezas y campañas de pauta pagada recomendadas para amplificar la narrativa del CNE Colombia.
+                Ideas de piezas y campañas de pauta pagada recomendadas para amplificar la narrativa de LinkTIC.
             </div>
             {isEditing && setStrategy && strategy && (
                 <Button size="sm" variant="outline" onClick={() => setStrategy({...strategy, pauta: [{ formato: 'Video 15s', objetivo: 'Nuevo Objetivo', plataforma: ['X'], cta: 'Ver Más', segmento: 'Audiencia', presupuesto: 'Medio' }, ...strategy.pauta]})} className="h-7 text-[10px] font-black uppercase text-green-400 border-green-500/20">

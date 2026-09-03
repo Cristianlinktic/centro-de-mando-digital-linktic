@@ -4,10 +4,10 @@
  * componentes cliente como en el proxy (Edge/Node) y en route handlers.
  *
  * Comparte base de datos con "dashboard-unificado": para no chocar en la tabla
- * user_screen_access, las pantallas de ESTE tablero usan el prefijo "cne-tab:".
+ * user_screen_access, las pantallas de ESTE tablero usan el prefijo "lt-tab:".
  */
 
-export const SCREEN_PREFIX = "cne-tab:";
+export const SCREEN_PREFIX = "lt-tab:";
 
 export type AppRole = "superadmin" | "admin" | "viewer";
 
@@ -17,13 +17,13 @@ export interface UserAccess {
   /** Nombre visible (full_name / username), si existe. */
   name: string;
   role: AppRole;
-  /** screen_keys "cne-tab:*" permitidos. Vacío = sin acceso a módulos. */
+  /** screen_keys "lt-tab:*" permitidos. Vacío = sin acceso a módulos. */
   screens: string[];
 }
 
 /** Una "pantalla" gateable: clave estable + ruta navegable. */
 export interface ScreenDef {
-  key: string; // p.ej. "cne-tab:mapa"
+  key: string; // p.ej. "lt-tab:mapa"
   path: string; // p.ej. "/mapa"
   title: string;
   group: string; // sección visible en la UI
@@ -31,16 +31,17 @@ export interface ScreenDef {
 
 /** Catálogo de todas las pantallas gateables de este tablero. */
 const SCREENS: ScreenDef[] = [
-  { key: "cne-tab:mapa", path: "/mapa", title: "Mapa Global", group: "Narrativa" },
-  { key: "cne-tab:nacional", path: "/nacional", title: "Conversación Nacional", group: "Narrativa" },
-  { key: "cne-tab:elecciones", path: "/elecciones", title: "Elecciones Presidenciales", group: "Narrativa" },
-  { key: "cne-tab:testigos", path: "/testigos", title: "Testigos Electorales", group: "Narrativa" },
-  { key: "cne-tab:legitimidad", path: "/legitimidad", title: "Legitimidad y Transparencia", group: "Narrativa" },
-  { key: "cne-tab:quiroz", path: "/quiroz", title: "Cristian Quiroz", group: "Narrativa" },
-  { key: "cne-tab:medios", path: "/medios", title: "Conversación en Medios", group: "Narrativa" },
-  { key: "cne-tab:social", path: "/social", title: "Conversación en Redes", group: "Narrativa" },
-  { key: "cne-tab:actores-mapa", path: "/actores-electorales/mapa-colombia", title: "Mapa de Colombia", group: "Actores Electorales" },
-  { key: "cne-tab:actores-perfiles", path: "/actores-electorales/perfiles", title: "Instagram", group: "Actores Electorales" },
+  { key: "lt-tab:mapa", path: "/mapa", title: "Mapa Global", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:nacional", path: "/nacional", title: "Conversación Nacional", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:testigos", path: "/testigos", title: "Testigos Electorales", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:medios", path: "/medios", title: "Conversación en Medios", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:social", path: "/social", title: "Conversación en Redes", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:actores-mapa", path: "/mapa-colombia", title: "Mapa de Colombia", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:actores-perfiles", path: "/instagram", title: "Instagram", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:redes-sociales", path: "/redes-sociales", title: "Redes Sociales", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:prensa", path: "/prensa", title: "Análisis de Prensa", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:parrilla", path: "/parrilla", title: "Parrilla de Contenidos", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:estrategia-digital", path: "/estrategia-digital", title: "Estrategia Digital", group: "Centro de Mando Digital LinkTIC" },
 ];
 
 export function allScreens(): ScreenDef[] {
@@ -97,7 +98,7 @@ export function isPathAllowed(access: Pick<UserAccess, "role" | "screens">, path
   return access.screens.includes(key);
 }
 
-/** ¿Tiene acceso a ESTE tablero? superadmin o al menos una pantalla cne-tab. */
+/** ¿Tiene acceso a ESTE tablero? superadmin o al menos una pantalla lt-tab. */
 export function hasAppAccess(access: Pick<UserAccess, "role" | "screens">): boolean {
   if (access.role === "superadmin") return true;
   return access.screens.some((s) => s.startsWith(SCREEN_PREFIX));

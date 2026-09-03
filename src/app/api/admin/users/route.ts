@@ -33,18 +33,23 @@ export async function GET() {
   }
 
   const validKeys = new Set(allScreens().map((s) => s.key));
-  const users = list.users.map((u) => {
-    const p = profMap.get(u.id);
-    // Solo exponemos las pantallas de ESTE tablero (cne-tab:*).
-    const screens = (screenMap.get(u.id) ?? []).filter((k) => validKeys.has(k));
-    return {
-      id: u.id,
-      email: u.email ?? "",
-      role: (p?.user_role as string) ?? "viewer",
-      full_name: p?.full_name ?? "",
-      screens,
-    };
-  });
+  const users = list.users
+    // Esta instancia de Supabase es compartida con otras apps (p.ej. "el
+    // analizador"): solo mostramos usuarios que tienen perfil en
+    // centro_mando, para no listar/exponer cuentas ajenas a este tablero.
+    .filter((u) => profMap.has(u.id))
+    .map((u) => {
+      const p = profMap.get(u.id);
+      // Solo exponemos las pantallas de ESTE tablero (lt-tab:*).
+      const screens = (screenMap.get(u.id) ?? []).filter((k) => validKeys.has(k));
+      return {
+        id: u.id,
+        email: u.email ?? "",
+        role: (p?.user_role as string) ?? "viewer",
+        full_name: p?.full_name ?? "",
+        screens,
+      };
+    });
 
   return NextResponse.json({ users, screens: allScreens() });
 }

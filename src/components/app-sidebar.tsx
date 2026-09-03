@@ -1,13 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
-  Vote,
   ShieldCheck,
-  Scale,
-  UserRound,
   Newspaper,
   Share2,
   Globe2,
@@ -15,8 +11,10 @@ import {
   Crosshair,
   Users,
   MapPinned,
-  ChevronsUpDown,
-  Check,
+  Rss,
+  FileSearch,
+  CalendarDays,
+  Target,
 } from "lucide-react";
 import {
   Sidebar,
@@ -32,51 +30,37 @@ import { useAuth } from "@/components/auth-provider";
 import { screenKeyForPath } from "@/lib/auth/rbac";
 
 const icons: Record<string, React.ComponentType<{ className?: string }>> = {
-  Vote,
   ShieldCheck,
-  Scale,
-  UserRound,
   Newspaper,
   Share2,
   Globe2,
   MapPinned,
   Users,
+  Rss,
+  FileSearch,
+  CalendarDays,
+  Target,
 };
 
-// Navegación por modo
-const cneNavItems = [
+// Navegación unificada — Centro de Mando Digital LinkTIC
+const navItems = [
   { path: "/mapa", label: "Mapa Global", icon: "Globe2", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
   { path: "/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
-  { path: "/elecciones", label: "Elecciones Presiden...", icon: "Vote", badge: "HOT", badgeBg: "#e05a33", badgeText: "#fff" },
   { path: "/testigos", label: "Testigos Electorales", icon: "ShieldCheck" },
-  { path: "/legitimidad", label: "Legitimidad y Transparencia", icon: "Scale" },
-  { path: "/quiroz", label: "Cristian Quiroz", icon: "UserRound" },
-  { path: "/medios", label: "Conversacion en Medios", icon: "Newspaper" },
-  { path: "/social", label: "Conversacion en Re...", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
+  { path: "/medios", label: "Conversación en Medios", icon: "Newspaper" },
+  { path: "/social", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
+  { path: "/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#E1306C" },
+  { path: "/instagram", label: "Instagram", icon: "Instagram" },
+  { path: "/redes-sociales", label: "Redes Sociales", icon: "Rss" },
+  { path: "/prensa", label: "Análisis de Prensa", icon: "FileSearch" },
+  { path: "/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays" },
+  { path: "/estrategia-digital", label: "Estrategia Digital", icon: "Target" },
 ];
-
-const actoresNavItems = [
-  { path: "/actores-electorales/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#E1306C" },
-  { path: "/actores-electorales/perfiles", label: "Instagram", icon: "Instagram" },
-];
-
-type ModeKey = "cne" | "actores";
-
-const modes: Record<ModeKey, { label: string; sub: string; icon: React.ComponentType<{ className?: string }>; home: string; navItems: typeof cneNavItems; section: string }> = {
-  cne: { label: "CNE Colombia", sub: "Panel central", icon: Crosshair, home: "/mapa", navItems: cneNavItems, section: "Narrativa" },
-  actores: { label: "Actores Electorales", sub: "Panel central", icon: Users, home: "/actores-electorales/mapa-colombia", navItems: actoresNavItems, section: "Actores Electorales" },
-};
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { toggleSidebar } = useSidebar();
   const { role, screens } = useAuth();
-  const [switcherOpen, setSwitcherOpen] = useState(false);
-
-  const currentMode: ModeKey = pathname.startsWith("/actores-electorales") ? "actores" : "cne";
-  const mode = modes[currentMode];
-  const ModeIcon = mode.icon;
 
   // El superadmin ve todo; el resto solo las pantallas que tiene asignadas.
   const canSee = (path: string) => {
@@ -84,62 +68,21 @@ export function AppSidebar() {
     const key = screenKeyForPath(path);
     return key ? screens.includes(key) : true;
   };
-  const visibleItems = mode.navItems.filter((item) => canSee(item.path));
-
-  const selectMode = (key: ModeKey) => {
-    setSwitcherOpen(false);
-    if (key !== currentMode) router.push(modes[key].home);
-  };
+  const visibleItems = navItems.filter((item) => canSee(item.path));
 
   return (
     <Sidebar collapsible="icon" className="glass border-r border-border/60">
       <SidebarHeader className="border-b border-border/40 px-4 py-4">
         <div className="flex items-center gap-2">
-          {/* Selector de modo: CNE / Actores Electorales */}
-          <div className="relative flex-1">
-            <button
-              onClick={() => setSwitcherOpen((o) => !o)}
-              className="flex items-center gap-3 w-full rounded-md hover:bg-accent/60 transition-colors p-1 -m-1"
-            >
-              <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-cne-blue shrink-0">
-                <ModeIcon className="h-3 w-3 text-cne-gold" />
-              </div>
-              <div className="flex flex-col items-start flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-                <span className="text-sm font-semibold text-foreground truncate max-w-full">{mode.label}</span>
-                <span className="text-[10px] text-muted-foreground truncate max-w-full">{mode.sub}</span>
-              </div>
-              <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground shrink-0 group-data-[collapsible=icon]:hidden" />
-            </button>
-
-            {switcherOpen && (
-              <>
-                {/* overlay para cerrar al hacer clic afuera */}
-                <div className="fixed inset-0 z-40" onClick={() => setSwitcherOpen(false)} />
-                <div className="absolute left-0 right-0 top-full mt-2 z-50 rounded-lg border border-border/60 bg-[#0b101d] shadow-2xl p-1 group-data-[collapsible=icon]:hidden">
-                  {(Object.keys(modes) as ModeKey[]).map((key) => {
-                    const m = modes[key];
-                    const MIcon = m.icon;
-                    const isCurrent = key === currentMode;
-                    return (
-                      <button
-                        key={key}
-                        onClick={() => selectMode(key)}
-                        className={`flex items-center gap-3 w-full rounded-md px-2 py-2 text-left transition-colors ${isCurrent ? "bg-[hsl(213_85%_48%/0.12)]" : "hover:bg-accent/60"}`}
-                      >
-                        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-cne-blue shrink-0">
-                          <MIcon className="h-3 w-3 text-cne-gold" />
-                        </div>
-                        <div className="flex flex-col flex-1 min-w-0">
-                          <span className="text-sm font-semibold text-foreground truncate">{m.label}</span>
-                          <span className="text-[10px] text-muted-foreground truncate">{m.sub}</span>
-                        </div>
-                        {isCurrent && <Check className="h-3.5 w-3.5 text-[hsl(213_85%_48%)] shrink-0" />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </>
-            )}
+          {/* Cabecera estática: Centro de Mando Digital LinkTIC */}
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linktic-blue shrink-0">
+              <Crosshair className="h-3 w-3 text-linktic-gold" />
+            </div>
+            <div className="flex flex-col items-start flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
+              <span className="text-sm font-semibold text-foreground truncate max-w-full">Centro de Mando</span>
+              <span className="text-[10px] text-muted-foreground truncate max-w-full">Digital LinkTIC</span>
+            </div>
           </div>
 
           <button
@@ -153,7 +96,7 @@ export function AppSidebar() {
 
       <SidebarContent className="px-2 py-3">
         <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground mb-2 px-2 group-data-[collapsible=icon]:hidden">
-          {mode.section}
+          Centro de Mando Digital LinkTIC
         </p>
         <nav className="space-y-1">
           {visibleItems.map((item) => {

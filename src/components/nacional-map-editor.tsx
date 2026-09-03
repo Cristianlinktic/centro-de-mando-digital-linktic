@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faChevronDown, faFileArrowDown, faFileArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { faTiktok, faXTwitter, faInstagram, faFacebook } from "@fortawesome/free-brands-svg-icons";
 
-// Editor multiplataforma de "Conversación Nacional" (CNE) por departamento.
+// Editor multiplataforma de "Conversación Nacional" por departamento.
 // Análogo a ColombiaMapEditor pero con volúmenes por plataforma (TikTok, X,
 // Instagram, Facebook) y persistiendo en content_manager_nacional_departamentos.
 

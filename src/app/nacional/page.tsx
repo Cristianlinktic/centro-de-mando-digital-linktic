@@ -402,7 +402,7 @@ export default function NacionalPage() {
 
         <div>
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">
-            Conversación Nacional — CNE Colombia
+            Conversación Nacional — Centro de Mando Digital LinkTIC
           </h1>
           <p className="text-slate-400 mt-2">
             Hola {firstName}, bienvenido. Cobertura de prensa por departamento. Haz clic en un departamento para ver los artículos.
@@ -470,7 +470,7 @@ export default function NacionalPage() {
               globeMarkers={[]}
               sentimentColors={sentimentColors}
               platformColors={toneColors}
-              title="Conversación Nacional en Medios — CNE Colombia"
+              title="Conversación Nacional en Medios — Centro de Mando Digital LinkTIC"
               geoUrl="/colombia-departamentos.geojson"
               regionNameProp="NOMBRE_DPT"
               initialPov={COLOMBIA_POV}

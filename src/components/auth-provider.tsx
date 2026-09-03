@@ -10,7 +10,7 @@ interface AuthContextType {
   user: any;
   role: Role;
   firstName: string;
-  /** screen_keys "cne-tab:*" permitidos para el usuario actual. */
+  /** screen_keys "lt-tab:*" permitidos para el usuario actual. */
   screens: string[];
   /** Re-lee sesión, perfil y pantallas (lo usa AccessSync ante cambios). */
   refresh: () => void;
@@ -67,14 +67,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setScreens((rows ?? []).map((r: { screen_key: string }) => r.screen_key));
   }, []);
 
+  // Refresh token inválido/caducado (p.ej. cookie vieja de otra instancia de
+  // Supabase): tratamos como sin sesión y limpiamos el estado local.
+  const safeGetSession = useCallback(async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      return session;
+    } catch {
+      await supabase.auth.signOut();
+      return null;
+    }
+  }, []);
+
   const refresh = useCallback(async () => {
-    const { data: { session } } = await supabase.auth.getSession();
+    const session = await safeGetSession();
     await loadFor(session?.user ?? null);
-  }, [loadFor]);
+  }, [loadFor, safeGetSession]);
 
   useEffect(() => {
     const init = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const session = await safeGetSession();
       await loadFor(session?.user ?? null);
       setLoading(false);
     };
@@ -88,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       subscription.unsubscribe();
     };
-  }, [loadFor]);
+  }, [loadFor, safeGetSession]);
 
   return (
     <AuthContext.Provider value={{ user, role, firstName, screens, refresh }}>

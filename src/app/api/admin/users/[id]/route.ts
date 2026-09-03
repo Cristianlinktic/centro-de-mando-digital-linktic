@@ -16,6 +16,13 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
   const admin = getServiceRoleSupabaseClient();
 
+  // Instancia compartida con otras apps: solo gestionamos usuarios que ya
+  // tienen perfil en centro_mando (creados desde este tablero).
+  const { data: existing } = await admin.from("profiles").select("id").eq("id", id).maybeSingle();
+  if (!existing) {
+    return NextResponse.json({ error: "Usuario no pertenece a este tablero." }, { status: 404 });
+  }
+
   const profileUpdate: Record<string, unknown> = {};
   if (body.role !== undefined) {
     if (!VALID_ROLES.includes(body.role)) {
@@ -38,7 +45,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (Array.isArray(body.screens)) {
     const validKeys = new Set(allScreens().map((s) => s.key));
     const screens = body.screens.map(String).filter((s: string) => validKeys.has(s));
-    // Reemplaza SOLO las pantallas de este tablero (cne-tab:*); no toca las de unificado.
+    // Reemplaza SOLO las pantallas de este tablero (lt-tab:*); no toca las de unificado.
     await admin
       .from("user_screen_access")
       .delete()
@@ -65,6 +72,14 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   }
 
   const admin = getServiceRoleSupabaseClient();
+
+  // Instancia compartida con otras apps: solo permitimos borrar usuarios que
+  // tienen perfil en centro_mando (creados desde este tablero).
+  const { data: existing } = await admin.from("profiles").select("id").eq("id", id).maybeSingle();
+  if (!existing) {
+    return NextResponse.json({ error: "Usuario no pertenece a este tablero." }, { status: 404 });
+  }
+
   const { error } = await admin.auth.admin.deleteUser(id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 

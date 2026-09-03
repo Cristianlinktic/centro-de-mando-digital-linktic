@@ -43,7 +43,7 @@ const getVolumeColor = (volumen: number) => {
     return intensityColors.sinDatos;
 };
 
-// Sede del CNE (Bogotá): destino de todos los arcos de conversación global.
+// Sede LinkTIC (Bogotá): destino de todos los arcos de conversación global.
 const COLOMBIA_HQ = { lat: 4.5, lng: -74.3 };
 
 // Elemento HTML de la sede: referencia ESTABLE a nivel de módulo. Si se recreara
@@ -196,13 +196,13 @@ export function GlobeComponent({
     hideIntensity = false,
     countriesData = [],
     globeMarkers = [],
-    title = "Conversación Global CNE Colombia",
+    title = "Conversación Global — Centro de Mando Digital LinkTIC",
     showDetails = true,
     mode = 'global',
     // Added props
     sentimentColors = { positivo: "rgb(46, 184, 138)", negativo: "rgb(223, 58, 58)", neutral: "rgb(243, 177, 22)", mixto: "hsl(42 90% 52%)" },
     platformColors = { X: "rgb(255, 255, 255)", Facebook: "rgb(24, 119, 242)", Instagram: "rgb(225, 48, 108)", TikTok: "rgb(105, 201, 208)" },
-    // Geografía (defaults = mapa mundial CNE)
+    // Geografía (defaults = mapa mundial)
     geoUrl = "/world.topojson",
     geoObjectKey = "countries",
     regionNameProp = "name",
@@ -615,7 +615,7 @@ export function GlobeComponent({
                 : "Sin datos");
 
             if (countryData.articulos) {
-                // Modo prensa (CNE) — carrusel de artículos
+                // Modo prensa — carrusel de artículos
                 const allArts: any[] = countryData.articulos;
                 const filteredArts = selectedPlatform ? allArts.filter((a: any) => a.tone === selectedPlatform) : allArts;
                 contentHtml = `
@@ -729,7 +729,7 @@ export function GlobeComponent({
           period: 1400 - ratio * 600,
         };
       });
-    // Onda expansiva permanente desde la sede del CNE (Colombia) en dorado.
+    // Onda expansiva permanente desde la sede LinkTIC (Colombia) en dorado.
     const hqRing = {
       lat: COLOMBIA_HQ.lat,
       lng: COLOMBIA_HQ.lng,
@@ -950,7 +950,7 @@ export function GlobeComponent({
                 : "Sin datos");
 
             if (countryData.articulos) {
-                // Modo prensa (CNE)
+                // Modo prensa
                 const allArts: any[] = countryData.articulos;
                 const filteredArts = selectedPlatform ? allArts.filter((a: any) => a.tone === selectedPlatform) : allArts;
                 content = `
@@ -1090,7 +1090,7 @@ export function GlobeComponent({
 
       // Idempotencia: elimina capas previas (re-ejecución por HMR/StrictMode) para
       // no acumular nubes/estrellas/luces ni dejar versiones viejas más tenues.
-      ["cne-clouds", "cne-starfield", "cne-sun-light"].forEach((nm) => {
+      ["lt-clouds", "lt-starfield", "lt-sun-light"].forEach((nm) => {
         const old: any = scene.getObjectByName(nm);
         if (old) {
           scene.remove(old);
@@ -1120,7 +1120,7 @@ export function GlobeComponent({
       const sharpenGlobe = () => {
         try {
           scene.traverse((obj: any) => {
-            if (!obj.isMesh || obj.name === "cne-clouds" || obj.name === "cne-starfield") return;
+            if (!obj.isMesh || obj.name === "lt-clouds" || obj.name === "lt-starfield") return;
             const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
             mats.forEach((m: any) => {
               if (!m) return;
@@ -1162,7 +1162,7 @@ export function GlobeComponent({
       try {
         const sun = new THREE.DirectionalLight(0xffffff, 0.7);
         sun.position.set(-1.5, 0.8, 1.2);
-        sun.name = "cne-sun-light";
+        sun.name = "lt-sun-light";
         scene.add(sun);
       } catch {
         // sin escena accesible
@@ -1195,7 +1195,7 @@ export function GlobeComponent({
           depthWrite: false,
         });
         const stars = new THREE.Points(starGeo, starMat);
-        stars.name = "cne-starfield";
+        stars.name = "lt-starfield";
         scene.add(stars);
         starsRef.current = stars;
       } catch {
@@ -1228,7 +1228,7 @@ export function GlobeComponent({
             depthWrite: false,
           })
         );
-        clouds.name = "cne-clouds";
+        clouds.name = "lt-clouds";
         clouds.renderOrder = 2;
         globeEl.current.scene().add(clouds);
         cloudsRef.current = clouds;
@@ -1271,7 +1271,7 @@ export function GlobeComponent({
       starsRef.current = null;
       if (g?.scene) {
         try {
-          const sun = g.scene().getObjectByName("cne-sun-light");
+          const sun = g.scene().getObjectByName("lt-sun-light");
           if (sun) g.scene().remove(sun);
         } catch {
           // ignore
@@ -1631,7 +1631,7 @@ export function GlobeComponent({
 
               <div className="space-y-6">
                   {selectedData.articulos ? (
-                    /* ── MODO PRENSA (CNE) ── */
+                    /* ── MODO PRENSA ── */
                     <>
                       {/* Tema principal sincronizado con el carrusel */}
                       <div className="bg-[#161d2b] p-4 rounded-xl">

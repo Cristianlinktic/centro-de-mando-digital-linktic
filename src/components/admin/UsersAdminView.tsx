@@ -307,7 +307,7 @@ function UserFormModal({
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={isEdit}
-              placeholder="ej: admin_cne"
+              placeholder="ej: admin_linktic"
               className={inputCls}
             />
           </div>

@@ -34,6 +34,7 @@ export async function proxy(request: NextRequest) {
           response.cookies.set({ name, value: '', ...options })
         },
       },
+      db: { schema: 'centro_mando' },
     }
   )
 
@@ -57,7 +58,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Hay sesión: cargamos rol + pantallas de ESTE tablero (cne-tab:*).
+  // Hay sesión: cargamos rol + pantallas de ESTE tablero (lt-tab:*).
   const [{ data: profile }, { data: rows }] = await Promise.all([
     supabase.from('profiles').select('user_role').eq('id', user.id).single(),
     supabase

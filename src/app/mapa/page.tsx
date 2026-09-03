@@ -269,8 +269,8 @@ export default function MapaPage() {
   // `silent`: refresco en vivo (Realtime) sin mostrar la pantalla de carga.
   const fetchMapData = async (silent = false) => {
     if (!silent) setLoadingDb(true);
-    const { data: countries } = await supabase.from('content_manager_mapa_countries').select('*');
-    const { data: markers } = await supabase.from('content_manager_globe_markers').select('*');
+    const { data: countries } = await supabase.from('mapa_paises').select('*');
+    const { data: markers } = await supabase.from('mapa_marcadores').select('*');
     if (countries) {
         const formattedC = countries.map((c: any) => ({
             ...c,
@@ -299,7 +299,7 @@ export default function MapaPage() {
   // Actualización automática en vivo: el mapa global se refresca apenas entran
   // datos nuevos (editor, import de Excel o cualquier otro dispositivo).
   useRealtimeRefresh(
-    ["content_manager_mapa_countries", "content_manager_globe_markers"],
+    ["mapa_paises", "mapa_marcadores"],
     () => fetchMapData(true),
     { paused: editorOpen }
   );
@@ -357,7 +357,7 @@ export default function MapaPage() {
                 const emoji = data.flag || getEmojiFlag(iso);
                 repaired = repaired.map((c: any) => c.id === country.id ? { ...c, lat, lng, emoji } : c);
                 // Save to DB immediately
-                await supabase.from('content_manager_mapa_countries').update({ lat, lng, emoji }).eq('id', country.id);
+                await supabase.from('mapa_paises').update({ lat, lng, emoji }).eq('id', country.id);
             } catch {
                 continue;
             }
@@ -558,7 +558,7 @@ export default function MapaPage() {
                 top_hashtags: c.topHashtags || [],
                 update_time: c.updateTime || 'hace poco'
             };
-            await supabase.from('content_manager_mapa_countries').upsert(updateData, { onConflict: 'id' });
+            await supabase.from('mapa_paises').upsert(updateData, { onConflict: 'id' });
         }
         alert("Datos del mapa guardados exitosamente!");
         fetchMapData();
@@ -706,8 +706,8 @@ export default function MapaPage() {
             <span className="bg-[#1e293b] text-slate-400 text-xs px-2 py-1 rounded-full border border-slate-500/20 uppercase">ACTUALIZADO {timeAgo}</span>
         </div>
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Global — CNE Colombia</h1>
-          <p className="text-slate-400 mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias internacionales del Consejo Nacional Electoral de Colombia. Haz clic en un marcador para ver el detalle.</p>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Global — Centro de Mando Digital LinkTIC</h1>
+          <p className="text-slate-400 mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias internacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
         </div>
 
         {sortedCountries.length > 0 && (
@@ -795,7 +795,7 @@ export default function MapaPage() {
       <div className="mt-8">
         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <FontAwesomeIcon icon={faGlobe} className="text-blue-500 w-5 h-5"/>
-            Países en donde se habla del CNE
+            Países en donde se habla de LinkTIC
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {sortedCountries.map((c: any) => (
@@ -997,7 +997,7 @@ export default function MapaPage() {
                                     <Input 
                                         type="text" 
                                         value={rawHashtags}
-                                        placeholder="Ej: #Elecciones2026, #CNE"
+                                        placeholder="Ej: #Elecciones2026, #LinkTIC"
                                         onFocus={() => setRawHashtags((c.topHashtags || []).join(', '))}
                                         onChange={(e) => setRawHashtags(e.target.value)}
                                         onBlur={(e) => handleArrayChange(c.id, 'topHashtags', e.target.value)}

@@ -202,7 +202,7 @@ export function ColombiaMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
           update_time: r.updateTime || "hace poco",
         };
         const { error } = await supabase
-          .from("content_manager_actores_colombia")
+          .from("actores_colombia")
           .upsert(payload, { onConflict: "id" });
         if (error) throw error;
       }

@@ -2,7 +2,7 @@
 // id = código DANE; nombre coincide (al normalizar) con NOMBRE_DPT del GeoJSON
 // public/colombia-departamentos.geojson. lat/lng = centroide (para la cámara).
 // Esta lista da identidad y geometría; las métricas (Instagram) viven en la tabla
-// content_manager_actores_colombia y se editan desde el editor de la sección.
+// actores_colombia y se editan desde el editor de la sección.
 
 export interface DepartamentoBase {
   id: string;

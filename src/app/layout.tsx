@@ -16,9 +16,9 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-  title: "CNE Colombia — Tablero de Narrativa",
+  title: "Centro de Mando Digital LinkTIC",
   description:
-    "Tablero de gestion de contenidos y narrativa para el Consejo Nacional Electoral de Colombia",
+    "Tablero de gestión de contenidos y narrativa del Centro de Mando Digital LinkTIC",
 };
 
 export default function RootLayout({

@@ -7,6 +7,7 @@ const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 // CLIENTE PARA EL NAVEGADOR (Client Components)
 // Singleton para evitar "Multiple GoTrueClient instances"
+// Configurado para resolver consultas en el schema "centro_mando".
 let browserClient: any;
 
 export const getSupabaseBrowserClient = () => {
@@ -14,7 +15,8 @@ export const getSupabaseBrowserClient = () => {
 
   browserClient = createBrowserClient(
     supabaseUrl,
-    supabaseAnonKey
+    supabaseAnonKey,
+    { db: { schema: 'centro_mando' } }
   );
 
   return browserClient;
@@ -25,6 +27,7 @@ export const supabase = getSupabaseBrowserClient();
 
 // CLIENTE ADMINISTRATIVO (Solo para el Servidor)
 // Se usa para saltar RLS cuando sea necesario y seguro
+// Configurado para resolver consultas en el schema "centro_mando".
 export function getServiceRoleSupabaseClient() {
     return createClient(supabaseUrl, supabaseServiceRoleKey, {
         auth: {
@@ -32,5 +35,6 @@ export function getServiceRoleSupabaseClient() {
             autoRefreshToken: false,
             detectSessionInUrl: false,
         },
+        db: { schema: 'centro_mando' },
     });
 }

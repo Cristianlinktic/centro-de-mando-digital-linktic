@@ -75,8 +75,8 @@ export default function MediosPage() {
 
   const fetchMediosData = async () => {
     setLoading(true);
-    const { data: pData } = await supabase.from('content_manager_medios_profiles').select('*');
-    const { data: fData } = await supabase.from('content_manager_medios_feed').select('*').order('id', { ascending: false });
+    const { data: pData } = await supabase.from('medios_perfiles').select('*');
+    const { data: fData } = await supabase.from('medios_feed').select('*').order('id', { ascending: false });
     
     if (pData) setProfiles(pData);
     if (fData) setFeed(fData);
@@ -103,10 +103,10 @@ export default function MediosPage() {
   const saveMediosData = async () => {
     try {
         for (const p of profiles) {
-            await supabase.from('content_manager_medios_profiles').upsert(p);
+            await supabase.from('medios_perfiles').upsert(p);
         }
         for (const post of feed) {
-            await supabase.from('content_manager_medios_feed').upsert(post);
+            await supabase.from('medios_feed').upsert(post);
         }
         alert("¡Datos guardados con éxito!");
         setIsEditing(false);

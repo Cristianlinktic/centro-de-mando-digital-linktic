@@ -83,7 +83,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
             INSTAGRAM
           </span>
           <span className="bg-[#1e293b] text-blue-400 text-[10px] px-2 py-1 rounded-full border border-blue-500/20 font-bold uppercase">
-            ACTORES ELECTORALES
+            LINKTIC
           </span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">

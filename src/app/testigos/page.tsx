@@ -126,7 +126,7 @@ function TestigosOverview({
           </span>
         </div>
         <p className="text-[11px] text-muted-foreground mb-4">
-          Misiones internacionales de observación acreditadas ante el CNE. Arrastra para rotar, haz click para ver el detalle.
+          Misiones internacionales de observación acreditadas ante el Centro de Mando Digital LinkTIC. Arrastra para rotar, haz click para ver el detalle.
         </p>
         
         <div className="relative w-full h-[420px] bg-[#05080f] rounded-xl overflow-hidden border border-white/5">
@@ -341,11 +341,11 @@ export default function TestigosPage() {
 
   const fetchTestigosData = async () => {
     setLoading(true);
-    const { data: sData } = await supabase.from('content_manager_testigos_strategy').select('*').eq('id', 'main').single();
-    const { data: kData } = await supabase.from('content_manager_testigos_kpis').select('*').order('id');
-    const { data: dData } = await supabase.from('content_manager_testigos_deptos').select('*').order('count', { ascending: false });
-    const { data: mData } = await supabase.from('content_manager_testigos_misiones').select('*').order('count', { ascending: false });
-    const { data: cData } = await supabase.from('content_manager_mapa_countries').select('*');
+    const { data: sData } = await supabase.from('testigos_estrategia').select('*').eq('id', 'main').single();
+    const { data: kData } = await supabase.from('testigos_kpis').select('*').order('id');
+    const { data: dData } = await supabase.from('testigos_departamentos').select('*').order('count', { ascending: false });
+    const { data: mData } = await supabase.from('testigos_misiones').select('*').order('count', { ascending: false });
+    const { data: cData } = await supabase.from('mapa_paises').select('*');
 
     if (sData) setStrategy(sData);
     if (kData) setKpis(kData);
@@ -361,20 +361,20 @@ export default function TestigosPage() {
 
   const saveTestigosData = async () => {
       try {
-          await supabase.from('content_manager_testigos_strategy').upsert({ id: 'main', ...strategy });
+          await supabase.from('testigos_estrategia').upsert({ id: 'main', ...strategy });
           
           for (const k of kpis) {
-              await supabase.from('content_manager_testigos_kpis').upsert(k);
+              await supabase.from('testigos_kpis').upsert(k);
           }
 
-          await supabase.from('content_manager_testigos_deptos').delete().neq('id', 0);
+          await supabase.from('testigos_departamentos').delete().neq('id', 0);
           if (deptos.length > 0) {
-              await supabase.from('content_manager_testigos_deptos').insert(deptos.map(({ id, ...rest }) => rest));
+              await supabase.from('testigos_departamentos').insert(deptos.map(({ id, ...rest }) => rest));
           }
 
-          await supabase.from('content_manager_testigos_misiones').delete().neq('id', 0);
+          await supabase.from('testigos_misiones').delete().neq('id', 0);
           if (misiones.length > 0) {
-              await supabase.from('content_manager_testigos_misiones').insert(misiones.map(({ id, ...rest }) => rest));
+              await supabase.from('testigos_misiones').insert(misiones.map(({ id, ...rest }) => rest));
           }
 
           alert("¡Cambios en Testigos guardados con éxito!");

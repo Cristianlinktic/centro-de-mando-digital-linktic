@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { LinkyIcon } from "@/components/linky-icon";
 
 const initialState: AuthState = {
   error: null,
@@ -16,20 +17,36 @@ export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(signIn, initialState);
 
   return (
-    <div className="h-screen w-full bg-[#03060d] flex items-center justify-center font-sans antialiased relative overflow-hidden">
+    <div className="h-screen w-full page-bg flex items-center justify-center font-sans antialiased relative overflow-hidden">
+      {isPending && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-[#03060d]/90 backdrop-blur-sm">
+          <div className="loading-ring w-40 h-40 flex items-center justify-center">
+            <LinkyIcon className="h-20 w-auto drop-shadow-[0_0_30px_rgba(59,130,246,0.5)]" />
+          </div>
+          <p className="text-slate-400 text-[10px] uppercase tracking-[0.2em] font-bold animate-pulse">
+            Validando acceso...
+          </p>
+        </div>
+      )}
+
       {/* Background decorations */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div className="absolute top-[20%] left-[10%] w-[40rem] h-[40rem] bg-blue-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[20%] right-[10%] w-[30rem] h-[30rem] bg-purple-500/10 rounded-full blur-[100px]" />
+        <LinkyIcon
+          fly
+          className="absolute left-[-4rem] bottom-[-3rem] h-[85vh] w-auto opacity-25 drop-shadow-[0_0_60px_rgba(59,130,246,0.4)]"
+        />
       </div>
 
-      <div className="z-10 bg-[#0b101d]/80 backdrop-blur-xl border border-white/10 p-10 rounded-3xl w-full max-w-md shadow-2xl flex flex-col items-center">
+      <div
+        className="neon-frame glass border rounded-3xl p-10 w-full max-w-md flex flex-col items-center z-10"
+        style={{ background: "linear-gradient(180deg, hsl(222 40% 11% / 0.5), hsl(222 44% 7% / 0.5))" }}
+      >
         <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mb-6 ring-4 ring-blue-500/20">
-          <span className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] text-white">CNE</span>
+          <span className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] text-white">LT</span>
         </div>
-        
-        <h1 className="text-2xl font-black mb-1 tracking-tight text-white">Tablero de Narrativa</h1>
-        <p className="text-slate-400 mb-8 text-center text-sm">Ingrese sus credenciales para acceder al sistema de monitoreo electoral</p>
+
+        <h1 className="text-2xl font-black mb-1 tracking-tight gradient-text text-glow-blue">Centro de Mando Digital LinkTIC</h1>
+        <p className="text-slate-400 mb-8 text-center text-sm">Ingresa tus credenciales para acceder al Centro de Mando Digital LinkTIC</p>
         
         <form action={formAction} className="w-full space-y-4">
           <div className="space-y-2">
@@ -39,7 +56,7 @@ export default function LoginPage() {
               <Input 
                 name="email"
                 type="text" 
-                placeholder="Ej: admin_cne"
+                placeholder="Ej: admin_linktic"
                 required
                 autoComplete="username"
                 className="pl-10 h-12 bg-[#161d2b] border-white/10 text-white rounded-xl focus:border-blue-500 focus:ring-blue-500 transition-all"
@@ -78,7 +95,7 @@ export default function LoginPage() {
         </form>
         
         <div className="mt-8 text-[10px] text-slate-500 uppercase tracking-[0.2em] font-medium opacity-50">
-          SISTEMA DE SEGURIDAD CNE
+          SISTEMA DE SEGURIDAD LINKTIC
         </div>
       </div>
     </div>

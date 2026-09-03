@@ -3,8 +3,9 @@ import { NO_TESTIGOS_DIGITALES_RULE, sanitizeAiText } from "@/lib/ai-sanitize";
 
 export const runtime = "nodejs";
 
-// Genera un análisis (o una micro-narración) de la conversación sobre el CNE
-// en un país concreto, a partir de las métricas que ya tiene el globo.
+// Genera un análisis (o una micro-narración) de la conversación sobre el
+// Centro de Mando Digital LinkTIC en un país concreto, a partir de las
+// métricas que ya tiene el globo.
 // mode: "summary"   -> párrafo de análisis para el panel de detalle.
 // mode: "narration" -> una sola frase para el modo narrador del tour.
 
@@ -65,11 +66,11 @@ export async function POST(req: Request) {
 
   const instruction =
     mode === "narration"
-      ? "Redacta UNA sola frase (máximo 22 palabras), en presente, lista para mostrarse como subtítulo en una presentación. Describe qué está pasando con la conversación sobre el CNE en este país. Sin comillas, sin emojis, sin hashtags."
-      : "Redacta un análisis breve (3 a 5 frases) en español, claro y accionable, sobre la conversación digital acerca del Consejo Nacional Electoral (CNE) de Colombia en este país. Interpreta el sentimiento, el volumen, la tendencia y los temas. No inventes datos que no estén en el contexto. No uses encabezados ni listas.";
+      ? "Redacta UNA sola frase (máximo 22 palabras), en presente, lista para mostrarse como subtítulo en una presentación. Describe qué está pasando con la conversación sobre el Centro de Mando Digital LinkTIC en este país. Sin comillas, sin emojis, sin hashtags."
+      : "Redacta un análisis breve (3 a 5 frases) en español, claro y accionable, sobre la conversación digital acerca del Centro de Mando Digital LinkTIC en este país. Interpreta el sentimiento, el volumen, la tendencia y los temas. No inventes datos que no estén en el contexto. No uses encabezados ni listas.";
 
   const system =
-    "Eres un analista de escucha social del Consejo Nacional Electoral (CNE) de Colombia. Analizas la conversación internacional sobre el CNE. Respondes SIEMPRE en español, con tono institucional y sobrio, basándote únicamente en los datos entregados. " +
+    "Eres un analista de escucha social del Centro de Mando Digital LinkTIC. Analizas la conversación internacional sobre LinkTIC. Respondes SIEMPRE en español, con tono institucional y sobrio, basándote únicamente en los datos entregados. " +
     NO_TESTIGOS_DIGITALES_RULE;
 
   try {

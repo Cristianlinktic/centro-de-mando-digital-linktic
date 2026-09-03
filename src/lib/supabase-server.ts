@@ -33,6 +33,7 @@ export async function getAuthenticatedSupabaseClient() {
           }
         },
       },
+      db: { schema: 'centro_mando' },
     }
   )
 }

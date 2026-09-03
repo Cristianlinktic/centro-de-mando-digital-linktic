@@ -15,6 +15,14 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   }
 
   const admin = getServiceRoleSupabaseClient();
+
+  // Instancia compartida con otras apps: solo permitimos resetear password de
+  // usuarios que tienen perfil en centro_mando (creados desde este tablero).
+  const { data: existing } = await admin.from("profiles").select("id").eq("id", id).maybeSingle();
+  if (!existing) {
+    return NextResponse.json({ error: "Usuario no pertenece a este tablero." }, { status: 404 });
+  }
+
   const { error } = await admin.auth.admin.updateUserById(id, { password });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 

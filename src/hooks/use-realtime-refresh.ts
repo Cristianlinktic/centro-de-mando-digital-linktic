@@ -53,7 +53,7 @@ export function useRealtimeRefresh(
 
     const channel = supabase.channel(`rt-${tablesKey}`);
     tablesKey.split("-").forEach((table) => {
-      channel.on("postgres_changes", { event: "*", schema: "public", table }, schedule);
+      channel.on("postgres_changes", { event: "*", schema: "centro_mando", table }, schedule);
     });
     channel.subscribe();
 

@@ -5,16 +5,25 @@ import { canEdit, normalizeRole, SCREEN_PREFIX, type UserAccess } from "@/lib/au
 
 /**
  * Carga el acceso del usuario ACTUAL (sesión por cookies de Supabase Auth):
- * rol normalizado + pantallas "cne-tab:*" permitidas. null si no hay sesión.
+ * rol normalizado + pantallas "lt-tab:*" permitidas. null si no hay sesión.
  *
  * Server-only. Úsese en Server Components (page/layout) y Route Handlers.
  */
 export async function getServerAccess(): Promise<UserAccess | null> {
   const supabase = await getAuthenticatedSupabaseClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+    user = authUser;
+  } catch {
+    // Refresh token inválido/caducado (p.ej. cookie vieja de otra instancia de
+    // Supabase): tratamos como sin sesión y limpiamos la cookie local.
+    await supabase.auth.signOut();
+    return null;
+  }
   if (!user) return null;
 
   const [{ data: profile }, { data: rows }] = await Promise.all([

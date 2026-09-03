@@ -58,8 +58,8 @@ export default function SocialPage() {
 
   const fetchSocialData = async () => {
     setLoading(true);
-    const { data: pData } = await supabase.from('content_manager_social_profiles').select('*');
-    const { data: fData } = await supabase.from('content_manager_social_feed').select('*').order('id', { ascending: false });
+    const { data: pData } = await supabase.from('social_perfiles').select('*');
+    const { data: fData } = await supabase.from('social_feed').select('*').order('id', { ascending: false });
     
     if (pData) setProfiles(pData);
     if (fData) setFeed(fData);
@@ -87,12 +87,12 @@ export default function SocialPage() {
     try {
         // Update Profiles
         for (const p of profiles) {
-            await supabase.from('content_manager_social_profiles').upsert(p);
+            await supabase.from('social_perfiles').upsert(p);
         }
         // Update Feed (caution: usually feed is large, here we just upsert the ones we have in state)
         // For simplicity, we just save what's in state
         for (const post of feed) {
-            const { error } = await supabase.from('content_manager_social_feed').upsert(post);
+            const { error } = await supabase.from('social_feed').upsert(post);
         }
         alert("¡Datos guardados con éxito!");
         setIsEditing(false);
