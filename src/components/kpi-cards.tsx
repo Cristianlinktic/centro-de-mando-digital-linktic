@@ -25,13 +25,13 @@ export function KpiCards({ items }: { items: KpiItem[] }) {
       {items.map((kpi, i) => {
         const barColor = kpiColors[i % kpiColors.length];
         return (
-          <div key={kpi.label} className="kpi-card group relative rounded-lg overflow-hidden">
+          <div key={kpi.label} className="kpi-card group relative rounded-2xl overflow-hidden">
             <div className="p-4 pb-3 relative z-10">
               <p className="text-[10px] text-muted-foreground uppercase tracking-widest truncate">
                 {kpi.label}
               </p>
               <div className="flex items-baseline gap-2 mt-1 min-w-0">
-                <p className="text-xl sm:text-2xl font-bold tabular-nums truncate min-w-0">
+                <p className="font-heading text-xl sm:text-2xl font-semibold tabular-nums truncate min-w-0">
                   <CountUp value={kpi.value} />
                 </p>
                 {kpi.delta && (

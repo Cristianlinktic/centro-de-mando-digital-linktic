@@ -80,7 +80,7 @@ export function AppSidebar() {
               <Crosshair className="h-3 w-3 text-linktic-gold" />
             </div>
             <div className="flex flex-col items-start flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-              <span className="text-sm font-semibold text-foreground truncate max-w-full">Centro de Mando</span>
+              <span className="font-heading text-sm font-semibold text-foreground truncate max-w-full">Centro de Mando</span>
               <span className="text-[10px] text-muted-foreground truncate max-w-full">Digital LinkTIC</span>
             </div>
           </div>

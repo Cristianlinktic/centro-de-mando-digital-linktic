@@ -64,7 +64,7 @@ export function AppHeader() {
         <LinkyIcon className="h-7 w-7 shrink-0" />
         <div className="min-w-0">
         <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold truncate gradient-text">{meta.title}</h2>
+            <h2 className="font-heading text-sm font-semibold truncate gradient-text">{meta.title}</h2>
             {role === "superadmin" ? (
                 <Badge variant="neon" className="text-[8px] h-4 px-1 font-black">SUPER</Badge>
             ) : role === "admin" ? (

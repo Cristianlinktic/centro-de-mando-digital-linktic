@@ -114,7 +114,7 @@ export default function LoginPage() {
               <span className="intro-fade text-[11px] uppercase tracking-[0.35em] text-slate-400 font-bold">
                 Centro de Mando Digital
               </span>
-              <h2 className="flex text-4xl font-black gradient-text text-glow-blue">
+              <h2 className="font-heading flex text-4xl font-semibold gradient-text text-glow-blue">
                 {"LinkTIC".split("").map((ch, i) => (
                   <span
                     key={i}
@@ -154,7 +154,7 @@ export default function LoginPage() {
           <span className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] text-white">LT</span>
         </div>
 
-        <h1 className="text-2xl font-black mb-1 tracking-tight gradient-text text-glow-blue">Centro de Mando Digital LinkTIC</h1>
+        <h1 className="font-heading text-2xl font-semibold mb-1 tracking-tight gradient-text text-glow-blue">Centro de Mando Digital LinkTIC</h1>
         <p className="text-slate-400 mb-8 text-center text-sm">Ingresa tus credenciales para acceder al Centro de Mando Digital LinkTIC</p>
         
         <form action={formAction} className="w-full space-y-4">
@@ -198,7 +198,7 @@ export default function LoginPage() {
               type="submit"
               variant="neon"
               disabled={isPending}
-              className="w-full h-12 rounded-xl font-bold mt-4"
+              className="w-full h-12 font-heading font-medium mt-4"
           >
             {isPending ? "Validando..." : "Ingresar al Tablero"}
           </Button>
