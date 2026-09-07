@@ -20,7 +20,7 @@ export function EmptyCampaign() {
         Importa un plan de pauta en Excel para empezar a ver el dashboard de estrategia digital.
       </p>
       <Link
-        href="/estrategia-digital/importar"
+        href="/interno/estrategia-digital/importar"
         className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
       >
         Ir a Importar

@@ -5,27 +5,25 @@ import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/components/auth-provider";
 import { canEdit } from "@/lib/auth/rbac";
 import { Card } from "@/components/ui/card";
-import { 
-  faNewspaper, 
-  faRadio, 
-  faTv, 
-  faGlobe, 
-  faArrowTrendUp, 
+import {
+  faNewspaper,
+  faRadio,
+  faTv,
+  faGlobe,
   faRotate,
-  faLock,
   faSave,
   faPlus,
   faTrash,
   faUpload
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  Tooltip, 
-  ResponsiveContainer, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
   CartesianGrid
 } from "recharts";
 import { Button } from "@/components/ui/button";
@@ -52,19 +50,19 @@ const formatTime = (time: string | Date) => {
     if (!time) return "Ahora";
     const date = typeof time === 'string' ? new Date(time) : time;
     if (isNaN(date.getTime())) return time.toString();
-    
+
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-    
+
     if (diffInSeconds < 0) return "En un momento";
     if (diffInSeconds < 60) return "Hace un momento";
     if (diffInSeconds < 3600) return `Hace ${Math.floor(diffInSeconds / 60)} min`;
     if (diffInSeconds < 86400) return `Hace ${Math.floor(diffInSeconds / 3600)} h`;
-    
+
     return date.toLocaleDateString('es-CO', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 };
 
-export default function MediosPage() {
+export function MediosSection() {
   const { role } = useAuth();
   const [profiles, setProfiles] = useState<any[]>([]);
   const [feed, setFeed] = useState<any[]>([]);
@@ -77,7 +75,7 @@ export default function MediosPage() {
     setLoading(true);
     const { data: pData } = await supabase.from('medios_perfiles').select('*');
     const { data: fData } = await supabase.from('medios_feed').select('*').order('id', { ascending: false });
-    
+
     if (pData) setProfiles(pData);
     if (fData) setFeed(fData);
     setLastFetchTime(new Date());
@@ -126,7 +124,7 @@ export default function MediosPage() {
         try {
             const bstr = evt.target?.result;
             const wb = XLSX.read(bstr, { type: 'binary' });
-            
+
             let updatedProfiles = [...profiles];
             let updatedFeed = [...feed];
             let feedsFound = 0;
@@ -152,7 +150,7 @@ export default function MediosPage() {
                             const d = new Date(tiempo);
                             tiempo = isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
                         }
-                        
+
                         return {
                             medio: row['Medio'] || row['medio'] || 'Medio',
                             tiempo: tiempo,
@@ -162,13 +160,13 @@ export default function MediosPage() {
                     });
                     updatedFeed = [...newFeedData, ...updatedFeed].slice(0, 50);
                     feedsFound += newFeedData.length;
-                } 
+                }
                 // PROFILES detection
                 else if (firstRow['ID'] || firstRow['id'] || firstRow['Notas'] || firstRow['notas']) {
                     data.forEach((row: any) => {
                         const id = (row['ID'] || row['id'] || '').toLowerCase().trim();
                         if (!id) return;
-                        
+
                         const idx = updatedProfiles.findIndex(p => p.id === id);
                         const obj = {
                             id,
@@ -199,7 +197,7 @@ export default function MediosPage() {
 
   const kpis = useMemo(() => profiles.filter(p => p.id.startsWith('kpi_')), [profiles]);
   const topMedios = useMemo(() => profiles.filter(p => !p.id.startsWith('kpi_')).sort((a,b) => b.notas - a.notas), [profiles]);
-  
+
   const stackedData = useMemo(() => {
     const kpiNotas = profiles.find(p => p.id === 'kpi_notas');
     if (!kpiNotas || !kpiNotas.tendencia_semanal) return [];
@@ -209,10 +207,10 @@ export default function MediosPage() {
     }));
   }, [profiles]);
 
-  if (loading) return <div className="h-screen page-bg text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Conversación en Medios...</div>;
+  if (loading) return <div className="h-64 text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Conversación en Medios...</div>;
 
   return (
-    <div className="page-bg text-white p-6">
+    <>
       {/* Header Section */}
       <div className="mb-8 flex justify-between items-center">
         <div>
@@ -221,7 +219,7 @@ export default function MediosPage() {
               <span className="bg-[#1e293b] text-slate-400 text-[10px] px-2 py-0.5 rounded-full border border-white/10 uppercase">ACTUALIZADO {timeAgo}</span>
           </div>
           <h1 className="text-3xl font-bold mb-1 gradient-text text-glow-blue">Conversación en Medios</h1>
-          <p className="text-slate-400 text-sm">Monitoreo de prensa, radio, TV y medios digitales sobre el proceso electoral.</p>
+          <p className="text-slate-400 text-sm">Monitoreo de prensa, radio, TV y medios digitales.</p>
         </div>
         <div className="flex gap-3">
             {canEdit(role) && (
@@ -253,27 +251,27 @@ export default function MediosPage() {
                   <div className="flex justify-between items-start mb-2">
                       <p className="text-[10px] font-bold text-slate-500 tracking-wider">
                           {isEditing ? (
-                              <Input 
-                                value={kpi.label} 
+                              <Input
+                                value={kpi.label}
                                 onChange={e => {
                                     const up = [...profiles];
                                     const idx = up.findIndex(pr => pr.id === kpi.id);
                                     up[idx].label = e.target.value;
                                     setProfiles(up);
-                                }} 
+                                }}
                                 className="h-4 bg-transparent border-none p-0 text-[10px] font-bold uppercase"
                               />
                           ) : kpi.label.toUpperCase()}
                       </p>
                       {isEditing ? (
-                          <Input 
-                            value={kpi.delta} 
+                          <Input
+                            value={kpi.delta}
                             onChange={e => {
                                 const up = [...profiles];
                                 const idx = up.findIndex(pr => pr.id === kpi.id);
                                 up[idx].delta = e.target.value;
                                 setProfiles(up);
-                            }} 
+                            }}
                             className="h-4 w-12 bg-transparent border-none p-0 text-[10px] font-bold text-right"
                           />
                       ) : (
@@ -281,26 +279,26 @@ export default function MediosPage() {
                       )}
                   </div>
                   {isEditing ? (
-                      <Input 
-                        value={kpi.value} 
+                      <Input
+                        value={kpi.value}
                         onChange={e => {
                             const up = [...profiles];
                             const idx = up.findIndex(pr => pr.id === kpi.id);
                             up[idx].value = e.target.value;
                             setProfiles(up);
-                        }} 
+                        }}
                         className="h-8 text-2xl font-bold text-blue-500 bg-white/5 border-white/10 mb-2"
                       />
                   ) : (
                       <p className="text-3xl font-bold text-blue-500">{kpi.value}</p>
                   )}
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-800">
-                      <div 
-                          className="h-full transition-all duration-1000" 
-                          style={{ 
-                              width: '40%', 
-                              background: i === 0 ? '#3b82f6' : i === 1 ? '#e8a817' : i === 2 ? '#2eb88a' : '#3b82f6' 
-                          }} 
+                      <div
+                          className="h-full transition-all duration-1000"
+                          style={{
+                              width: '40%',
+                              background: i === 0 ? '#3b82f6' : i === 1 ? '#e8a817' : i === 2 ? '#2eb88a' : '#3b82f6'
+                          }}
                       />
                   </div>
               </Card>
@@ -316,14 +314,14 @@ export default function MediosPage() {
             </div>
             <div className="h-64 px-4">
                 <ResponsiveContainer width="100%" height="100%">
-                    <BarChart 
-                        data={stackedData} 
+                    <BarChart
+                        data={stackedData}
                         margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                     >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
                         <XAxis dataKey="dia" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
                         <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
-                        <Tooltip 
+                        <Tooltip
                             cursor={{ fill: 'rgba(255,255,255,0.03)' }}
                             contentStyle={{ backgroundColor: '#0b101d', border: '1px solid #1e293b', borderRadius: '12px' }}
                         />
@@ -432,15 +430,15 @@ export default function MediosPage() {
                         <div className="flex items-center gap-2 w-32 shrink-0">
                             <FontAwesomeIcon icon={getMediaIcon(m.label)} className="w-3.5 h-3.5 text-blue-500" />
                             {isEditing ? (
-                                <Input 
-                                    value={m.label} 
+                                <Input
+                                    value={m.label}
                                     onChange={e => {
                                         const up = [...profiles];
                                         const idx = up.findIndex(pr => pr.id === m.id);
                                         up[idx].label = e.target.value;
                                         setProfiles(up);
-                                    }} 
-                                    className="h-6 text-xs font-bold bg-white/5 border-white/10 p-1" 
+                                    }}
+                                    className="h-6 text-xs font-bold bg-white/5 border-white/10 p-1"
                                 />
                             ) : (
                                 <span className="text-xs font-bold truncate text-slate-100">{m.label}</span>
@@ -521,18 +519,18 @@ export default function MediosPage() {
                                         up[idx].medio = e.target.value;
                                         setFeed(up);
                                     }} className="h-6 text-xs font-bold text-blue-400 bg-white/5 border-white/10 w-32" />
-                                    <Input 
+                                    <Input
                                         type="datetime-local"
-                                        value={post.tiempo && !isNaN(new Date(post.tiempo).getTime()) ? new Date(new Date(post.tiempo).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''} 
+                                        value={post.tiempo && !isNaN(new Date(post.tiempo).getTime()) ? new Date(new Date(post.tiempo).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
                                         onChange={e => {
                                             const up = [...feed];
                                             up[idx].tiempo = e.target.value;
                                             setFeed(up);
-                                        }} 
-                                        className="h-6 text-xs bg-white/5 border-white/10 w-44" 
+                                        }}
+                                        className="h-6 text-xs bg-white/5 border-white/10 w-44"
                                     />
-                                    <select 
-                                        value={post.tipo} 
+                                    <select
+                                        value={post.tipo}
                                         onChange={e => {
                                             const up = [...feed];
                                             up[idx].tipo = e.target.value;
@@ -553,8 +551,8 @@ export default function MediosPage() {
                             )}
                         </div>
                         {isEditing ? (
-                            <textarea 
-                                value={post.texto} 
+                            <textarea
+                                value={post.texto}
                                 onChange={e => {
                                     const up = [...feed];
                                     up[idx].texto = e.target.value;
@@ -747,9 +745,9 @@ export default function MediosPage() {
                                                 news[idx].medio = e.target.value;
                                                 setFeed(news);
                                             }} className="bg-[#05080f] border-white/5 h-8 text-xs w-1/3" />
-                                            <Input 
+                                            <Input
                                                 type="datetime-local"
-                                                value={post.tiempo && !isNaN(new Date(post.tiempo).getTime()) ? new Date(new Date(post.tiempo).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''} 
+                                                value={post.tiempo && !isNaN(new Date(post.tiempo).getTime()) ? new Date(new Date(post.tiempo).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''}
                                                 onChange={(e) => {
                                                     const news = [...feed];
                                                     news[idx].tiempo = e.target.value;
@@ -781,6 +779,6 @@ export default function MediosPage() {
                 </div>
             </div>
       </AdminPopup>
-    </div>
+    </>
   );
 }

@@ -131,7 +131,7 @@ export default function ImportarPage() {
                 <Item label="Canales" value={String(summary.channels)} />
                 <Item label="Días cargados" value={String(summary.days)} />
               </dl>
-              <a href="/estrategia-digital" className="mt-4 inline-block rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2 text-sm font-bold text-white transition-colors">
+              <a href="/interno/estrategia-digital" className="mt-4 inline-block rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2 text-sm font-bold text-white transition-colors">
                 Ver dashboard
               </a>
             </div>

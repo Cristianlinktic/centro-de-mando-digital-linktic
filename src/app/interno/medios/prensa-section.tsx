@@ -240,7 +240,7 @@ function UbicacionesPanel({
   );
 }
 
-export default function PrensaPage() {
+export function PrensaSection() {
   const { role } = useAuth();
   const editable = canEdit(role);
 
@@ -370,18 +370,18 @@ export default function PrensaPage() {
   );
 
   if (loading && !displayData) {
-    return <div className="h-screen page-bg text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Análisis de Prensa...</div>;
+    return <div className="h-64 text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Análisis de Prensa...</div>;
   }
 
   return (
-    <div className="page-bg text-white p-6">
+    <>
       {/* Header */}
       <div className="mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
           <div className="flex gap-2 mb-2">
             <span className="bg-[#1e293b] text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 uppercase font-black">MONITOREO DE PRENSA</span>
           </div>
-          <h1 className="text-3xl font-bold mb-1 gradient-text text-glow-blue">Análisis de Prensa</h1>
+          <h2 className="text-2xl font-bold mb-1 gradient-text text-glow-blue">Análisis de Prensa</h2>
           <p className="text-slate-400 text-sm">Impacto, cobertura y sentimiento en medios de comunicación.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -529,6 +529,6 @@ export default function PrensaPage() {
           </div>
         </SheetContent>
       </Sheet>
-    </div>
+    </>
   );
 }

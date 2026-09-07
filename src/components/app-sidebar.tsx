@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  ShieldCheck,
   Newspaper,
   Share2,
   Globe2,
@@ -11,10 +10,9 @@ import {
   Crosshair,
   Users,
   MapPinned,
-  Rss,
-  FileSearch,
   CalendarDays,
   Target,
+  Building2,
 } from "lucide-react";
 import {
   Sidebar,
@@ -30,37 +28,32 @@ import { useAuth } from "@/components/auth-provider";
 import { screenKeyForPath } from "@/lib/auth/rbac";
 
 const icons: Record<string, React.ComponentType<{ className?: string }>> = {
-  ShieldCheck,
   Newspaper,
   Share2,
   Globe2,
   MapPinned,
   Users,
-  Rss,
-  FileSearch,
   CalendarDays,
   Target,
 };
 
-// Navegación unificada — Centro de Mando Digital LinkTIC
+// Navegación de la pestaña "Interno" — Centro de Mando Digital LinkTIC
 const navItems = [
-  { path: "/mapa", label: "Mapa Global", icon: "Globe2", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
-  { path: "/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
-  { path: "/testigos", label: "Testigos Electorales", icon: "ShieldCheck" },
-  { path: "/medios", label: "Conversación en Medios", icon: "Newspaper" },
-  { path: "/social", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
-  { path: "/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#E1306C" },
-  { path: "/instagram", label: "Instagram", icon: "Instagram" },
-  { path: "/redes-sociales", label: "Redes Sociales", icon: "Rss" },
-  { path: "/prensa", label: "Análisis de Prensa", icon: "FileSearch" },
-  { path: "/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays" },
-  { path: "/estrategia-digital", label: "Estrategia Digital", icon: "Target" },
+  { path: "/interno/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
+  { path: "/interno/medios", label: "Conversación en Medios", icon: "Newspaper" },
+  { path: "/interno/social", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
+  { path: "/interno/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#E1306C" },
+  { path: "/interno/instagram", label: "Instagram", icon: "Instagram" },
+  { path: "/interno/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays" },
+  { path: "/interno/estrategia-digital", label: "Estrategia Publicitaria", icon: "Target" },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
   const { role, screens } = useAuth();
+
+  const activeGroup: "interno" | "externo" = pathname.startsWith("/externo") ? "externo" : "interno";
 
   // El superadmin ve todo; el resto solo las pantallas que tiene asignadas.
   const canSee = (path: string) => {
@@ -92,54 +85,85 @@ export function AppSidebar() {
             <ChevronLeft className="h-4 w-4" />
           </button>
         </div>
+
+        {/* Pestañas de alto nivel: Interno / Externo */}
+        <div className="mt-3 grid grid-cols-2 gap-1 rounded-lg bg-black/20 p-1 group-data-[collapsible=icon]:hidden">
+          <Link
+            href="/interno/nacional"
+            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-bold transition-colors ${
+              activeGroup === "interno"
+                ? "bg-linktic-blue text-white shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Building2 className="h-3 w-3" /> Interno
+          </Link>
+          <Link
+            href="/externo"
+            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-bold transition-colors ${
+              activeGroup === "externo"
+                ? "bg-linktic-blue text-white shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Globe2 className="h-3 w-3" /> Externo
+          </Link>
+        </div>
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-3">
         <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground mb-2 px-2 group-data-[collapsible=icon]:hidden">
-          Centro de Mando Digital LinkTIC
+          {activeGroup === "interno" ? "Centro de Mando Digital Interno" : "Centro de Mando Digital Externo"}
         </p>
-        <nav className="space-y-1">
-          {visibleItems.map((item) => {
-            const Icon = icons[item.icon];
-            const isActive =
-              pathname === item.path || pathname.startsWith(item.path + "/");
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${isActive && item.icon === "Instagram"
-                    ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)]"
-                    : isActive
-                      ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)]"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                  }`}
-              >
-                {item.icon === "Instagram" ? (
-                  <FontAwesomeIcon
-                    icon={faInstagram}
-                    className={`h-4 w-4 shrink-0 ${isActive ? "text-[#E1306C]" : ""}`}
-                  />
-                ) : Icon ? (
-                  <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[hsl(213_85%_48%)]" : ""}`} />
-                ) : null}
-                <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">
-                  {item.label}
-                </span>
-                {item.badge && (
-                  <span
-                    className="text-[9px] font-bold px-2 py-0.5 rounded-full group-data-[collapsible=icon]:hidden"
-                    style={{
-                      backgroundColor: item.badgeBg,
-                      color: item.badgeText,
-                    }}
-                  >
-                    {item.badge}
+
+        {activeGroup === "interno" ? (
+          <nav className="space-y-1">
+            {visibleItems.map((item) => {
+              const Icon = icons[item.icon];
+              const isActive =
+                pathname === item.path || pathname.startsWith(item.path + "/");
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${isActive && item.icon === "Instagram"
+                      ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)]"
+                      : isActive
+                        ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)]"
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
+                >
+                  {item.icon === "Instagram" ? (
+                    <FontAwesomeIcon
+                      icon={faInstagram}
+                      className={`h-4 w-4 shrink-0 ${isActive ? "text-[#E1306C]" : ""}`}
+                    />
+                  ) : Icon ? (
+                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[hsl(213_85%_48%)]" : ""}`} />
+                  ) : null}
+                  <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">
+                    {item.label}
                   </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+                  {item.badge && (
+                    <span
+                      className="text-[9px] font-bold px-2 py-0.5 rounded-full group-data-[collapsible=icon]:hidden"
+                      style={{
+                        backgroundColor: item.badgeBg,
+                        color: item.badgeText,
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+        ) : (
+          <p className="px-3 py-2 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+            Todavía no hay módulos en Externo.
+          </p>
+        )}
 
         {role === "superadmin" && (
           <>

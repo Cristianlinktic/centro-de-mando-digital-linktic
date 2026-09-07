@@ -24,24 +24,23 @@ export interface UserAccess {
 /** Una "pantalla" gateable: clave estable + ruta navegable. */
 export interface ScreenDef {
   key: string; // p.ej. "lt-tab:mapa"
-  path: string; // p.ej. "/mapa"
+  path: string; // p.ej. "/interno/nacional"
   title: string;
   group: string; // sección visible en la UI
 }
 
-/** Catálogo de todas las pantallas gateables de este tablero. */
+/** Catálogo de todas las pantallas gateables de este tablero. Todas viven
+ *  bajo /interno/* (la pestaña "Centro de Mando Digital Interno"); /externo
+ *  todavía no tiene pantallas propias (placeholder, abierto a cualquier
+ *  autenticado — ver isPathAllowed). */
 const SCREENS: ScreenDef[] = [
-  { key: "lt-tab:mapa", path: "/mapa", title: "Mapa Global", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:nacional", path: "/nacional", title: "Conversación Nacional", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:testigos", path: "/testigos", title: "Testigos Electorales", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:medios", path: "/medios", title: "Conversación en Medios", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:social", path: "/social", title: "Conversación en Redes", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:actores-mapa", path: "/mapa-colombia", title: "Mapa de Colombia", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:actores-perfiles", path: "/instagram", title: "Instagram", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:redes-sociales", path: "/redes-sociales", title: "Redes Sociales", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:prensa", path: "/prensa", title: "Análisis de Prensa", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:parrilla", path: "/parrilla", title: "Parrilla de Contenidos", group: "Centro de Mando Digital LinkTIC" },
-  { key: "lt-tab:estrategia-digital", path: "/estrategia-digital", title: "Estrategia Digital", group: "Centro de Mando Digital LinkTIC" },
+  { key: "lt-tab:nacional", path: "/interno/nacional", title: "Conversación Nacional", group: "Interno" },
+  { key: "lt-tab:medios", path: "/interno/medios", title: "Conversación en Medios", group: "Interno" },
+  { key: "lt-tab:social", path: "/interno/social", title: "Conversación en Redes", group: "Interno" },
+  { key: "lt-tab:actores-mapa", path: "/interno/mapa-colombia", title: "Mapa de Colombia", group: "Interno" },
+  { key: "lt-tab:actores-perfiles", path: "/interno/instagram", title: "Instagram", group: "Interno" },
+  { key: "lt-tab:parrilla", path: "/interno/parrilla", title: "Parrilla de Contenidos", group: "Interno" },
+  { key: "lt-tab:estrategia-digital", path: "/interno/estrategia-digital", title: "Estrategia Publicitaria", group: "Interno" },
 ];
 
 export function allScreens(): ScreenDef[] {
@@ -105,9 +104,9 @@ export function hasAppAccess(access: Pick<UserAccess, "role" | "screens">): bool
 }
 
 /** Ruta de aterrizaje tras el login: primera pantalla permitida.
- *  superadmin → /mapa. Sin pantallas (y no superadmin) → null (sin acceso). */
+ *  superadmin → /interno/nacional. Sin pantallas (y no superadmin) → null (sin acceso). */
 export function firstAllowedPath(access: Pick<UserAccess, "role" | "screens">): string | null {
-  if (access.role === "superadmin") return "/mapa";
+  if (access.role === "superadmin") return "/interno/nacional";
   for (const s of SCREENS) {
     if (access.screens.includes(s.key)) return s.path;
   }
