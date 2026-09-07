@@ -50,7 +50,7 @@ export default function SeguimientoPage() {
   }
   if (campaignId === null) {
     return (
-      <Card className="bg-[#0b101d] border border-white/5 p-10 rounded-2xl text-center">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-10 rounded-2xl text-center">
         <p className="text-slate-400 text-sm">Aún no hay una campaña cargada. Importa un plan en la pestaña Importar.</p>
       </Card>
     );
@@ -115,7 +115,7 @@ export default function SeguimientoPage() {
 
 function StatCard({ label, value, editing, accent, onChange }: { label: string; value: number; editing: boolean; accent?: boolean; onChange: (v: number) => void }) {
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-5 rounded-2xl" style={accent ? { borderTop: "3px solid #3b82f6" } : undefined}>
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-5 rounded-2xl" style={accent ? { borderTop: "3px solid #3b82f6" } : undefined}>
       <p className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{label}</p>
       {editing ? (
         <Input

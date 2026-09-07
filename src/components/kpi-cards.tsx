@@ -25,7 +25,7 @@ export function KpiCards({ items }: { items: KpiItem[] }) {
       {items.map((kpi, i) => {
         const barColor = kpiColors[i % kpiColors.length];
         return (
-          <div key={kpi.label} className="kpi-card relative rounded-lg overflow-hidden">
+          <div key={kpi.label} className="kpi-card group relative rounded-lg overflow-hidden">
             <div className="p-4 pb-3 relative z-10">
               <p className="text-[10px] text-muted-foreground uppercase tracking-widest truncate">
                 {kpi.label}
@@ -61,8 +61,8 @@ export function KpiCards({ items }: { items: KpiItem[] }) {
               </div>
             )}
             <div
-              className="h-1 w-full"
-              style={{ background: `linear-gradient(90deg, ${barColor}, transparent 140%)` }}
+              className="h-1 w-full opacity-90 transition-opacity duration-300 group-hover:opacity-100"
+              style={{ background: `linear-gradient(90deg, ${barColor}, transparent 140%)`, boxShadow: `0 0 10px ${barColor}` }}
             />
           </div>
         );

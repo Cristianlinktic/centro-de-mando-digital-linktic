@@ -292,7 +292,7 @@ function UserFormModal({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 bg-[#0b101d] border border-white/10 shadow-2xl">
+      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 bg-[#0b101d]/70 backdrop-blur-md border border-white/10 shadow-2xl">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-black text-white">{isEdit ? "Editar usuario" : "Nuevo usuario"}</h2>
           <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white">

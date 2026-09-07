@@ -409,7 +409,7 @@ export default function TestigosPage() {
                     </div>
                 )
             )}
-            <Button variant="outline" size="sm" onClick={fetchTestigosData} className="bg-[#0b101d] border-white/10 text-white">
+            <Button variant="outline" size="sm" onClick={fetchTestigosData} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
                 <FontAwesomeIcon icon={faRotate} className={`mr-2 ${loading ? 'animate-spin' : ''}`}/>
             </Button>
         </div>
@@ -443,12 +443,12 @@ export default function TestigosPage() {
 
       <AdminPopup title="Estratega: Testigos Electorales" hideTrigger={true}>
           <div className="space-y-6">
-              <div className="flex justify-between items-center bg-[#161d2b] p-4 rounded-xl border border-white/5">
+              <div className="flex justify-between items-center bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl border border-white/5">
                 <div>
                     <h3 className="font-bold text-blue-400">Panel Estratégico</h3>
                     <p className="text-xs text-slate-400">Configura las misiones internacionales y metas regionales.</p>
                 </div>
-                <Button className="bg-blue-600 hover:bg-blue-700 font-bold" onClick={saveTestigosData}>
+                <Button variant="neon" className="font-bold" onClick={saveTestigosData}>
                     <FontAwesomeIcon icon={faSave} className="mr-2" /> Guardar Todo
                 </Button>
               </div>

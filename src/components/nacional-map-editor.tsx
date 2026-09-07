@@ -73,7 +73,7 @@ const Field = ({ label, children }: { label: string; children: React.ReactNode }
   </label>
 );
 
-const inputCls = "bg-[#161d2b] border-white/10 text-white h-9 text-sm";
+const inputCls = "bg-[#161d2b]/70 backdrop-blur-md border-white/10 text-white h-9 text-sm";
 
 export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () => void }) {
   const [rows, setRows] = useState<any[]>([]);
@@ -273,7 +273,7 @@ export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
 
   return (
     <div className="space-y-3">
-      <div className="sticky top-0 z-10 bg-[#0b101d] pb-3 space-y-3">
+      <div className="sticky top-0 z-10 bg-[#0b101d]/70 backdrop-blur-md pb-3 space-y-3">
         <div className="flex items-center justify-between gap-3">
           <p className="text-xs text-slate-400">
             Edita las menciones por plataforma (<b>TikTok, X, Instagram, Facebook</b>) de los departamentos.
@@ -286,10 +286,10 @@ export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <Button type="button" variant="outline" size="sm" className="bg-[#161d2b] border-white/10 text-white" onClick={downloadTemplate}>
+          <Button type="button" variant="outline" size="sm" className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 text-white" onClick={downloadTemplate}>
             <FontAwesomeIcon icon={faFileArrowDown} className="w-4 h-4 mr-2" /> Descargar plantilla
           </Button>
-          <Button type="button" variant="outline" size="sm" className="bg-[#161d2b] border-white/10 text-white" onClick={() => fileInputRef.current?.click()}>
+          <Button type="button" variant="outline" size="sm" className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 text-white" onClick={() => fileInputRef.current?.click()}>
             <FontAwesomeIcon icon={faFileArrowUp} className="w-4 h-4 mr-2" /> Importar Excel
           </Button>
           <input ref={fileInputRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} />
@@ -302,7 +302,7 @@ export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
 
       <div className="space-y-2">
         {rows.map((r) => (
-          <details key={r.id} className="group bg-[#0b101d] border border-white/10 rounded-xl overflow-hidden">
+          <details key={r.id} className="group bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden">
             <summary className="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer list-none hover:bg-white/5">
               <span className="flex items-center gap-3">
                 <span className="font-mono text-xs text-slate-500 w-6">{r.id}</span>

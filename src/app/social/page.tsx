@@ -212,7 +212,7 @@ export default function SocialPage() {
                     </div>
                 )
             )}
-            <Button variant="outline" size="sm" onClick={fetchSocialData} className="bg-[#0b101d] border-white/10 text-white">
+            <Button variant="outline" size="sm" onClick={fetchSocialData} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
                 <FontAwesomeIcon icon={faRotate} className={`mr-2 ${loading ? 'animate-spin' : ''}`}/>
             </Button>
         </div>
@@ -239,7 +239,7 @@ export default function SocialPage() {
                   seguidores: "0", sentimiento: 0, interacciones: 0, alcance: "0", posts: 0, tendencia: [], top_posts: []
               };
               return (
-                <Card key={key} className="bg-[#0b101d] border border-white/5 p-4 rounded-2xl">
+                <Card key={key} className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-4 rounded-2xl">
                     <div className="flex justify-between items-start mb-4">
                         <div className="flex items-center gap-2">
                             <div className="p-2 rounded-lg bg-white/5" style={{ color: p.color }}>
@@ -390,7 +390,7 @@ export default function SocialPage() {
       </div>
 
       {/* Feed */}
-      <div className="bg-[#0b101d] border border-white/5 rounded-2xl p-6 mb-20 neon-frame">
+      <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl p-6 mb-20 neon-frame">
         <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
                 <span className="text-yellow-500 font-bold text-xl">⚡</span>
@@ -436,7 +436,7 @@ export default function SocialPage() {
                                                 up[idx].red = e.target.value;
                                                 setFeed(up);
                                             }}
-                                            className="bg-[#161d2b] text-[10px] font-bold rounded p-1 border-none outline-none"
+                                            className="bg-[#161d2b]/70 backdrop-blur-md text-[10px] font-bold rounded p-1 border-none outline-none"
                                         >
                                             <option value="X">X</option>
                                             <option value="Instagram">IG</option>
@@ -468,7 +468,7 @@ export default function SocialPage() {
                                                 up[idx].tipo = e.target.value;
                                                 setFeed(up);
                                             }}
-                                            className="bg-[#161d2b] text-[10px] font-bold rounded p-1 border-none outline-none"
+                                            className="bg-[#161d2b]/70 backdrop-blur-md text-[10px] font-bold rounded p-1 border-none outline-none"
                                         >
                                             <option value="positivo">Positivo</option>
                                             <option value="neutral">Neutral</option>
@@ -514,7 +514,7 @@ export default function SocialPage() {
 
       <AdminPopup title="Editor de Inteligencia Social" hideTrigger={true}>
             <div className="space-y-6">
-                <div className="flex justify-between items-center mb-6 bg-[#161d2b] p-4 rounded-xl border border-white/5">
+                <div className="flex justify-between items-center mb-6 bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl border border-white/5">
                     <div>
                         <h3 className="font-bold">Panel de Control</h3>
                         <p className="text-xs text-slate-400">Gestiona métricas y publicaciones en tiempo real.</p>
@@ -524,7 +524,7 @@ export default function SocialPage() {
                             <FontAwesomeIcon icon={faUpload} className="mr-2" /> Excel
                             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleExcelUpload} accept=".xlsx,.xls" />
                         </Button>
-                        <Button className="bg-blue-600 hover:bg-blue-700 font-bold" onClick={saveSocialData}>
+                        <Button variant="neon" className="font-bold" onClick={saveSocialData}>
                             <FontAwesomeIcon icon={faSave} className="mr-2" /> Guardar Todos
                         </Button>
                     </div>
@@ -593,7 +593,7 @@ export default function SocialPage() {
                         <div className="space-y-2">
                             {feed.map((post, idx) => (
                                 <div key={idx} className="bg-white/5 p-3 rounded-xl flex gap-3 items-start border border-white/5">
-                                    <select className="bg-[#161d2b] border-none text-[10px] font-bold rounded p-1" value={post.red} onChange={(e) => {
+                                    <select className="bg-[#161d2b]/70 backdrop-blur-md border-none text-[10px] font-bold rounded p-1" value={post.red} onChange={(e) => {
                                         const news = [...feed];
                                         news[idx].red = e.target.value;
                                         setFeed(news);

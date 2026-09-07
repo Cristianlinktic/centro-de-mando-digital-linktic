@@ -21,7 +21,7 @@ export function AdminPopup({ children, title = "Panel de Administración", hideT
         </SheetTrigger>
       )}
       
-      <SheetContent side="right" className="bg-[#0b101d] text-white border-l border-white/10 w-full sm:max-w-xl md:max-w-2xl overflow-y-auto">
+      <SheetContent side="right" className="bg-[#0b101d]/70 backdrop-blur-md text-white border-l border-white/10 w-full sm:max-w-xl md:max-w-2xl overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="text-white text-xl font-bold border-b border-white/10 pb-4">{title}</SheetTitle>
         </SheetHeader>

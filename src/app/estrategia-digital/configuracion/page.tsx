@@ -112,7 +112,7 @@ function ParamsForm({ data, editable, onSaved }: { data: CampaignData; editable:
   };
 
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Field label="Nombre" className="sm:col-span-2">
           <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} disabled={!editable} className="bg-white/5 border-white/10" />
@@ -129,7 +129,7 @@ function ParamsForm({ data, editable, onSaved }: { data: CampaignData; editable:
       </div>
       {editable && (
         <div className="mt-4">
-          <Button onClick={save} disabled={saving} className="bg-blue-600 hover:bg-blue-700 font-bold">
+          <Button variant="neon" onClick={save} disabled={saving} className="font-bold">
             <FontAwesomeIcon icon={faSave} className="mr-2" /> {saving ? "Guardando…" : "Guardar parámetros"}
           </Button>
         </div>
@@ -161,7 +161,7 @@ function MetricsForm({ data, editable, onSaved }: { data: CampaignData; editable
   };
 
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
       <p className="text-xs text-slate-500 mb-4">Estos valores se muestran en las cards del Resumen. Actualízalos periódicamente.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Field label="Inversión acumulada (COP)">
@@ -179,7 +179,7 @@ function MetricsForm({ data, editable, onSaved }: { data: CampaignData; editable
       </div>
       {editable && (
         <div className="mt-4">
-          <Button onClick={save} disabled={saving} className="bg-blue-600 hover:bg-blue-700 font-bold">
+          <Button variant="neon" onClick={save} disabled={saving} className="font-bold">
             <FontAwesomeIcon icon={faSave} className="mr-2" /> {saving ? "Guardando…" : "Guardar métricas"}
           </Button>
         </div>
@@ -241,7 +241,7 @@ function DailyForm({
   };
 
   return (
-    <Card className="bg-[#0b101d] border border-white/5 rounded-2xl overflow-hidden">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
       <div className="p-6 pb-3">
         <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">{title}</h3>
         <p className="text-xs text-slate-500 mt-1">{subtitle}</p>

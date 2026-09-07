@@ -66,7 +66,7 @@ export function AppHeader() {
         <div className="flex items-center gap-2">
             <h2 className="text-sm font-semibold truncate gradient-text">{meta.title}</h2>
             {role === "superadmin" ? (
-                <Badge className="bg-fuchsia-600/10 text-fuchsia-400 border-fuchsia-500/20 text-[8px] h-4 px-1 font-black">SUPER</Badge>
+                <Badge variant="neon" className="text-[8px] h-4 px-1 font-black">SUPER</Badge>
             ) : role === "admin" ? (
                 <Badge className="bg-blue-600/10 text-blue-400 border-blue-500/20 text-[8px] h-4 px-1 font-black">ADMIN</Badge>
             ) : (
@@ -92,7 +92,7 @@ export function AppHeader() {
         <LogOut className="h-4 w-4" />
       </button>
 
-      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-linktic-blue to-linktic-gold flex items-center justify-center text-[11px] font-bold text-white shrink-0">
+      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-linktic-blue to-linktic-gold flex items-center justify-center text-[11px] font-bold text-white shrink-0 shadow-[0_0_14px_hsl(213_85%_55%/0.45)] ring-1 ring-white/10">
         {role === "superadmin" ? "SA" : role === "admin" ? "AD" : "LC"}
       </div>
     </header>

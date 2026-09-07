@@ -137,7 +137,7 @@ function KpiCard({
   suffix?: string;
 }) {
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-5 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-5 rounded-2xl">
       <div className="flex items-center gap-3 mb-3">
         <div className={`p-2 rounded-xl bg-white/5 border border-white/10 ${colorClass}`}>
           <FontAwesomeIcon icon={icon} className="w-4 h-4" />
@@ -173,7 +173,7 @@ function SentimentDonut({
   const emoji = dominant.name === "Positivo" ? "😊" : dominant.name === "Negativo" ? "😟" : "😐";
 
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
       <h3 className="text-sm font-semibold mb-5 text-slate-200 uppercase tracking-widest">{title}</h3>
       <div className="flex items-center gap-6">
         <div className="relative w-36 h-36 shrink-0">
@@ -312,7 +312,7 @@ function TagListEditor({
           <option value="media">Media</option>
           <option value="baja">Baja</option>
         </select>
-        <Button type="button" size="sm" onClick={add} className="bg-blue-600 hover:bg-blue-700 h-9">
+        <Button type="button" size="sm" variant="neon" onClick={add} className="h-9">
           <FontAwesomeIcon icon={faPlus} />
         </Button>
       </div>
@@ -378,7 +378,7 @@ function ImpactListEditor({
           <option value="neutral">Neutral 😐</option>
           <option value="negativo">Negativo 😡</option>
         </select>
-        <Button type="button" size="sm" onClick={add} className="bg-blue-600 hover:bg-blue-700 h-9">
+        <Button type="button" size="sm" variant="neon" onClick={add} className="h-9">
           <FontAwesomeIcon icon={faPlus} />
         </Button>
       </div>
@@ -522,7 +522,7 @@ function EstrategiaFormModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="bg-[#0b101d] border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div>
             <h2 className="text-xl font-bold text-white">Actualizar Estrategia — {fecha}</h2>
@@ -548,7 +548,7 @@ function EstrategiaFormModal({
           <Button variant="outline" onClick={onClose} className="text-slate-400">
             Cancelar
           </Button>
-          <Button onClick={save} disabled={saving} className="bg-blue-600 hover:bg-blue-700">
+          <Button variant="neon" onClick={save} disabled={saving}>
             <FontAwesomeIcon icon={saving ? faSpinner : faSave} className={`mr-2 ${saving ? "animate-spin" : ""}`} />
             Guardar
           </Button>
@@ -666,7 +666,7 @@ function ListeningFormModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="bg-[#0b101d] border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div>
             <h2 className="text-xl font-bold text-white">Actualizar Listening — {fecha}</h2>
@@ -755,7 +755,7 @@ function ListeningFormModal({
           <Button variant="outline" onClick={onClose} className="text-slate-400">
             Cancelar
           </Button>
-          <Button onClick={save} disabled={saving} className="bg-blue-600 hover:bg-blue-700">
+          <Button variant="neon" onClick={save} disabled={saving}>
             <FontAwesomeIcon icon={saving ? faSpinner : faSave} className={`mr-2 ${saving ? "animate-spin" : ""}`} />
             Guardar
           </Button>
@@ -863,7 +863,7 @@ export default function RedesSocialesPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 bg-[#0b101d] border border-white/10 rounded-xl px-3 py-2">
+          <div className="flex items-center gap-2 bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-xl px-3 py-2">
             <FontAwesomeIcon
               icon={faCalendarDays}
               className="w-4 h-4 text-slate-400 cursor-pointer"
@@ -878,11 +878,11 @@ export default function RedesSocialesPage() {
               className="bg-transparent text-sm text-white focus:outline-none w-[130px]"
             />
           </div>
-          <Button variant="outline" size="sm" onClick={fetchData} className="bg-[#0b101d] border-white/10 text-white">
+          <Button variant="outline" size="sm" onClick={fetchData} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
             <FontAwesomeIcon icon={faRotate} />
           </Button>
           {editable && (
-            <Button onClick={() => setFormOpen(true)} className="bg-blue-600 hover:bg-blue-700 font-bold">
+            <Button variant="neon" onClick={() => setFormOpen(true)} className="font-bold">
               <FontAwesomeIcon icon={faPlus} className="mr-2" />
               {tab === "estrategia" ? (latestEst ? "Editar / Ingresar" : "Ingresar Datos") : latestLis ? "Editar / Ingresar" : "Ingresar Datos"}
             </Button>
@@ -906,7 +906,7 @@ export default function RedesSocialesPage() {
 
       {tab === "estrategia" ? (
         !latestEst ? (
-          <Card className="bg-[#0b101d] border-white/5 p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
+          <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
             <FontAwesomeIcon icon={faUsers} className="w-8 h-8 text-slate-600" />
             <h2 className="text-lg font-bold">Aún no hay datos de estrategia</h2>
             <p className="text-slate-500 text-sm max-w-sm">
@@ -930,7 +930,7 @@ export default function RedesSocialesPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl">
+              <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
                 <h3 className="text-sm font-semibold mb-1 text-slate-200 uppercase tracking-widest">Perfil de Engagement</h3>
                 <p className="text-xs text-slate-500 mb-4">% respecto al máximo histórico registrado</p>
                 <ResponsiveContainer width="100%" height={240}>
@@ -944,7 +944,7 @@ export default function RedesSocialesPage() {
               </Card>
 
               {chartData.length > 1 && (
-                <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl">
+                <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
                   <h3 className="text-sm font-semibold mb-5 text-slate-200 uppercase tracking-widest">Tendencia Histórica</h3>
                   <ResponsiveContainer width="100%" height={220}>
                     <AreaChart data={chartData} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
@@ -967,7 +967,7 @@ export default function RedesSocialesPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <SentimentDonut positivo={latestEst.sentimiento_positivo} negativo={latestEst.sentimiento_negativo} title="Análisis de Sentimiento" />
-              <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 320 }}>
+              <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 320 }}>
                 <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Publicaciones Principales</h3>
                 <ImageBox src={latestEst.publicaciones_principales} alt="Publicaciones principales" />
               </Card>
@@ -975,7 +975,7 @@ export default function RedesSocialesPage() {
           </div>
         )
       ) : !latestLis ? (
-        <Card className="bg-[#0b101d] border-white/5 p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
+        <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
           <FontAwesomeIcon icon={faBolt} className="w-8 h-8 text-slate-600" />
           <h2 className="text-lg font-bold">Aún no hay datos de listening</h2>
           <p className="text-slate-500 text-sm max-w-sm">
@@ -991,7 +991,7 @@ export default function RedesSocialesPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl">
+            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
               <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Radar de Emociones</h3>
               <ResponsiveContainer width="100%" height={220}>
                 <RadarChart data={emotionRadarData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
@@ -1003,7 +1003,7 @@ export default function RedesSocialesPage() {
               </ResponsiveContainer>
             </Card>
 
-            <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl flex flex-col">
+            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col">
               <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Distribución de Impacto</h3>
               {impactTotal === 0 ? (
                 <div className="flex-1 flex items-center justify-center text-xs text-slate-500 italic">Sin datos de impacto</div>
@@ -1039,11 +1039,11 @@ export default function RedesSocialesPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
+            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
               <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Activity Peak</h3>
               <ImageBox src={latestLis.activity_peak} alt="Activity peak" />
             </Card>
-            <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
+            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
               <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Hashtags</h3>
               <ImageBox src={latestLis.hashtags} alt="Hashtags" />
             </Card>
@@ -1077,7 +1077,7 @@ function TagListCard({ title, items }: { title: string; items: TagItem[] }) {
     return (rank[b.importance] ?? 0) - (rank[a.importance] ?? 0);
   });
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl min-h-[220px] flex flex-col">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl min-h-[220px] flex flex-col">
       <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">{title}</h3>
       {sorted.length === 0 ? (
         <div className="flex-1 flex items-center justify-center text-xs text-slate-500 italic">Sin datos</div>
@@ -1097,7 +1097,7 @@ function TagListCard({ title, items }: { title: string; items: TagItem[] }) {
 
 function ImpactListCard({ title, items, isUrl }: { title: string; items: ImpactItem[]; isUrl?: boolean }) {
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-6 rounded-2xl min-h-[220px] flex flex-col">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl min-h-[220px] flex flex-col">
       <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">{title}</h3>
       {!items || items.length === 0 ? (
         <div className="flex-1 flex items-center justify-center text-xs text-slate-500 italic">Sin datos</div>

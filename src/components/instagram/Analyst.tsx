@@ -152,7 +152,7 @@ export function Analyst() {
       </div>
 
       {open && (
-        <div className="fixed bottom-20 right-5 z-40 flex h-[70vh] max-h-[640px] w-[min(440px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b101d] shadow-2xl">
+        <div className="fixed bottom-20 right-5 z-40 flex h-[70vh] max-h-[640px] w-[min(440px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b101d]/70 backdrop-blur-md shadow-2xl">
           {/* Header */}
           <div
             className="border-b border-white/10 px-4 py-3"

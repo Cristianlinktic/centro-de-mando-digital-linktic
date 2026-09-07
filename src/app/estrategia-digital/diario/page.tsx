@@ -37,7 +37,7 @@ export default function DiarioPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
         <h3 className="font-bold text-sm text-slate-200 mb-1 uppercase tracking-widest">Curva de inversión diaria</h3>
         <p className="text-xs text-slate-500 mb-4">Día pico: {formatDate(peak?.date ?? "")} con {formatCOP(peak?.totalInvestment ?? 0)}</p>
         <div className="h-64">
@@ -59,7 +59,7 @@ export default function DiarioPage() {
         </div>
       </Card>
 
-      <Card className="bg-[#0b101d] border border-white/5 rounded-2xl overflow-hidden">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
         <div className="p-6 pb-3">
           <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">Detalle por día</h3>
         </div>

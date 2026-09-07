@@ -24,7 +24,7 @@ const IG_PINK = "#E1306C";
 
 function KpiCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-[#0b101d] p-5">
+    <div className="rounded-2xl border border-white/5 bg-[#0b101d]/70 backdrop-blur-md p-5">
       <div className="text-sm text-slate-400">{label}</div>
       <div className="mt-1 text-3xl font-semibold tracking-tight text-white">{value}</div>
       {sub && <div className="mt-1 text-xs text-slate-500">{sub}</div>}
@@ -103,7 +103,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
       </section>
 
       {/* Chart */}
-      <section className="mb-8 rounded-2xl border border-white/5 bg-[#0b101d] p-5">
+      <section className="mb-8 rounded-2xl border border-white/5 bg-[#0b101d]/70 backdrop-blur-md p-5">
         <h2 className="mb-4 text-lg font-semibold text-white">Alcance por publicación en el tiempo</h2>
         <ReachChart posts={filtered} onSelect={setSelected} />
         <p className="mt-3 text-xs text-slate-500">Haz clic en una barra para ver el detalle de esa publicación.</p>
@@ -111,7 +111,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
 
       {/* Type breakdown + hashtags */}
       <section className="mb-8 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-white/5 bg-[#0b101d] p-5">
+        <div className="rounded-2xl border border-white/5 bg-[#0b101d]/70 backdrop-blur-md p-5">
           <h2 className="mb-4 text-lg font-semibold text-white">Por tipo de contenido</h2>
           <div className="space-y-3">
             {byType.map((t) => {
@@ -141,7 +141,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/5 bg-[#0b101d] p-5">
+        <div className="rounded-2xl border border-white/5 bg-[#0b101d]/70 backdrop-blur-md p-5">
           <h2 className="mb-4 text-lg font-semibold text-white">Hashtags más usados</h2>
           <div className="flex flex-wrap gap-2">
             {tags.map((h) => (
@@ -211,7 +211,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
             <button
               key={p.id}
               onClick={() => setSelected(p)}
-              className="group overflow-hidden rounded-2xl border border-white/5 bg-[#0b101d] text-left transition hover:border-white/20"
+              className="group overflow-hidden rounded-2xl border border-white/5 bg-[#0b101d]/70 backdrop-blur-md text-left transition hover:border-white/20"
             >
               <PostImage post={p} className="aspect-square w-full" rounded="rounded-none" />
               <div className="p-3">
@@ -242,7 +242,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
         <section className="overflow-hidden rounded-2xl border border-white/5">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[720px] text-left text-sm">
-              <thead className="bg-[#0b101d] text-xs uppercase tracking-wide text-slate-400">
+              <thead className="bg-[#0b101d]/70 backdrop-blur-md text-xs uppercase tracking-wide text-slate-400">
                 <tr>
                   <th className="px-4 py-3">Fecha</th>
                   <th className="px-4 py-3">Tipo</th>

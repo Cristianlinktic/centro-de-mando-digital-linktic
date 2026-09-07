@@ -183,7 +183,7 @@ const DepartmentDetail = ({ dep, selectedTone }: { dep: DeptData; selectedTone: 
   );
 
   return (
-    <div className="p-5 space-y-4 bg-[#0b101d] border border-white/10 rounded-2xl text-white">
+    <div className="p-5 space-y-4 bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-2xl text-white">
       {/* Header */}
       <div>
         <h3 className="text-xl font-bold leading-tight">{dep.label ?? dep.pais}</h3>
@@ -192,11 +192,11 @@ const DepartmentDetail = ({ dep, selectedTone }: { dep: DeptData; selectedTone: 
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-[#161d2b] p-3 rounded-xl">
+        <div className="bg-[#161d2b]/70 backdrop-blur-md p-3 rounded-xl">
           <p className="text-2xl font-bold text-yellow-500">{dep.volumen.toLocaleString()}</p>
           <p className="text-xs text-slate-400">artículos</p>
         </div>
-        <div className="bg-[#161d2b] p-3 rounded-xl">
+        <div className="bg-[#161d2b]/70 backdrop-blur-md p-3 rounded-xl">
           <SentimentDonut
             positivo={positivo || 0}
             neutral={neutral || 0}
@@ -433,7 +433,7 @@ export default function NacionalPage() {
         <div className="flex flex-wrap gap-2 items-center mt-2">
           <Button
             variant="outline" size="sm"
-            className={`bg-[#0b101d] border-white/10 ${!selectedTone ? "bg-primary/20 border-primary" : "text-white"}`}
+            className={`bg-[#0b101d]/70 backdrop-blur-md border-white/10 ${!selectedTone ? "bg-primary/20 border-primary" : "text-white"}`}
             onClick={() => setSelectedTone(null)}
           >
             Todos
@@ -441,7 +441,7 @@ export default function NacionalPage() {
           {(["Positivo", "Negativo", "Neutro"] as const).map((tone) => (
             <Button
               key={tone} variant="outline" size="sm"
-              className={`bg-[#0b101d] border-white/10 ${selectedTone === tone ? "bg-primary/20 border-primary" : "text-white"}`}
+              className={`bg-[#0b101d]/70 backdrop-blur-md border-white/10 ${selectedTone === tone ? "bg-primary/20 border-primary" : "text-white"}`}
               onClick={() => setSelectedTone(tone)}
             >
               <span className="w-2 h-2 rounded-full mr-2 inline-block" style={{ background: toneColors[tone] }} />
@@ -450,7 +450,7 @@ export default function NacionalPage() {
           ))}
           <Button
             variant="outline" size="sm"
-            className="bg-[#0b101d] border-white/10 text-white"
+            className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white"
             onClick={() => fetchData()}
           >
             <FontAwesomeIcon icon={faRotate} className="h-4 w-4 mr-2" /> Actualizar
@@ -497,7 +497,7 @@ export default function NacionalPage() {
             )}
           </div>
 
-          <Card className="bg-[#0b101d] border border-white/10 p-4 text-white flex-1 min-h-0 flex flex-col">
+          <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/10 p-4 text-white flex-1 min-h-0 flex flex-col">
             <div className="flex items-center justify-between mb-3 shrink-0">
               <h3 className="font-bold text-sm flex items-center gap-2">
                 <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4 text-blue-400" /> Ranking por artículos
@@ -548,7 +548,7 @@ export default function NacionalPage() {
               <button
                 key={d.id}
                 onClick={() => setSelected(d.id)}
-                className={`text-left p-3 rounded-xl border transition-all ${isSel ? "bg-primary/15 border-primary/50 ring-1 ring-primary/40" : "bg-[#0b101d] border-white/10 hover:border-blue-500/40 hover:bg-white/[0.03]"}`}
+                className={`text-left p-3 rounded-xl border transition-all ${isSel ? "bg-primary/15 border-primary/50 ring-1 ring-primary/40" : "bg-[#0b101d]/70 backdrop-blur-md border-white/10 hover:border-blue-500/40 hover:bg-white/[0.03]"}`}
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="font-mono text-[10px] text-slate-500">#{i + 1} · {d.id}</span>

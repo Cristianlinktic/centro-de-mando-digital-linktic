@@ -110,18 +110,61 @@
   background-attachment: fixed;
 }
 
-/* Capa de aurora animada (muy sutil), detrás de todo el contenido del shell. */
+/* Capa de aurora animada: "bolas" de luz desvanecidas en azul/púrpura/dorado
+   LinkTIC que flotan lentamente detrás de todo el contenido del shell —
+   inspirada en el hero del LinkTIC Future Forum. */
 .app-aurora {
   position: fixed;
   inset: -20%;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
   background:
-    radial-gradient(40% 40% at 20% 25%, hsl(213 85% 48% / 0.18), transparent 70%),
-    radial-gradient(38% 38% at 82% 18%, hsl(280 65% 60% / 0.14), transparent 70%),
-    radial-gradient(45% 45% at 60% 95%, hsl(42 90% 52% / 0.10), transparent 70%);
+    radial-gradient(40% 40% at 20% 25%, hsl(213 85% 48% / 0.16), transparent 70%),
+    radial-gradient(38% 38% at 82% 18%, hsl(280 65% 60% / 0.12), transparent 70%),
+    radial-gradient(45% 45% at 60% 95%, hsl(42 90% 52% / 0.09), transparent 70%);
   filter: blur(40px);
   opacity: 0.55;
+}
+
+.app-aurora::before,
+.app-aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+}
+
+.app-aurora::before {
+  width: 34vw;
+  height: 34vw;
+  min-width: 320px;
+  min-height: 320px;
+  top: 8%;
+  left: 6%;
+  background: radial-gradient(circle, hsl(213 90% 58% / 0.5), transparent 72%);
+  animation: orb-float-a 24s ease-in-out infinite;
+}
+
+.app-aurora::after {
+  width: 28vw;
+  height: 28vw;
+  min-width: 260px;
+  min-height: 260px;
+  bottom: 10%;
+  right: 8%;
+  background: radial-gradient(circle, hsl(280 70% 60% / 0.4), transparent 72%);
+  animation: orb-float-b 28s ease-in-out infinite;
+}
+
+@keyframes orb-float-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6vw, 4vh) scale(1.12); }
+}
+
+@keyframes orb-float-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5vw, -5vh) scale(1.08); }
 }
 
 /* Texto con degradado (títulos): sheen blanco -> azul -> dorado de LinkTIC. */
@@ -396,6 +439,8 @@
 @media (prefers-reduced-motion: reduce) {
 
   .app-aurora,
+  .app-aurora::before,
+  .app-aurora::after,
   .shimmer,
   .marquee-track,
   .neon-frame::before,
@@ -415,15 +460,135 @@
 }
 
 .kpi-card {
-  background: linear-gradient(135deg, hsl(222 40% 9%), hsl(213 60% 18% / 0.4));
+  background: linear-gradient(135deg, hsl(222 40% 9% / 0.75), hsl(213 60% 18% / 0.35));
+  -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  backdrop-filter: blur(10px) saturate(1.15);
   border: 1px solid hsl(222 30% 18%);
   box-shadow: 0 8px 32px hsl(213 85% 48% / 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .kpi-card:hover {
   transform: translateY(-2px);
+  border-color: hsl(213 85% 55% / 0.4);
   box-shadow: 0 12px 40px hsl(213 85% 48% / 0.25);
+}
+
+/* ============================================================
+   === Sistema "Future Forum": glass + neón para elementos
+   === destacados (CTAs, tarjetas, chips, inputs, spotlight). ===
+   ============================================================ */
+
+/* Panel de cristal más pronunciado que .glass — para hero/CTA. */
+.glass-strong {
+  background: linear-gradient(160deg, hsl(222 42% 13% / 0.65), hsl(222 46% 6% / 0.55));
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  backdrop-filter: blur(22px) saturate(1.3);
+  border: 1px solid hsl(0 0% 100% / 0.08);
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.06), 0 20px 60px hsl(222 60% 3% / 0.45);
+}
+
+/* Halo radial suave para respaldar títulos/hero dentro de un panel. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 60%;
+  z-index: -1;
+  background: radial-gradient(60% 100% at 50% 0%, hsl(213 90% 58% / 0.28), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* Botón neón: degradado LinkTIC + resplandor que se intensifica al pasar el mouse. */
+.neon-btn {
+  position: relative;
+  background: linear-gradient(115deg, hsl(213 90% 52%), hsl(280 70% 58%) 55%, hsl(42 92% 55%) 130%);
+  background-size: 180% 180%;
+  background-position: 0% 50%;
+  color: #fff;
+  border: 1px solid hsl(0 0% 100% / 0.14);
+  box-shadow: 0 0 0 1px hsl(213 85% 55% / 0.15) inset, 0 8px 26px hsl(213 85% 50% / 0.35), 0 2px 10px hsl(280 65% 55% / 0.2);
+  transition: background-position 0.5s ease, box-shadow 0.25s ease, transform 0.2s ease, filter 0.2s ease;
+}
+
+.neon-btn:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 0 0 1px hsl(213 85% 60% / 0.25) inset, 0 10px 36px hsl(213 85% 55% / 0.5), 0 4px 18px hsl(280 65% 60% / 0.35);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+.neon-btn:active {
+  transform: translateY(0);
+  filter: brightness(0.97);
+}
+
+/* Chip/badge con resplandor pulsante (para LIVE, NEW, estados destacados). */
+.badge-neon {
+  position: relative;
+  box-shadow: 0 0 0 1px hsl(0 0% 100% / 0.08) inset, 0 0 14px var(--badge-neon-color, hsl(213 85% 55% / 0.55));
+  animation: badge-neon-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes badge-neon-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px hsl(0 0% 100% / 0.08) inset, 0 0 10px var(--badge-neon-color, hsl(213 85% 55% / 0.45)); }
+  50% { box-shadow: 0 0 0 1px hsl(0 0% 100% / 0.08) inset, 0 0 18px var(--badge-neon-color, hsl(213 85% 55% / 0.7)); }
+}
+
+/* Input tipo "cristal": fondo translúcido + resplandor neón al enfocar. */
+.input-glass {
+  background: hsl(222 35% 12% / 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-color: hsl(0 0% 100% / 0.1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.input-glass:focus-within,
+.input-glass:focus {
+  border-color: hsl(213 85% 55% / 0.6);
+  box-shadow: 0 0 0 3px hsl(213 85% 55% / 0.15), 0 0 24px hsl(213 85% 55% / 0.2);
+  background: hsl(222 35% 14% / 0.7);
+}
+
+/* Tarjeta de cristal reutilizable: fondo translúcido con blur + glow multicolor al pasar el mouse. */
+.card-glass {
+  background: linear-gradient(165deg, hsl(222 40% 11% / 0.6), hsl(222 44% 7% / 0.55));
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid hsl(0 0% 100% / 0.08);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.card-glass:hover {
+  border-color: hsl(213 85% 55% / 0.35);
+  box-shadow: 0 16px 48px hsl(213 85% 48% / 0.18), 0 0 0 1px hsl(280 65% 60% / 0.08) inset;
+  transform: translateY(-2px);
+}
+
+/* Barra de progreso/acento con brillo recorriendo el degradado (para accent-bar destacados). */
+.accent-bar-anim {
+  background: linear-gradient(90deg, hsl(213 85% 55%), hsl(280 70% 62%), hsl(42 90% 52%), hsl(213 85% 55%));
+  background-size: 300% 100%;
+  animation: accent-bar-flow 4s linear infinite;
+}
+
+@keyframes accent-bar-flow {
+  to { background-position: -300% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge-neon,
+  .accent-bar-anim,
+  .neon-btn {
+    animation: none !important;
+  }
 }
 
 .trend-up {

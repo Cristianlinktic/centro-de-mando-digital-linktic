@@ -80,7 +80,7 @@ export default function AdminPage() {
               <FontAwesomeIcon icon={faLock} className="text-6xl text-red-500 mb-2" />
               <h1 className="text-2xl font-bold">Acceso No Autorizado</h1>
               <p className="text-slate-400">Esta página está reservada para administradores del sistema.</p>
-              <Button onClick={() => window.location.href = '/elecciones'} className="bg-blue-600 hover:bg-blue-700">
+              <Button variant="neon" onClick={() => window.location.href = '/elecciones'}>
                   Volver al Tablero
               </Button>
           </div>

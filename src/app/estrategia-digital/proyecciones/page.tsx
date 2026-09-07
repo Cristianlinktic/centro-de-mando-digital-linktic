@@ -39,7 +39,7 @@ export default function ProyeccionesPage() {
         <Kpi label="CTR ponderado" value={formatPercent(totals.weightedCtr)} hint={`CPC ${formatCOP(totals.blendedCpc)}`} color="#e8a817" />
       </div>
 
-      <Card className="bg-[#0b101d] border border-white/5 rounded-2xl overflow-hidden">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
         <div className="p-6 pb-3">
           <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">Proyección consolidada por canal</h3>
         </div>
@@ -87,7 +87,7 @@ export default function ProyeccionesPage() {
         </div>
       </Card>
 
-      <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
         <h3 className="font-bold text-sm text-slate-200 mb-1 uppercase tracking-widest">Proyección diaria — impresiones y clicks</h3>
         <p className="text-xs text-slate-500 mb-4">Todos los canales combinados</p>
         <div className="h-64">
@@ -115,7 +115,7 @@ export default function ProyeccionesPage() {
 
 function Kpi({ label, value, hint, color }: { label: string; value: string; hint?: string; color: string }) {
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-5 rounded-2xl relative overflow-hidden">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-5 rounded-2xl relative overflow-hidden">
       <p className="text-[10px] font-bold text-slate-500 tracking-wider uppercase">{label}</p>
       <p className="text-2xl font-bold mt-1" style={{ color }}>{value}</p>
       {hint && <p className="text-[10px] text-slate-500 mt-1">{hint}</p>}

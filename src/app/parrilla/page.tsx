@@ -393,11 +393,11 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
             </Button>
           )}
           {editing && (
-            <Button variant="outline" size="sm" onClick={() => setShowTabPanel((v) => !v)} className="bg-[#0b101d] border-white/10 text-white">
+            <Button variant="outline" size="sm" onClick={() => setShowTabPanel((v) => !v)} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
               <FontAwesomeIcon icon={faLayerGroup} className="mr-2" /> Pestañas
             </Button>
           )}
-          <Button variant="outline" size="sm" onClick={fetchContent} className="bg-[#0b101d] border-white/10 text-white">
+          <Button variant="outline" size="sm" onClick={fetchContent} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
             <FontAwesomeIcon icon={faRotate} />
           </Button>
         </div>
@@ -405,7 +405,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
 
       {/* Custom tabs panel (opcional, secundario) */}
       {showTabPanel && editing && (
-        <Card className="bg-[#0b101d] border border-white/5 p-5 rounded-2xl mb-6">
+        <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-5 rounded-2xl mb-6">
           <h3 className="text-sm font-bold text-slate-200 mb-1">Pestañas adicionales de parrilla</h3>
           <p className="text-xs text-slate-500 mb-4">
             Registra una pestaña nueva (p.ej. para un evento puntual). Esto solo crea el registro — la tabla física
@@ -418,7 +418,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               onChange={(e) => setNewTabLabel(e.target.value)}
               className="bg-[#05080f] border-white/10 h-9 text-sm flex-1"
             />
-            <Button size="sm" onClick={createCustomTab} className="bg-blue-600 hover:bg-blue-700">
+            <Button size="sm" variant="neon" onClick={createCustomTab}>
               <FontAwesomeIcon icon={faPlus} className="mr-2" /> Registrar
             </Button>
           </div>
@@ -445,15 +445,15 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       )}
 
       {/* Grid */}
-      <div className="bg-[#0b101d] border border-white/5 rounded-2xl neon-frame overflow-auto" style={{ maxHeight: "calc(100vh - 260px)" }}>
+      <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl neon-frame overflow-auto" style={{ maxHeight: "calc(100vh - 260px)" }}>
         <div className="grid min-w-[1100px]" style={{ gridTemplateColumns: "80px repeat(4, minmax(240px, 1fr))" }}>
-          <div className="sticky top-0 left-0 z-30 flex items-center justify-center border-b border-r border-white/10 bg-[#0b101d] p-4 text-xs font-bold uppercase tracking-wide text-slate-400">
+          <div className="sticky top-0 left-0 z-30 flex items-center justify-center border-b border-r border-white/10 bg-[#0b101d]/70 backdrop-blur-md p-4 text-xs font-bold uppercase tracking-wide text-slate-400">
             Hora
           </div>
           {PLATFORMS.map((plat) => (
             <div
               key={plat.id}
-              className="sticky top-0 z-20 flex items-center gap-2 border-b border-white/10 bg-[#0b101d] p-4 text-sm font-bold"
+              className="sticky top-0 z-20 flex items-center gap-2 border-b border-white/10 bg-[#0b101d]/70 backdrop-blur-md p-4 text-sm font-bold"
               style={{ color: plat.color, boxShadow: `inset 0 -2px 0 0 ${plat.color}` }}
             >
               <FontAwesomeIcon icon={plat.icon} className="w-4 h-4" />
@@ -470,7 +470,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               <div key={hour} className="contents">
                 <div
                   className={`sticky left-0 z-10 h-[140px] border-b border-r border-white/5 flex items-center justify-center text-sm font-mono font-bold ${
-                    isActive ? "bg-amber-500/10 text-amber-300" : "bg-[#0b101d] text-slate-400"
+                    isActive ? "bg-amber-500/10 text-amber-300" : "bg-[#0b101d]/70 backdrop-blur-md text-slate-400"
                   }`}
                 >
                   {hour}
@@ -536,7 +536,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* Add/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4" onClick={() => setIsModalOpen(false)}>
-          <div className="bg-[#0b101d] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between border-b border-white/10 p-5">
               <h2 className="text-lg font-bold">{form.id ? "Editar Publicación" : "Agregar a Parrilla"}</h2>
               <button onClick={() => setIsModalOpen(false)} className="text-slate-500 hover:text-white">
@@ -620,7 +620,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                     Guardar como nuevo
                   </Button>
                 )}
-                <Button type="submit" disabled={saving} className="bg-blue-600 hover:bg-blue-700">
+                <Button type="submit" variant="neon" disabled={saving}>
                   <FontAwesomeIcon icon={faSave} className="mr-2" /> {form.id ? "Guardar Cambios" : "Guardar"}
                 </Button>
                 {form.id && (
@@ -637,7 +637,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* View Modal (lectores) */}
       {viewItem && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4" onClick={() => setViewItem(null)}>
-          <div className="bg-[#0b101d] border border-white/10 rounded-2xl w-full max-w-xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-2xl w-full max-w-xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between border-b border-white/10 p-5">
               <h2 className="text-lg font-bold">Contenido</h2>
               <button onClick={() => setViewItem(null)} className="text-slate-500 hover:text-white">
@@ -685,7 +685,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                 <div className="flex gap-2">
                   <Input placeholder="Tu nombre" value={viewerName} onChange={(e) => setViewerName(e.target.value)} className="bg-[#05080f] border-white/10 h-8 text-xs w-32" />
                   <Input placeholder="Comentario..." value={viewerComment} onChange={(e) => setViewerComment(e.target.value)} className="bg-[#05080f] border-white/10 h-8 text-xs flex-1" />
-                  <Button size="sm" onClick={addViewerComment} className="bg-blue-600 hover:bg-blue-700 h-8">
+                  <Button size="sm" variant="neon" onClick={addViewerComment} className="h-8">
                     Enviar
                   </Button>
                 </div>
@@ -698,7 +698,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* Delete confirm */}
       {itemToDelete && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 p-4">
-          <div className="bg-[#0b101d] border border-rose-500/30 rounded-2xl w-full max-w-sm">
+          <div className="bg-[#0b101d]/70 backdrop-blur-md border border-rose-500/30 rounded-2xl w-full max-w-sm">
             <div className="p-5 border-b border-rose-500/20">
               <h2 className="font-bold text-rose-300">Confirmar eliminación</h2>
             </div>

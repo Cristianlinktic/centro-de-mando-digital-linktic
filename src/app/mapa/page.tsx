@@ -68,7 +68,7 @@ const CountryDetail = ({ country, selectedPlatform, sentimentColors, platformCol
 
     if (!country) return null;
     return (
-        <div key={country.id} className="p-5 space-y-4 bg-[#0b101d] border border-white/10 rounded-2xl text-white animate-in fade-in slide-in-from-right-4 duration-500">
+        <div key={country.id} className="p-5 space-y-4 bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-2xl text-white animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                     <Flag code={country.id} className="h-8 w-auto rounded shadow border border-white/10" />
@@ -79,18 +79,18 @@ const CountryDetail = ({ country, selectedPlatform, sentimentColors, platformCol
                 </div>
             </div>
 
-            <div className="bg-[#161d2b] p-4 rounded-xl">
+            <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
                 <p className="text-xs text-slate-400 mb-1">Tema principal</p>
                 <p className="text-sm font-semibold text-blue-400">{country.tema}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-                <div className="bg-[#161d2b] p-4 rounded-xl min-w-0 overflow-hidden">
+                <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl min-w-0 overflow-hidden">
                     <p className="text-xl font-bold text-yellow-500 tabular-nums truncate"><CountUp value={country.volumen} /></p>
                     <p className="text-xs text-slate-400 truncate">menciones hoy</p>
                     <p className="text-xs text-green-500 flex items-center gap-1 mt-1"><FontAwesomeIcon icon={faArrowTrendUp} className="w-3 h-3 shrink-0"/> <span className="truncate">{country.pctCambio}%</span></p>
                 </div>
-                <div className="bg-[#161d2b] p-4 rounded-xl min-w-0 overflow-hidden">
+                <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl min-w-0 overflow-hidden">
                     <p className="text-base font-bold text-green-500 flex items-center gap-1"><span className="truncate">↑ Positivo</span> <FontAwesomeIcon icon={faStar} className="w-3 h-3 shrink-0 fill-green-500"/></p>
                     <p className="text-xs text-slate-400 truncate">Sentimiento</p>
                     <p className="text-xs text-blue-400 mt-1 flex items-center gap-1"><span className="truncate">{selectedPlatform || 'TikTok'}</span> <FontAwesomeIcon icon={faStar} className="w-3 h-3 shrink-0"/></p>
@@ -121,7 +121,7 @@ const CountryDetail = ({ country, selectedPlatform, sentimentColors, platformCol
                                     <div style={{ color: platformColors[plat] }}>
                                         <BrandIcon name={plat} className="w-5 h-5"/>
                                     </div>
-                                    <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]">
+                                    <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]/70 backdrop-blur-md">
                                         <div 
                                             className="h-full rounded-full transition-all duration-500" 
                                             style={{ 
@@ -140,18 +140,18 @@ const CountryDetail = ({ country, selectedPlatform, sentimentColors, platformCol
             <div className="space-y-2">
                 <p className="text-xs text-slate-400">Palabras clave</p>
                 <div className="flex flex-wrap gap-1">
-                    {country.keywords.map((k: string) => <span key={k} className="px-2 py-1 rounded bg-[#161d2b] text-[10px]">{k}</span>)}
+                    {country.keywords.map((k: string) => <span key={k} className="px-2 py-1 rounded bg-[#161d2b]/70 backdrop-blur-md text-[10px]">{k}</span>)}
                 </div>
             </div>
 
             <div className="space-y-2">
                 <p className="text-xs text-slate-400">Top hashtags</p>
                 <div className="flex flex-wrap gap-1">
-                    {country.topHashtags.map((h: string) => <span key={h} className="px-2 py-1 rounded bg-[#161d2b] text-[10px] text-yellow-500">{h}</span>)}
+                    {country.topHashtags.map((h: string) => <span key={h} className="px-2 py-1 rounded bg-[#161d2b]/70 backdrop-blur-md text-[10px] text-yellow-500">{h}</span>)}
                 </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-[#161d2b] border border-blue-500/20 text-xs text-slate-300 leading-relaxed">
+            <div className="p-4 rounded-xl bg-[#161d2b]/70 backdrop-blur-md border border-blue-500/20 text-xs text-slate-300 leading-relaxed">
                 <p className="text-slate-400 mb-1">Resumen</p>
                 {country.resumen}
             </div>
@@ -739,11 +739,11 @@ export default function MapaPage() {
 
         <div className="flex flex-wrap gap-4 items-center mt-4">
             <div className="flex flex-wrap gap-2">
-                <Button variant="outline" size="sm" className={`bg-[#0b101d] border-white/10 ${!selectedPlatform ? 'bg-primary/20 border-primary' : 'text-white'}`} onClick={() => setSelectedPlatform(null)}>Todas</Button>
+                <Button variant="outline" size="sm" className={`bg-[#0b101d]/70 backdrop-blur-md border-white/10 ${!selectedPlatform ? 'bg-primary/20 border-primary' : 'text-white'}`} onClick={() => setSelectedPlatform(null)}>Todas</Button>
                 {Object.keys(platformConfig).map(plat => (
-                    <Button key={plat} variant="outline" size="sm" className={`bg-[#0b101d] border-white/10 ${selectedPlatform === plat ? 'bg-primary/20 border-primary' : 'text-white'}`} onClick={() => setSelectedPlatform(plat)}><BrandIcon name={plat} className="mr-2"/> {plat}</Button>
+                    <Button key={plat} variant="outline" size="sm" className={`bg-[#0b101d]/70 backdrop-blur-md border-white/10 ${selectedPlatform === plat ? 'bg-primary/20 border-primary' : 'text-white'}`} onClick={() => setSelectedPlatform(plat)}><BrandIcon name={plat} className="mr-2"/> {plat}</Button>
                 ))}
-                <Button variant="outline" size="sm" className="bg-[#0b101d] border-white/10 text-white" onClick={() => fetchMapData()}><FontAwesomeIcon icon={faRotate} className="h-4 w-4 mr-2"/> Actualizar</Button>
+                <Button variant="outline" size="sm" className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white" onClick={() => fetchMapData()}><FontAwesomeIcon icon={faRotate} className="h-4 w-4 mr-2"/> Actualizar</Button>
             </div>
         </div>
       </div>
@@ -773,7 +773,7 @@ export default function MapaPage() {
             </Card>
           )}
 
-          <Card className="flex-none shadow-md border-none bg-[#0b101d] text-white">
+          <Card className="flex-none shadow-md border-none bg-[#0b101d]/70 backdrop-blur-md text-white">
             <div className="p-4 font-bold text-lg flex justify-between">
                 Ranking de Países <span className="text-sm font-normal text-slate-400">por menciones</span>
             </div>
@@ -802,7 +802,7 @@ export default function MapaPage() {
                 <button 
                     key={c.id} 
                     onClick={() => setSelected(c.id)}
-                    className="p-4 bg-[#0b101d] border border-white/5 rounded-2xl text-left hover:border-primary/50 transition-all"
+                    className="p-4 bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl text-left hover:border-primary/50 transition-all"
                 >
                     <div className="flex justify-between items-center gap-2 mb-1">
                         <h4 className="font-bold text-sm flex items-center gap-2 min-w-0">
@@ -831,13 +831,13 @@ export default function MapaPage() {
       
       <AdminPopup title="Editor de Mapa Global" open={editorOpen} onOpenChange={setEditorOpen}>
         <div className="space-y-6">
-            <div className="flex justify-between items-center bg-[#161d2b] p-4 rounded-xl border border-white/5">
+            <div className="flex justify-between items-center bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl border border-white/5">
                 <div>
                     <h3 className="font-bold">Datos de Países</h3>
                     <p className="text-xs text-slate-400">Actualiza las métricas principales de conversación de cada país.</p>
                 </div>
                 <div className="flex gap-2 flex-wrap">
-                    <Button type="button" onClick={addNewCountry} variant="outline" className="bg-[#161d2b] border-white/10 text-white">
+                    <Button type="button" onClick={addNewCountry} variant="outline" className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 text-white">
                         <FontAwesomeIcon icon={faPlus} className="mr-2" /> Agregar País
                     </Button>
                     <Button type="button" onClick={repairAllCoordinates} disabled={lookingUp} variant="outline" className="bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20">
@@ -857,7 +857,7 @@ export default function MapaPage() {
             <div className="bg-[#101726] p-4 rounded-xl border border-white/5">
                 <label className="text-xs text-slate-400 uppercase tracking-widest font-bold mb-2 block">Seleccionar País a Editar</label>
                 <select 
-                    className="w-full h-10 rounded-lg bg-[#161d2b] border border-white/10 px-3 py-2 text-sm outline-none focus:border-primary text-white"
+                    className="w-full h-10 rounded-lg bg-[#161d2b]/70 backdrop-blur-md border border-white/10 px-3 py-2 text-sm outline-none focus:border-primary text-white"
                     value={editingCountryId || ''}
                     onChange={(e) => setEditingCountryId(e.target.value)}
                 >
@@ -879,7 +879,7 @@ export default function MapaPage() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">ID (ISO 2-letras)</label>
-                                        <Input type="text" value={c.id} readOnly className="bg-[#0b101d] border-white/5 h-10 opacity-60" />
+                                        <Input type="text" value={c.id} readOnly className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 h-10 opacity-60" />
                                     </div>
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">
@@ -891,18 +891,18 @@ export default function MapaPage() {
                                             onChange={(e) => handleCountryChange(c.id, 'pais', e.target.value)} 
                                             onBlur={(e) => lookupCountryByName(c.id, e.target.value)}
                                             placeholder="Escribe el nombre y sale el foco para auto-detectar"
-                                            className="bg-[#161d2b] border-white/10 h-10" 
+                                            className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" 
                                         />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:items-center">
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Latitud</label>
-                                        <Input type="number" step="0.0001" value={c.lat ?? 0} onChange={(e) => handleCountryChange(c.id, 'lat', parseFloat(e.target.value))} className="bg-[#161d2b] border-white/10 h-10" />
+                                        <Input type="number" step="0.0001" value={c.lat ?? 0} onChange={(e) => handleCountryChange(c.id, 'lat', parseFloat(e.target.value))} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" />
                                     </div>
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Longitud</label>
-                                        <Input type="number" step="0.0001" value={c.lng ?? 0} onChange={(e) => handleCountryChange(c.id, 'lng', parseFloat(e.target.value))} className="bg-[#161d2b] border-white/10 h-10" />
+                                        <Input type="number" step="0.0001" value={c.lng ?? 0} onChange={(e) => handleCountryChange(c.id, 'lng', parseFloat(e.target.value))} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" />
                                     </div>
                                     <div className="flex flex-col items-center justify-center pt-4">
                                         <span className="text-3xl">{c.emoji || '🌍'}</span>
@@ -917,12 +917,12 @@ export default function MapaPage() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Tema Principal</label>
-                                        <Input type="text" value={c.tema} onChange={(e) => handleCountryChange(c.id, 'tema', e.target.value)} className="bg-[#161d2b] border-white/10 h-10" />
+                                        <Input type="text" value={c.tema} onChange={(e) => handleCountryChange(c.id, 'tema', e.target.value)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" />
                                     </div>
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Tendencia General</label>
                                         <select 
-                                            className="w-full h-10 rounded-lg bg-[#161d2b] border border-white/10 px-2.5 py-1 text-sm outline-none"
+                                            className="w-full h-10 rounded-lg bg-[#161d2b]/70 backdrop-blur-md border border-white/10 px-2.5 py-1 text-sm outline-none"
                                             value={c.tendencia} onChange={(e) => handleCountryChange(c.id, 'tendencia', e.target.value)}
                                         >
                                             <option value="sube">Sube</option>
@@ -936,31 +936,31 @@ export default function MapaPage() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="flex items-center gap-3">
                                         <FontAwesomeIcon icon={faTiktok} className="text-white w-5 h-5"/>
-                                        <Input type="number" value={(c.plataformas as any)?.TikTok || 0} onChange={(e) => handlePlatformChange(c.id, 'TikTok', e.target.value)} className="bg-[#161d2b] border-white/10 h-8" />
+                                        <Input type="number" value={(c.plataformas as any)?.TikTok || 0} onChange={(e) => handlePlatformChange(c.id, 'TikTok', e.target.value)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-8" />
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <FontAwesomeIcon icon={faXTwitter} className="text-white w-5 h-5"/>
-                                        <Input type="number" value={(c.plataformas as any)?.X || 0} onChange={(e) => handlePlatformChange(c.id, 'X', e.target.value)} className="bg-[#161d2b] border-white/10 h-8" />
+                                        <Input type="number" value={(c.plataformas as any)?.X || 0} onChange={(e) => handlePlatformChange(c.id, 'X', e.target.value)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-8" />
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <FontAwesomeIcon icon={faInstagram} className="text-[#E1306C] w-5 h-5"/>
-                                        <Input type="number" value={(c.plataformas as any)?.Instagram || 0} onChange={(e) => handlePlatformChange(c.id, 'Instagram', e.target.value)} className="bg-[#161d2b] border-white/10 h-8" />
+                                        <Input type="number" value={(c.plataformas as any)?.Instagram || 0} onChange={(e) => handlePlatformChange(c.id, 'Instagram', e.target.value)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-8" />
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <FontAwesomeIcon icon={faFacebook} className="text-[#1877F2] w-5 h-5"/>
-                                        <Input type="number" value={(c.plataformas as any)?.Facebook || 0} onChange={(e) => handlePlatformChange(c.id, 'Facebook', e.target.value)} className="bg-[#161d2b] border-white/10 h-8" />
+                                        <Input type="number" value={(c.plataformas as any)?.Facebook || 0} onChange={(e) => handlePlatformChange(c.id, 'Facebook', e.target.value)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-8" />
                                     </div>
                                 </div>
                                 
                                 <div className="grid grid-cols-3 gap-4 mt-4">
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Volumen Total</label>
-                                        <Input type="number" value={c.volumen} disabled className="bg-[#0b101d] border-white/5 h-10 text-yellow-500 font-bold opacity-70" />
+                                        <Input type="number" value={c.volumen} disabled className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 h-10 text-yellow-500 font-bold opacity-70" />
                                     </div>
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Sentimiento</label>
                                         <select 
-                                            className="w-full h-10 rounded-lg bg-[#161d2b] border border-white/10 px-2.5 py-1 text-sm outline-none focus:border-primary"
+                                            className="w-full h-10 rounded-lg bg-[#161d2b]/70 backdrop-blur-md border border-white/10 px-2.5 py-1 text-sm outline-none focus:border-primary"
                                             value={c.sentimiento} onChange={(e) => handleCountryChange(c.id, 'sentimiento', e.target.value)}
                                         >
                                             <option value="positivo">Positivo</option>
@@ -971,7 +971,7 @@ export default function MapaPage() {
                                     </div>
                                     <div>
                                         <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">% Crecimiento</label>
-                                        <Input type="number" value={c.pctCambio} onChange={(e) => handleCountryChange(c.id, 'pctCambio', e.target.value)} className="bg-[#161d2b] border-white/10 h-10" />
+                                        <Input type="number" value={c.pctCambio} onChange={(e) => handleCountryChange(c.id, 'pctCambio', e.target.value)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" />
                                     </div>
                                 </div>
 
@@ -979,15 +979,15 @@ export default function MapaPage() {
                                 <div className="grid grid-cols-3 gap-4">
                                     <div>
                                         <label className="text-[10px] text-green-400 uppercase tracking-widest block mb-1">Positivo</label>
-                                        <DecimalInput value={c.sentimientoPct?.positivo || 0} onChange={(v) => handleSentimentPctChange(c.id, 'positivo', v)} className="bg-[#161d2b] border-white/10 h-10" />
+                                        <DecimalInput value={c.sentimientoPct?.positivo || 0} onChange={(v) => handleSentimentPctChange(c.id, 'positivo', v)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" />
                                     </div>
                                     <div>
                                         <label className="text-[10px] text-yellow-400 uppercase tracking-widest block mb-1">Neutral</label>
-                                        <DecimalInput value={c.sentimientoPct?.neutral || 0} onChange={(v) => handleSentimentPctChange(c.id, 'neutral', v)} className="bg-[#161d2b] border-white/10 h-10" />
+                                        <DecimalInput value={c.sentimientoPct?.neutral || 0} onChange={(v) => handleSentimentPctChange(c.id, 'neutral', v)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" />
                                     </div>
                                     <div>
                                         <label className="text-[10px] text-red-400 uppercase tracking-widest block mb-1">Negativo</label>
-                                        <DecimalInput value={c.sentimientoPct?.negativo || 0} onChange={(v) => handleSentimentPctChange(c.id, 'negativo', v)} className="bg-[#161d2b] border-white/10 h-10" />
+                                        <DecimalInput value={c.sentimientoPct?.negativo || 0} onChange={(v) => handleSentimentPctChange(c.id, 'negativo', v)} className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" />
                                     </div>
                                 </div>
 
@@ -1001,7 +1001,7 @@ export default function MapaPage() {
                                         onFocus={() => setRawHashtags((c.topHashtags || []).join(', '))}
                                         onChange={(e) => setRawHashtags(e.target.value)}
                                         onBlur={(e) => handleArrayChange(c.id, 'topHashtags', e.target.value)}
-                                        className="bg-[#161d2b] border-white/10 h-10" 
+                                        className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" 
                                     />
                                 </div>
                                 <div>
@@ -1013,13 +1013,13 @@ export default function MapaPage() {
                                         onFocus={() => setRawKeywords((c.keywords || []).join(', '))}
                                         onChange={(e) => setRawKeywords(e.target.value)}
                                         onBlur={(e) => handleArrayChange(c.id, 'keywords', e.target.value)}
-                                        className="bg-[#161d2b] border-white/10 h-10" 
+                                        className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 h-10" 
                                     />
                                 </div>
                                 <div>
                                     <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1">Resumen / Análisis Corto</label>
                                     <textarea 
-                                        className="w-full h-24 rounded-lg bg-[#161d2b] border border-white/10 p-3 text-sm outline-none focus:border-primary text-slate-300 resize-none"
+                                        className="w-full h-24 rounded-lg bg-[#161d2b]/70 backdrop-blur-md border border-white/10 p-3 text-sm outline-none focus:border-primary text-slate-300 resize-none"
                                         value={c.resumen || ''}
                                         placeholder="Escribe un análisis representativo del país..."
                                         onChange={(e) => handleCountryChange(c.id, 'resumen', e.target.value)}

@@ -95,7 +95,7 @@ export default function EstrategiaDigitalPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1 bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+        <Card className="lg:col-span-1 bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
           <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Distribución por canal</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
@@ -127,7 +127,7 @@ export default function EstrategiaDigitalPage() {
           </ul>
         </Card>
 
-        <Card className="lg:col-span-2 bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+        <Card className="lg:col-span-2 bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
           <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Inversión diaria por canal</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -158,7 +158,7 @@ export default function EstrategiaDigitalPage() {
         </Card>
       </div>
 
-      <Card className="bg-[#0b101d] border border-white/5 rounded-2xl overflow-hidden">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
         <div className="p-6 pb-3">
           <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">Seguimiento real vs meta</h3>
         </div>
@@ -204,7 +204,7 @@ export default function EstrategiaDigitalPage() {
 
 function Kpi({ label, value, hint, color }: { label: string; value: string; hint: string; color: string }) {
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-5 rounded-2xl relative overflow-hidden">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-5 rounded-2xl relative overflow-hidden">
       <p className="text-[10px] font-bold text-slate-500 tracking-wider uppercase">{label}</p>
       <p className="text-2xl font-bold mt-1" style={{ color }}>{value}</p>
       <p className="text-[10px] text-slate-500 mt-1">{hint}</p>

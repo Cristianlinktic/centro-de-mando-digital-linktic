@@ -77,7 +77,7 @@ export default function ImportarPage() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
       <div className="lg:col-span-2">
-        <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+        <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
           <h3 className="font-bold text-sm text-slate-200 mb-1 uppercase tracking-widest">Subir plan de pauta</h3>
           <p className="text-xs text-slate-500 mb-5">
             El archivo reemplaza los datos de la campaña actual (la inversión real registrada se conserva).
@@ -131,7 +131,7 @@ export default function ImportarPage() {
                 <Item label="Canales" value={String(summary.channels)} />
                 <Item label="Días cargados" value={String(summary.days)} />
               </dl>
-              <a href="/estrategia-digital" className="mt-4 inline-block rounded-xl bg-blue-600 hover:bg-blue-700 px-4 py-2 text-sm font-bold text-white transition-colors">
+              <a href="/estrategia-digital" className="neon-btn mt-4 inline-block rounded-xl px-4 py-2 text-sm font-bold">
                 Ver dashboard
               </a>
             </div>
@@ -139,7 +139,7 @@ export default function ImportarPage() {
         </Card>
       </div>
 
-      <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
         <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Formato esperado</h3>
         <div className="space-y-3 text-xs text-slate-400">
           <p>El Excel debe contener estas hojas:</p>

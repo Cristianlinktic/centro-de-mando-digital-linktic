@@ -84,7 +84,7 @@ const TIER_COLORS = ["#fbbf24", "#94a3b8", "#78716c"];
 
 function KpiCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-5 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-5 rounded-2xl">
       <p className="text-[10px] font-bold text-slate-500 tracking-wider mb-2">{label.toUpperCase()}</p>
       <p className="text-2xl font-bold text-blue-500">{value}</p>
       {hint && <p className="text-[10px] text-slate-500 mt-1">{hint}</p>}
@@ -100,7 +100,7 @@ function SentimentDonut({ positivo, negativo }: { positivo: number; negativo: nu
     { name: "Neutral", value: neutral, color: SENTIMENT_COLORS.neutral },
   ];
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
       <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Sentimiento</h3>
       <div className="h-40">
         <ResponsiveContainer width="100%" height="100%">
@@ -132,7 +132,7 @@ function CoverageBars({ tv, digital, radio, impresos }: { tv: number; digital: n
   ];
   const max = Math.max(1, ...items.map((i) => i.value));
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
       <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Cobertura por Medio</h3>
       <div className="space-y-3">
         {items.map((it) => (
@@ -159,7 +159,7 @@ function TierBars({ tier1, tier2, tier3 }: { tier1: number; tier2: number; tier3
   ];
   const max = Math.max(1, ...items.map((i) => i.value));
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
       <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Medios por Tier</h3>
       <div className="space-y-3">
         {items.map((it) => (
@@ -191,7 +191,7 @@ function UbicacionesPanel({
   const max = Math.max(1, ...sorted.map((u) => u.weight || 0));
 
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl h-full">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl h-full">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-widest">Menciones por Ciudad</h3>
         {editing && onChange && (
@@ -392,9 +392,9 @@ export default function PrensaPage() {
             </TabsList>
           </Tabs>
           {activeTab === "diario" ? (
-            <Input type="date" value={selectedDate} max={todayISO()} onChange={(e) => setSelectedDate(e.target.value)} className="h-8 w-40 bg-[#0b101d] border-white/10 text-xs [color-scheme:dark]" />
+            <Input type="date" value={selectedDate} max={todayISO()} onChange={(e) => setSelectedDate(e.target.value)} className="h-8 w-40 bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-xs [color-scheme:dark]" />
           ) : (
-            <Input type="month" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="h-8 w-36 bg-[#0b101d] border-white/10 text-xs [color-scheme:dark]" />
+            <Input type="month" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="h-8 w-36 bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-xs [color-scheme:dark]" />
           )}
           {editable && activeTab === "diario" && (
             <>
@@ -412,19 +412,19 @@ export default function PrensaPage() {
                   </Button>
                 </div>
               )}
-              <Button variant="outline" size="sm" onClick={openHistory} className="bg-[#0b101d] border-white/10 text-white">
+              <Button variant="outline" size="sm" onClick={openHistory} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
                 <FontAwesomeIcon icon={faClock} className="mr-2" /> Historial
               </Button>
             </>
           )}
-          <Button variant="outline" size="sm" onClick={() => (activeTab === "diario" ? loadDaily(selectedDate) : loadMonthly(selectedMonth))} className="bg-[#0b101d] border-white/10 text-white">
+          <Button variant="outline" size="sm" onClick={() => (activeTab === "diario" ? loadDaily(selectedDate) : loadMonthly(selectedMonth))} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
             <FontAwesomeIcon icon={faRotate} className={loading ? "animate-spin" : ""} />
           </Button>
         </div>
       </div>
 
       {activeTab === "mensual" && !monthly ? (
-        <Card className="bg-[#0b101d] border border-white/5 p-12 rounded-2xl text-center">
+        <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-12 rounded-2xl text-center">
           <p className="text-slate-300 font-bold mb-1">No hay datos para este mes</p>
           <p className="text-slate-500 text-sm">Selecciona otro periodo o ingresa datos diarios en la vista Diaria.</p>
         </Card>
@@ -439,7 +439,7 @@ export default function PrensaPage() {
           </div>
 
           {/* Historical chart */}
-          <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl neon-frame mb-6">
+          <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl neon-frame mb-6">
             <h3 className="font-bold text-lg text-slate-200 mb-1">{activeTab === "diario" ? "Últimos 30 registros" : "Tendencia del mes"}</h3>
             <p className="text-xs text-slate-500 mb-6">Menciones y audiencia estimada</p>
             <div className="h-64">
@@ -479,7 +479,7 @@ export default function PrensaPage() {
 
           {/* Inline edit form */}
           {activeTab === "diario" && isEditing && (
-            <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl mb-20 animate-in fade-in slide-in-from-top-4 duration-300">
+            <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl mb-20 animate-in fade-in slide-in-from-top-4 duration-300">
               <h3 className="text-blue-400 font-black mb-4 uppercase text-xs tracking-widest flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-blue-500" /> Editar métricas — {selectedDate}
               </h3>
@@ -505,7 +505,7 @@ export default function PrensaPage() {
 
       {/* Historial modal */}
       <Sheet open={showHistory} onOpenChange={setShowHistory}>
-        <SheetContent side="right" className="bg-[#0b101d] text-white border-l border-white/10 w-full sm:max-w-md overflow-y-auto">
+        <SheetContent side="right" className="bg-[#0b101d]/70 backdrop-blur-md text-white border-l border-white/10 w-full sm:max-w-md overflow-y-auto">
           <SheetHeader>
             <SheetTitle className="text-white text-xl font-bold border-b border-white/10 pb-4">Historial de Registros</SheetTitle>
           </SheetHeader>

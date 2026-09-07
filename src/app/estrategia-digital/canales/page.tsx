@@ -45,7 +45,7 @@ export default function CanalesPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <Card className="bg-[#0b101d] border border-white/5 rounded-2xl overflow-hidden">
+      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
         <div className="p-6 pb-3">
           <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">Presupuesto y proyección por canal</h3>
         </div>
@@ -103,11 +103,11 @@ export default function CanalesPage() {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+        <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
           <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Impresiones por canal</h3>
           <MiniBar data={impressionsData} />
         </Card>
-        <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
+        <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
           <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Clicks por canal</h3>
           <MiniBar data={clicksData} />
         </Card>
@@ -181,7 +181,7 @@ function ChannelCard({
   };
 
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-5 rounded-2xl" style={{ borderTop: `3px solid ${meta.color}` }}>
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-5 rounded-2xl" style={{ borderTop: `3px solid ${meta.color}` }}>
       <div className="flex items-center justify-between mb-3">
         <div>
           <p className="font-bold text-slate-100">{meta.label}</p>

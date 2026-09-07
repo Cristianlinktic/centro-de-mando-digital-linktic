@@ -108,9 +108,9 @@ export function AppSidebar() {
                 key={item.path}
                 href={item.path}
                 className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${isActive && item.icon === "Instagram"
-                    ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)]"
+                    ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)] shadow-[0_0_16px_rgba(225,48,108,0.18)]"
                     : isActive
-                      ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)]"
+                      ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)] shadow-[0_0_16px_hsl(213_85%_48%/0.18)]"
                       : "text-muted-foreground hover:bg-accent hover:text-foreground"
                   }`}
               >

@@ -914,7 +914,7 @@ export function GlobeComponent({
     const mission = getMissionData(regionName, globeMarkers);
 
     if (!countryData && !mission) {
-        return `<div class="bg-[#0b101d] text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${regionName}</div>`;
+        return `<div class="bg-[#0b101d]/70 backdrop-blur-md text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${regionName}</div>`;
     }
 
     const id = countryData?.id || mission?.id?.substring(0, 2).toUpperCase() || "??";
@@ -933,7 +933,7 @@ export function GlobeComponent({
                 </div>
             `;
         } else {
-            return `<div class="bg-[#0b101d] text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${name}</div>`;
+            return `<div class="bg-[#0b101d]/70 backdrop-blur-md text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${name}</div>`;
         }
     } else {
         if (countryData) {
@@ -979,7 +979,7 @@ export function GlobeComponent({
                 `;
             }
         } else {
-            return `<div class="bg-[#0b101d] text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${name}</div>`;
+            return `<div class="bg-[#0b101d]/70 backdrop-blur-md text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${name}</div>`;
         }
     }
 
@@ -1505,7 +1505,7 @@ export function GlobeComponent({
           <Button
               variant="outline"
               size="sm"
-              className={`bg-[#0b101d] text-white border-white/20 hover:bg-white/5 ${layersOpen ? 'border-blue-500/50 text-blue-400' : ''}`}
+              className={`bg-[#0b101d]/70 backdrop-blur-md text-white border-white/20 hover:bg-white/5 ${layersOpen ? 'border-blue-500/50 text-blue-400' : ''}`}
               onClick={() => setLayersOpen((v) => !v)}
           >
               <FontAwesomeIcon icon={faLayerGroup} className="sm:mr-2" />
@@ -1515,7 +1515,7 @@ export function GlobeComponent({
         <Button
             variant="outline"
             size="sm"
-            className="bg-[#0b101d] text-white border-white/20 hover:bg-white/5"
+            className="bg-[#0b101d]/70 backdrop-blur-md text-white border-white/20 hover:bg-white/5"
             onClick={toggleFullscreen}
         >
             <FontAwesomeIcon icon={isFullscreen ? faCompress : faExpand} className="sm:mr-2" />
@@ -1524,7 +1524,7 @@ export function GlobeComponent({
         <Button
             variant="outline"
             size="sm"
-            className={`bg-[#0b101d] text-white border-white/20 hover:bg-white/5 ${isTourActive ? 'border-blue-500/50 text-blue-400' : ''}`}
+            className={`bg-[#0b101d]/70 backdrop-blur-md text-white border-white/20 hover:bg-white/5 ${isTourActive ? 'border-blue-500/50 text-blue-400' : ''}`}
             onClick={() => {
                 const next = !isTourActive;
                 if (next) {
@@ -1634,7 +1634,7 @@ export function GlobeComponent({
                     /* ── MODO PRENSA ── */
                     <>
                       {/* Tema principal sincronizado con el carrusel */}
-                      <div className="bg-[#161d2b] p-4 rounded-xl">
+                      <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
                           <p className="text-xs text-slate-400 mb-1">Tema principal</p>
                           <p key={carouselIdx + '-title'} className="text-sm font-semibold text-blue-400 leading-snug animate-in fade-in duration-500">
                               {activeArt?.title || '—'}
@@ -1647,13 +1647,13 @@ export function GlobeComponent({
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-[#161d2b] p-4 rounded-xl">
+                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
                               <p className="text-xl font-bold text-yellow-500">
                                   {Number(selectedData.totalDept ?? selectedData.volumen).toLocaleString()}
                               </p>
                               <p className="text-xs text-slate-400">artículos</p>
                           </div>
-                          <div className="bg-[#161d2b] p-4 rounded-xl">
+                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
                               {(() => {
                                   const cm: Record<string,string> = { Positivo:'#2eb88a', positivo:'#2eb88a', Negativo:'#df3a3a', negativo:'#df3a3a', Neutro:'#f3b116', neutral:'#f3b116' };
                                   const raw = activeArt?.tone || selectedData.sentimiento || 'neutral';
@@ -1681,7 +1681,7 @@ export function GlobeComponent({
                                   return (
                                       <div key={tone} className="flex items-center gap-3">
                                           <span className="text-[10px] font-semibold w-16 shrink-0" style={{ color: col }}>{tone}</span>
-                                          <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]">
+                                          <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]/70 backdrop-blur-md">
                                               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${tot > 0 ? (v / tot) * 100 : 0}%`, background: col }} />
                                           </div>
                                           <span className="text-xs font-mono w-10 text-right text-white">{v.toLocaleString()}</span>
@@ -1709,7 +1709,7 @@ export function GlobeComponent({
                           </div>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-[#161d2b] border border-blue-500/20 text-xs leading-relaxed">
+                      <div className="p-4 rounded-xl bg-[#161d2b]/70 backdrop-blur-md border border-blue-500/20 text-xs leading-relaxed">
                           <p className="text-slate-400 mb-1">Resumen</p>
                           <p key={carouselIdx + '-summary'} className="text-slate-300 animate-in fade-in duration-500">
                               {activeArt?.summary || '—'}
@@ -1719,18 +1719,18 @@ export function GlobeComponent({
                   ) : (
                     /* ── MODO SOCIAL (globo mundial) — comportamiento original ── */
                     <>
-                      <div className="bg-[#161d2b] p-4 rounded-xl">
+                      <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
                           <p className="text-xs text-slate-400 mb-1">Tema principal</p>
                           <p className="text-sm font-semibold text-blue-400">{selectedData.tema}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-[#161d2b] p-4 rounded-xl">
+                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
                               <p className="text-xl font-bold text-yellow-500">{Number(selectedData.volumen).toLocaleString()}</p>
                               <p className="text-xs text-slate-400">menciones hoy</p>
                               <p className="text-xs text-green-500 flex items-center mt-1"><FontAwesomeIcon icon={faArrowTrendUp} className="w-3 h-3 mr-1"/> {selectedData.pctCambio}%</p>
                           </div>
-                          <div className="bg-[#161d2b] p-4 rounded-xl">
+                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
                               {(() => {
                                   const plats = selectedData.plataformas || {};
                                   const dominantPlat = selectedPlatform || (Object.entries(plats).sort((a: any, b: any) => b[1] - a[1])[0]?.[0] ?? '');
@@ -1761,7 +1761,7 @@ export function GlobeComponent({
                                           <div style={{ color: platformColors[plat] }}>
                                               <span dangerouslySetInnerHTML={{ __html: platformIcons[plat.toLowerCase()] || "" }} />
                                           </div>
-                                          <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]">
+                                          <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]/70 backdrop-blur-md">
                                               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${trueTotal > 0 ? ((vol || 0) / trueTotal) * 100 : 0}%`, background: platformColors[plat] }} />
                                           </div>
                                           <span className="text-xs font-mono w-16 text-right text-white">{(vol || 0).toLocaleString()}</span>
@@ -1774,18 +1774,18 @@ export function GlobeComponent({
                       <div className="space-y-2">
                           <p className="text-xs text-slate-400">Palabras clave</p>
                           <div className="flex flex-wrap gap-1">
-                              {selectedData.keywords?.map((k: string) => <span key={k} className="px-2 py-1 rounded bg-[#161d2b] text-[10px] text-white">{k}</span>)}
+                              {selectedData.keywords?.map((k: string) => <span key={k} className="px-2 py-1 rounded bg-[#161d2b]/70 backdrop-blur-md text-[10px] text-white">{k}</span>)}
                           </div>
                       </div>
 
                       <div className="space-y-2">
                           <p className="text-xs text-slate-400">Top hashtags</p>
                           <div className="flex flex-wrap gap-1">
-                              {selectedData.topHashtags?.map((h: string) => <span key={h} className="px-2 py-1 rounded bg-[#161d2b] text-[10px] text-yellow-500">{h}</span>)}
+                              {selectedData.topHashtags?.map((h: string) => <span key={h} className="px-2 py-1 rounded bg-[#161d2b]/70 backdrop-blur-md text-[10px] text-yellow-500">{h}</span>)}
                           </div>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-[#161d2b] border border-blue-500/20 text-xs text-slate-300 leading-relaxed">
+                      <div className="p-4 rounded-xl bg-[#161d2b]/70 backdrop-blur-md border border-blue-500/20 text-xs text-slate-300 leading-relaxed">
                           <p className="text-slate-400 mb-1">Resumen</p>
                           {selectedData.resumen}
                       </div>

@@ -13,7 +13,7 @@ export function LoadingCampaign() {
 
 export function EmptyCampaign() {
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-10 rounded-2xl text-center">
+    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-10 rounded-2xl text-center">
       <FontAwesomeIcon icon={faFileExcel} className="text-4xl text-slate-600 mb-4" />
       <h3 className="text-lg font-bold text-slate-200 mb-2">Aún no hay una campaña cargada</h3>
       <p className="text-sm text-slate-500 mb-6">
@@ -21,7 +21,7 @@ export function EmptyCampaign() {
       </p>
       <Link
         href="/estrategia-digital/importar"
-        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
+        className="neon-btn inline-flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-lg"
       >
         Ir a Importar
       </Link>

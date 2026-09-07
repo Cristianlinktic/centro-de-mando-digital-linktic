@@ -240,7 +240,7 @@ export default function MediosPage() {
                     </div>
                 )
             )}
-            <Button variant="outline" size="sm" onClick={fetchMediosData} className="bg-[#0b101d] border-white/10 text-white">
+            <Button variant="outline" size="sm" onClick={fetchMediosData} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
                 <FontAwesomeIcon icon={faRotate} className={`mr-2 ${loading ? 'animate-spin' : ''}`}/>
             </Button>
         </div>
@@ -249,7 +249,7 @@ export default function MediosPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           {kpis.map((kpi, i) => (
-              <Card key={kpi.id} className="bg-[#0b101d] border-white/5 p-5 rounded-2xl relative overflow-hidden group">
+              <Card key={kpi.id} className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-5 rounded-2xl relative overflow-hidden group">
                   <div className="flex justify-between items-start mb-2">
                       <p className="text-[10px] font-bold text-slate-500 tracking-wider">
                           {isEditing ? (
@@ -309,7 +309,7 @@ export default function MediosPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         {/* Weekly Chart */}
-        <Card className="lg:col-span-2 bg-[#0b101d] border border-white/5 p-6 rounded-2xl neon-frame">
+        <Card className="lg:col-span-2 bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl neon-frame">
             <div className="mb-8">
                 <h3 className="font-bold text-lg text-slate-200">Notas Publicadas esta Semana</h3>
                 <p className="text-xs text-slate-500">Distribución por sentimiento — últimos 7 días</p>
@@ -421,7 +421,7 @@ export default function MediosPage() {
         </Card>
 
         {/* Top Media */}
-        <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl overflow-y-auto">
+        <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl overflow-y-auto">
             <h3 className="text-sm font-semibold mb-6 text-slate-200 uppercase tracking-widest">Top Medios</h3>
             <div className="space-y-4">
                 {topMedios.map((m, i) => (
@@ -492,7 +492,7 @@ export default function MediosPage() {
       </div>
 
       {/* Live Feed de Noticias */}
-      <div className="bg-[#0b101d] border border-white/5 rounded-2xl p-6 mb-20">
+      <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl p-6 mb-20">
         <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
                 <span className="text-blue-500 font-bold text-xl">📰</span>
@@ -538,7 +538,7 @@ export default function MediosPage() {
                                             up[idx].tipo = e.target.value;
                                             setFeed(up);
                                         }}
-                                        className="bg-[#161d2b] text-[10px] font-bold rounded p-1 border-none outline-none"
+                                        className="bg-[#161d2b]/70 backdrop-blur-md text-[10px] font-bold rounded p-1 border-none outline-none"
                                     >
                                         <option value="positivo">Positivo</option>
                                         <option value="neutral">Neutral</option>
@@ -582,7 +582,7 @@ export default function MediosPage() {
 
       <AdminPopup title="Editor de Conversación en Medios" hideTrigger={true}>
             <div className="space-y-6">
-                <div className="flex justify-between items-center bg-[#161d2b] p-4 rounded-xl border border-white/5">
+                <div className="flex justify-between items-center bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl border border-white/5">
                     <div>
                         <h3 className="font-bold">Panel de Administración</h3>
                         <p className="text-xs text-slate-400">Edita métricas, gráficos y titulares del día.</p>
@@ -592,7 +592,7 @@ export default function MediosPage() {
                             <FontAwesomeIcon icon={faUpload} className="mr-2" /> Excel
                             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleExcelUpload} accept=".xlsx,.xls" />
                         </Button>
-                        <Button className="bg-blue-600 hover:bg-blue-700 font-bold" onClick={saveMediosData}>
+                        <Button variant="neon" className="font-bold" onClick={saveMediosData}>
                             <FontAwesomeIcon icon={faSave} className="mr-2" /> Guardar Todos
                         </Button>
                     </div>
