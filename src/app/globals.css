@@ -99,20 +99,22 @@
   box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.04);
 }
 
-/* Fondo de página con profundidad: auroras sutiles en azul/púrpura/dorado de LinkTIC
-   sobre un azul-noche profundo. Reemplaza el negro plano #03060d en cada vista. */
+/* Fondo de página con profundidad: las mismas "eclipse" azul/índigo que
+   LinkTIC usa como PNG decorativos en el Future Forum (eclipe-arriba.png,
+   eclipe-medio.png, eclipe-ft-2/3.png ≈ #0094ff y #2a1fe0), recreadas acá
+   como radial-gradients sobre el azul-noche profundo del tablero. */
 .page-bg {
   background-color: hsl(222 47% 5%);
   background-image:
-    radial-gradient(1100px 560px at 12% -12%, hsl(213 85% 48% / 0.12), transparent 60%),
-    radial-gradient(1000px 520px at 112% 6%, hsl(280 65% 60% / 0.10), transparent 55%),
-    radial-gradient(900px 620px at 50% 122%, hsl(42 90% 52% / 0.07), transparent 55%);
+    radial-gradient(1100px 560px at 12% -12%, hsl(205 100% 50% / 0.14), transparent 60%),
+    radial-gradient(1000px 620px at 112% 10%, hsl(243 85% 58% / 0.13), transparent 58%),
+    radial-gradient(900px 620px at 50% 122%, hsl(205 100% 50% / 0.07), transparent 55%);
   background-attachment: fixed;
 }
 
-/* Capa de aurora animada: "bolas" de luz desvanecidas en azul/púrpura/dorado
-   LinkTIC que flotan lentamente detrás de todo el contenido del shell —
-   inspirada en el hero del LinkTIC Future Forum. */
+/* Capa de aurora animada: las mismas "bolas" de luz azul/índigo desvanecidas
+   que LinkTIC usa como PNG decorativos (eclipe-*.png) en el Future Forum,
+   flotando lentamente detrás de todo el contenido del shell. */
 .app-aurora {
   position: fixed;
   inset: -20%;
@@ -120,11 +122,11 @@
   pointer-events: none;
   overflow: hidden;
   background:
-    radial-gradient(40% 40% at 20% 25%, hsl(213 85% 48% / 0.16), transparent 70%),
-    radial-gradient(38% 38% at 82% 18%, hsl(280 65% 60% / 0.12), transparent 70%),
-    radial-gradient(45% 45% at 60% 95%, hsl(42 90% 52% / 0.09), transparent 70%);
+    radial-gradient(40% 40% at 20% 25%, hsl(205 100% 50% / 0.18), transparent 70%),
+    radial-gradient(40% 40% at 82% 18%, hsl(243 85% 58% / 0.15), transparent 70%),
+    radial-gradient(45% 45% at 60% 95%, hsl(205 100% 50% / 0.1), transparent 70%);
   filter: blur(40px);
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 .app-aurora::before,
@@ -136,24 +138,24 @@
 }
 
 .app-aurora::before {
-  width: 34vw;
-  height: 34vw;
-  min-width: 320px;
-  min-height: 320px;
-  top: 8%;
-  left: 6%;
-  background: radial-gradient(circle, hsl(213 90% 58% / 0.5), transparent 72%);
+  width: 38vw;
+  height: 38vw;
+  min-width: 340px;
+  min-height: 340px;
+  top: 6%;
+  left: 4%;
+  background: radial-gradient(circle, hsl(205 100% 55% / 0.55), transparent 72%);
   animation: orb-float-a 24s ease-in-out infinite;
 }
 
 .app-aurora::after {
-  width: 28vw;
-  height: 28vw;
-  min-width: 260px;
-  min-height: 260px;
-  bottom: 10%;
-  right: 8%;
-  background: radial-gradient(circle, hsl(280 70% 60% / 0.4), transparent 72%);
+  width: 32vw;
+  height: 32vw;
+  min-width: 280px;
+  min-height: 280px;
+  bottom: 8%;
+  right: 6%;
+  background: radial-gradient(circle, hsl(243 85% 58% / 0.45), transparent 72%);
   animation: orb-float-b 28s ease-in-out infinite;
 }
 
@@ -242,12 +244,12 @@
   padding: 1.5px;
   background: conic-gradient(from var(--neon-angle),
       transparent 0%,
-      hsl(213 90% 60%) 12%,
-      hsl(280 70% 65%) 28%,
-      transparent 42%,
-      transparent 60%,
-      hsl(42 95% 58%) 78%,
-      transparent 92%);
+      hsl(205 100% 55%) 16%,
+      hsl(243 85% 60%) 34%,
+      transparent 48%,
+      transparent 64%,
+      hsl(205 100% 55%) 88%,
+      transparent 100%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -264,12 +266,12 @@
   border-radius: inherit;
   background: conic-gradient(from var(--neon-angle),
       transparent 0%,
-      hsl(213 90% 60% / 0.6) 14%,
-      hsl(280 70% 65% / 0.5) 28%,
-      transparent 42%,
-      transparent 60%,
-      hsl(42 95% 58% / 0.5) 78%,
-      transparent 92%);
+      hsl(205 100% 55% / 0.6) 16%,
+      hsl(243 85% 60% / 0.5) 34%,
+      transparent 48%,
+      transparent 64%,
+      hsl(205 100% 55% / 0.5) 88%,
+      transparent 100%);
   filter: blur(14px);
   opacity: 0.5;
   animation: neon-spin 7s linear infinite;
@@ -362,10 +364,10 @@
   padding: 3px;
   background: conic-gradient(from 0deg,
       transparent 0%,
-      hsl(213 90% 60%) 20%,
-      hsl(280 70% 65%) 45%,
-      hsl(42 95% 58%) 70%,
-      transparent 92%);
+      hsl(205 100% 55%) 20%,
+      hsl(243 85% 60%) 50%,
+      hsl(205 100% 55%) 80%,
+      transparent 96%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -561,8 +563,8 @@
 }
 
 .card-glass:hover {
-  border-color: hsl(213 85% 55% / 0.35);
-  box-shadow: 0 16px 48px hsl(213 85% 48% / 0.18), 0 0 0 1px hsl(280 65% 60% / 0.08) inset;
+  border-color: hsl(205 100% 55% / 0.35);
+  box-shadow: 0 16px 48px hsl(205 100% 50% / 0.18), 0 0 0 1px hsl(243 85% 58% / 0.1) inset;
   transform: translateY(-2px);
 }
 
