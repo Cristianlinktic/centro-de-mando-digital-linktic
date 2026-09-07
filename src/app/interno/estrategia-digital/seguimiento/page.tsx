@@ -9,6 +9,7 @@ import { canEdit } from "@/lib/auth/rbac";
 import { fetchContentTracking, saveContentTracking } from "@/lib/campana/client-data";
 import { ADS_FIELDS, META_FIELDS, type ContentTrackingField } from "@/lib/campana/types";
 import { formatNumber } from "@/lib/campana/format";
+import { toast } from "@/components/ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
@@ -64,8 +65,9 @@ export default function SeguimientoPage() {
     try {
       await saveContentTracking(campaignId, values);
       setEditing(false);
+      toast.success("Seguimiento guardado");
     } catch (e) {
-      alert("No se pudo guardar el seguimiento.");
+      toast.error("Error al guardar", "No se pudo guardar el seguimiento.");
       console.error(e);
     } finally {
       setSaving(false);

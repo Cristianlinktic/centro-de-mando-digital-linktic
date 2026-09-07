@@ -7,6 +7,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AuthProvider } from "@/components/auth-provider";
 import { AccessSync } from "@/components/auth/AccessSync";
 import { Analyst } from "@/components/instagram/Analyst";
+import { Toaster } from "@/components/ui/toast";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -32,6 +33,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
       </SidebarProvider>
       {/* Martha: disponible en todo el Centro de Mando Digital (Interno y Externo). */}
       <Analyst />
+      <Toaster />
     </AuthProvider>
   );
 }

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { toast } from "@/components/ui/toast";
 import {
   faRotate,
   faSave,
@@ -350,10 +351,10 @@ export function PrensaSection() {
       if (error) throw error;
       setIsEditing(false);
       await loadDaily(selectedDate);
-      alert("¡Datos guardados con éxito!");
+      toast.success("Datos guardados", "El monitoreo de prensa del día quedó guardado.");
     } catch (err) {
       console.error(err);
-      alert("Error al guardar datos");
+      toast.error("Error al guardar", "No se pudieron guardar los datos. Intenta de nuevo.");
     }
   };
 

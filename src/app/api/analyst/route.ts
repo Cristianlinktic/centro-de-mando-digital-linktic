@@ -2,7 +2,6 @@ import Anthropic from "@anthropic-ai/sdk";
 import postsData from "@/data/instagram-posts.json";
 import type { Post } from "@/lib/instagram-types";
 import { computeTotals, breakdownByType, topHashtags, typeLabel } from "@/lib/instagram-analytics";
-import { NO_TESTIGOS_DIGITALES_RULE, createStreamSanitizer } from "@/lib/ai-sanitize";
 
 const posts = postsData as Post[];
 const ACCOUNT = "actoreselectorales";
@@ -55,7 +54,6 @@ Reglas:
 - Si te preguntan algo que los datos no contienen (p. ej. quiénes son las personas que dan like o comentan individualmente), explica que la API de Instagram/Meta no expone identidades individuales, solo métricas agregadas.
 - Da respuestas breves y bien estructuradas (usa listas y negritas cuando ayude). No inventes datos.
 - Cuando recomiendes acciones, fundaméntalas en los números que ves.
-- ${NO_TESTIGOS_DIGITALES_RULE}
 
 === DATOS DE LA CUENTA ===
 ${DATA_CONTEXT}`;
@@ -90,7 +88,6 @@ export async function POST(req: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const sanitizer = createStreamSanitizer();
         const llm = client.messages.stream({
           model: "claude-opus-4-8",
           max_tokens: 2048,
@@ -101,12 +98,9 @@ export async function POST(req: Request) {
           messages,
         });
         llm.on("text", (delta) => {
-          const safe = sanitizer.push(delta);
-          if (safe) controller.enqueue(encoder.encode(safe));
+          controller.enqueue(encoder.encode(delta));
         });
         await llm.finalMessage();
-        const tail = sanitizer.flush();
-        if (tail) controller.enqueue(encoder.encode(tail));
         controller.close();
       } catch (err) {
         const msg = err instanceof Error ? err.message : "Error desconocido";

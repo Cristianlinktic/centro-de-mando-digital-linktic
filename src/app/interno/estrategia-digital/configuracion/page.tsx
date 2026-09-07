@@ -19,6 +19,7 @@ import { CHANNELS } from "@/lib/campana/constants";
 import { formatDate, formatPercent } from "@/lib/campana/format";
 import type { CampaignData, DailyActuals, DailyImpressions, DailyPlan } from "@/lib/campana/types";
 import { EmptyCampaign, LoadingCampaign } from "../_shared";
+import { toast } from "@/components/ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
@@ -103,8 +104,9 @@ function ParamsForm({ data, editable, onSaved }: { data: CampaignData; editable:
     try {
       await updateCampaignParams({ id: data.campaign.id, ...form });
       onSaved();
+      toast.success("Parámetros guardados");
     } catch (e) {
-      alert("No se pudieron guardar los parámetros.");
+      toast.error("Error al guardar", "No se pudieron guardar los parámetros.");
       console.error(e);
     } finally {
       setSaving(false);
@@ -152,8 +154,9 @@ function MetricsForm({ data, editable, onSaved }: { data: CampaignData; editable
     try {
       await upsertCampaignMetrics({ campaign_id: data.campaign.id, ...form });
       onSaved();
+      toast.success("Métricas guardadas");
     } catch (e) {
-      alert("No se pudieron guardar las métricas.");
+      toast.error("Error al guardar", "No se pudieron guardar las métricas.");
       console.error(e);
     } finally {
       setSaving(false);
@@ -232,8 +235,9 @@ function DailyForm({
       }));
       await onSave(campaignId, payload);
       onSaved();
+      toast.success("Datos guardados");
     } catch (e) {
-      alert("No se pudieron guardar los datos.");
+      toast.error("Error al guardar", "No se pudieron guardar los datos.");
       console.error(e);
     } finally {
       setSaving(false);

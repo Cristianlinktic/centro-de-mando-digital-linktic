@@ -13,6 +13,7 @@ import { AreaChart, Area, ResponsiveContainer } from "recharts";
 import { AdminPopup } from "@/components/admin-popup";
 import { Input } from "@/components/ui/input";
 import { LiveTicker } from "@/components/live-ticker";
+import { toast } from "@/components/ui/toast";
 import * as XLSX from 'xlsx';
 
 const feedSentimentColor: Record<string, string> = {
@@ -83,6 +84,23 @@ export default function SocialPage() {
     return () => clearInterval(interval);
   }, [lastFetchTime]);
 
+  const defaultProfile = (id: string) => ({
+    id, seguidores: "0", sentimiento: 0, interacciones: 0, alcance: "0", posts: 0, tendencia: [], top_posts: [],
+  });
+
+  const updateProfile = (id: string, patch: Record<string, any> | ((current: any) => Record<string, any>)) => {
+    setProfiles(prev => {
+      const idx = prev.findIndex(p => p.id === id);
+      const current = idx !== -1 ? prev[idx] : defaultProfile(id);
+      const resolvedPatch = typeof patch === "function" ? patch(current) : patch;
+      const updated = { ...current, ...resolvedPatch };
+      if (idx === -1) return [...prev, updated];
+      const copy = [...prev];
+      copy[idx] = updated;
+      return copy;
+    });
+  };
+
   const saveSocialData = async () => {
     try {
         // Update Profiles
@@ -94,12 +112,12 @@ export default function SocialPage() {
         for (const post of feed) {
             const { error } = await supabase.from('social_feed').upsert(post);
         }
-        alert("¡Datos guardados con éxito!");
+        toast.success("Datos guardados", "Los cambios de Conversación en Redes quedaron guardados.");
         setIsEditing(false);
         fetchSocialData();
     } catch (err) {
         console.error(err);
-        alert("Error al guardar datos");
+        toast.error("Error al guardar", "No se pudieron guardar los datos. Intenta de nuevo.");
     }
   };
 
@@ -165,11 +183,11 @@ export default function SocialPage() {
             if (feedsFound > 0) setFeed(updatedFeed);
             if (profilesFound > 0) setProfiles(updatedProfiles);
 
-            alert(`Importación finalizada:\n- ${profilesFound} redes actualizadas\n- ${feedsFound} entradas de feed añadidas`);
-            
+            toast.success("Importación finalizada", `${profilesFound} redes actualizadas, ${feedsFound} entradas de feed añadidas.`);
+
         } catch(err) {
             console.error(err);
-            alert("Error procesando Excel. Revisa que el formato de las columnas sea correcto.");
+            toast.error("Error al procesar el Excel", "Revisa que el formato de las columnas sea correcto.");
         }
     };
     reader.readAsBinaryString(file);
@@ -235,9 +253,8 @@ export default function SocialPage() {
       {/* Platform Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {Object.entries(platformConfig).map(([key, p]) => {
-              const stats = profiles.find(pr => pr.id === key.toLowerCase()) || {
-                  seguidores: "0", sentimiento: 0, interacciones: 0, alcance: "0", posts: 0, tendencia: [], top_posts: []
-              };
+              const id = key.toLowerCase();
+              const stats = profiles.find(pr => pr.id === id) || defaultProfile(id);
               return (
                 <Card key={key} className="bg-[#0b101d] border border-white/5 p-4 rounded-2xl">
                     <div className="flex justify-between items-start mb-4">
@@ -248,15 +265,10 @@ export default function SocialPage() {
                             <div>
                                 <h3 className="font-bold text-sm">{p.name}</h3>
                                 {isEditing ? (
-                                    <Input 
-                                        value={stats.seguidores} 
-                                        onChange={e => {
-                                            const up = [...profiles];
-                                            const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                            up[idx].seguidores = e.target.value;
-                                            setProfiles(up);
-                                        }} 
-                                        className="h-5 text-[10px] bg-white/5 border-white/10 p-1 w-20" 
+                                    <Input
+                                        value={stats.seguidores}
+                                        onChange={e => updateProfile(id, { seguidores: e.target.value })}
+                                        className="h-5 text-[10px] bg-white/5 border-white/10 p-1 w-20"
                                     />
                                 ) : (
                                     <p className="text-[10px] text-slate-400">{stats.seguidores} seguidores</p>
@@ -265,16 +277,11 @@ export default function SocialPage() {
                         </div>
                         {isEditing ? (
                             <div className="flex items-center gap-1">
-                                <Input 
-                                    type="number" 
-                                    value={stats.sentimiento} 
-                                    onChange={e => {
-                                        const up = [...profiles];
-                                        const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                        up[idx].sentimiento = parseInt(e.target.value);
-                                        setProfiles(up);
-                                    }} 
-                                    className="h-5 text-[10px] bg-white/5 border-green-500/30 p-1 w-10 text-green-500" 
+                                <Input
+                                    type="number"
+                                    value={stats.sentimiento}
+                                    onChange={e => updateProfile(id, { sentimiento: parseInt(e.target.value) || 0 })}
+                                    className="h-5 text-[10px] bg-white/5 border-green-500/30 p-1 w-10 text-green-500"
                                 />
                                 <span className="text-[10px] text-green-500">%</span>
                             </div>
@@ -285,12 +292,7 @@ export default function SocialPage() {
                     <div className="flex justify-between text-center mb-4">
                         <div>
                             {isEditing ? (
-                                <Input type="number" value={stats.interacciones} onChange={e => {
-                                    const up = [...profiles];
-                                    const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                    up[idx].interacciones = parseInt(e.target.value);
-                                    setProfiles(up);
-                                }} className="h-6 text-xs text-center bg-white/5 border-white/10" />
+                                <Input type="number" value={stats.interacciones} onChange={e => updateProfile(id, { interacciones: parseInt(e.target.value) || 0 })} className="h-6 text-xs text-center bg-white/5 border-white/10" />
                             ) : (
                                 <p className="text-lg font-bold">{stats.interacciones >= 1000 ? (stats.interacciones/1000).toFixed(1)+'K' : stats.interacciones}</p>
                             )}
@@ -298,12 +300,7 @@ export default function SocialPage() {
                         </div>
                         <div>
                             {isEditing ? (
-                                <Input value={stats.alcance} onChange={e => {
-                                    const up = [...profiles];
-                                    const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                    up[idx].alcance = e.target.value;
-                                    setProfiles(up);
-                                }} className="h-6 text-xs text-center bg-white/5 border-white/10" />
+                                <Input value={stats.alcance} onChange={e => updateProfile(id, { alcance: e.target.value })} className="h-6 text-xs text-center bg-white/5 border-white/10" />
                             ) : (
                                 <p className="text-lg font-bold">{stats.alcance}</p>
                             )}
@@ -311,12 +308,7 @@ export default function SocialPage() {
                         </div>
                         <div>
                             {isEditing ? (
-                                <Input type="number" value={stats.posts} onChange={e => {
-                                    const up = [...profiles];
-                                    const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                    up[idx].posts = parseInt(e.target.value);
-                                    setProfiles(up);
-                                }} className="h-6 text-xs text-center bg-white/5 border-white/10" />
+                                <Input type="number" value={stats.posts} onChange={e => updateProfile(id, { posts: parseInt(e.target.value) || 0 })} className="h-6 text-xs text-center bg-white/5 border-white/10" />
                             ) : (
                                 <p className="text-lg font-bold">{stats.posts}</p>
                             )}
@@ -333,15 +325,9 @@ export default function SocialPage() {
                     <div className="text-xs">
                         <p className="text-slate-400 mb-1">Top post</p>
                         {isEditing ? (
-                            <textarea 
-                                value={stats.top_posts?.[0]?.texto || ''} 
-                                onChange={e => {
-                                    const up = [...profiles];
-                                    const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                    if (!up[idx].top_posts) up[idx].top_posts = [{}];
-                                    up[idx].top_posts[0].texto = e.target.value;
-                                    setProfiles(up);
-                                }}
+                            <textarea
+                                value={stats.top_posts?.[0]?.texto || ''}
+                                onChange={e => updateProfile(id, (c) => ({ top_posts: [{ ...(c.top_posts?.[0] || {}), texto: e.target.value }] }))}
                                 className="w-full bg-white/5 border border-white/10 rounded p-1 text-[10px] text-white resize-none min-h-[40px] outline-none"
                             />
                         ) : (
@@ -351,16 +337,10 @@ export default function SocialPage() {
                             <span className="flex items-center gap-1">
                                 <FontAwesomeIcon icon={faHeart} className="w-3 h-3 text-red-500/50"/>
                                 {isEditing ? (
-                                    <Input 
-                                        type="number" 
-                                        value={stats.top_posts?.[0]?.likes || 0} 
-                                        onChange={e => {
-                                            const up = [...profiles];
-                                            const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                            if (!up[idx].top_posts) up[idx].top_posts = [{}];
-                                            up[idx].top_posts[0].likes = parseInt(e.target.value);
-                                            setProfiles(up);
-                                        }}
+                                    <Input
+                                        type="number"
+                                        value={stats.top_posts?.[0]?.likes || 0}
+                                        onChange={e => updateProfile(id, (c) => ({ top_posts: [{ ...(c.top_posts?.[0] || {}), likes: parseInt(e.target.value) || 0 }] }))}
                                         className="h-4 w-10 bg-transparent border-none p-0 text-[10px] font-bold"
                                     />
                                 ) : (stats.top_posts?.[0]?.likes || 0)}
@@ -368,16 +348,10 @@ export default function SocialPage() {
                             <span className="flex items-center gap-1">
                                 <FontAwesomeIcon icon={faComment} className="w-3 h-3 text-blue-500/50"/>
                                 {isEditing ? (
-                                    <Input 
-                                        type="number" 
-                                        value={stats.top_posts?.[0]?.comments || 0} 
-                                        onChange={e => {
-                                            const up = [...profiles];
-                                            const idx = up.findIndex(pr => pr.id === key.toLowerCase());
-                                            if (!up[idx].top_posts) up[idx].top_posts = [{}];
-                                            up[idx].top_posts[0].comments = parseInt(e.target.value);
-                                            setProfiles(up);
-                                        }}
+                                    <Input
+                                        type="number"
+                                        value={stats.top_posts?.[0]?.comments || 0}
+                                        onChange={e => updateProfile(id, (c) => ({ top_posts: [{ ...(c.top_posts?.[0] || {}), comments: parseInt(e.target.value) || 0 }] }))}
                                         className="h-4 w-10 bg-transparent border-none p-0 text-[10px] font-bold"
                                     />
                                 ) : (stats.top_posts?.[0]?.comments || 0)}
