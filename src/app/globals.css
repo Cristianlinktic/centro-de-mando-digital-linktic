@@ -130,6 +130,18 @@
   --ff-grad-title: linear-gradient(90deg, #75ddff 0%, #ffffff 100%);
   --ff-grad-title-light: linear-gradient(90deg, #0094ff 0%, #2709cd 100%);
 
+  /* Acento de sección — azul en Interno (por defecto), verde en Externo
+     (ver [data-section="externo"] más abajo). Úsalo para lo que deba
+     "seguir" a la pestaña activa: el switcher del sidebar, la página
+     placeholder de Externo, etc. Los módulos de Interno mantienen sus
+     propios colores fijos — no dependen de este token. */
+  --tab-accent: #0094ff;
+  --tab-accent-2: #00e1ff;
+  --tab-accent-soft: #75ddff;
+  --tab-accent-wash: rgba(0, 148, 255, 0.10);
+  --tab-accent-ring: rgba(0, 148, 255, 0.20);
+  --tab-accent-glow: rgba(0, 148, 255, 0.55);
+
   /* Velo del hero del KV: oscurece arriba, se abre al centro, cierra abajo. */
   --ff-veil: linear-gradient(
     180deg,
@@ -196,6 +208,33 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #1e2240;
   --sidebar-ring: #0094ff;
+}
+
+/* Pestaña "Externo": mismo sistema, acento verde en vez de azul.
+   Sobreescribe tanto --tab-accent* (switcher, placeholder) como los
+   tokens base de marca (--primary, --ring, --ff-grad*, --badge-neon-color)
+   para que TODO el cromo del sidebar/header que ya "sigue" al azul de marca
+   — el degradado del avatar, el badge de rol, anillos de foco — cambie con
+   la pestaña, sin tener que tocar cada componente uno por uno. Los módulos
+   de Interno usan sus propios colores fijos (navItems.accent) y no leen
+   estos tokens, así que no se ven afectados. */
+[data-section="externo"] {
+  --tab-accent: #10b981;
+  --tab-accent-2: #34d399;
+  --tab-accent-soft: #6ee7b7;
+  --tab-accent-wash: rgba(16, 185, 129, 0.10);
+  --tab-accent-ring: rgba(16, 185, 129, 0.20);
+  --tab-accent-glow: rgba(16, 185, 129, 0.55);
+
+  --ff-grad-title: linear-gradient(90deg, #6ee7b7 0%, #ffffff 100%);
+  --ff-grad: linear-gradient(90deg, #10b981 0%, #0f766e 100%);
+  --ff-grad-hot: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  --badge-neon-color: rgba(16, 185, 129, 0.45);
+
+  --primary: #10b981;
+  --ring: #10b981;
+  --sidebar-primary: #10b981;
+  --sidebar-ring: #10b981;
 }
 
 /* ============================================================

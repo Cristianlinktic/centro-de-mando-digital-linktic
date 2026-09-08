@@ -2,6 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { CHANNEL_ORDER } from "./constants";
 import type {
   Campaign,
+  CampaignCategory,
   CampaignChannel,
   CampaignData,
   CampaignMetrics,
@@ -14,11 +15,12 @@ import type {
 } from "./types";
 import { CONTENT_TRACKING_FIELDS } from "./types";
 
-/** Trae la (única) campaña activa con todo lo relacionado. */
-export async function fetchCampaignData(): Promise<CampaignData | null> {
+/** Trae la campaña activa de esta categoría (rrss o medios) con todo lo relacionado. */
+export async function fetchCampaignData(category: CampaignCategory = "rrss"): Promise<CampaignData | null> {
   const { data: campaignData, error } = await supabase
     .from("campaign_dash")
     .select("*")
+    .eq("category", category)
     .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();
@@ -68,10 +70,11 @@ export async function fetchCampaignData(): Promise<CampaignData | null> {
   };
 }
 
-export async function fetchContentTracking(): Promise<ContentTrackingData | null> {
+export async function fetchContentTracking(category: CampaignCategory = "rrss"): Promise<ContentTrackingData | null> {
   const { data: campaignData, error } = await supabase
     .from("campaign_dash")
     .select("id")
+    .eq("category", category)
     .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();
@@ -218,10 +221,11 @@ export async function saveContentTracking(
   if (error) throw error;
 }
 
-async function ensureCampaignId(): Promise<string> {
+async function ensureCampaignId(category: CampaignCategory): Promise<string> {
   const { data } = await supabase
     .from("campaign_dash")
     .select("id")
+    .eq("category", category)
     .order("created_at", { ascending: true })
     .limit(1)
     .maybeSingle();
@@ -231,7 +235,7 @@ async function ensureCampaignId(): Promise<string> {
 
   const { data: createdData, error } = await supabase
     .from("campaign_dash")
-    .insert({ name: "Campaña de pauta" })
+    .insert({ name: category === "medios" ? "Campaña de medios" : "Campaña de pauta", category })
     .select("id")
     .single();
   const created = createdData as { id: string } | null;
@@ -242,8 +246,8 @@ async function ensureCampaignId(): Promise<string> {
 
 /** Reemplaza el plan de campaña (canales + días) a partir de un Excel importado.
  *  Preserva la inversión real ya registrada por canal. */
-export async function replaceCampaignFromPlan(plan: ParsedPlan): Promise<void> {
-  const campaignId = await ensureCampaignId();
+export async function replaceCampaignFromPlan(plan: ParsedPlan, category: CampaignCategory = "rrss"): Promise<void> {
+  const campaignId = await ensureCampaignId(category);
 
   const { data: prev } = await supabase
     .from("campaign_channels")

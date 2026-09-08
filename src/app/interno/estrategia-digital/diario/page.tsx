@@ -8,18 +8,20 @@ import { CHANNELS } from "@/lib/campana/constants";
 import { formatCOP, formatDate, formatDateShort, formatDecimal, formatNumber } from "@/lib/campana/format";
 import type { CampaignData } from "@/lib/campana/types";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import { EmptyCampaign, LoadingCampaign } from "../_shared";
+import { EmptyCampaign, LoadingCampaign, useCategoria } from "../_shared";
 import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR_LINE } from "@/lib/chart-theme";
 import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
 const CHANNEL_KEYS = ["meta", "pilas", "youtube", "google_display"] as const;
 
 export default function DiarioPage() {
+  const tipo = useCategoria();
   const [data, setData] = useState<CampaignData | null | undefined>(undefined);
 
   useEffect(() => {
-    fetchCampaignData().then(setData).catch(() => setData(null));
-  }, []);
+    setData(undefined);
+    fetchCampaignData(tipo).then(setData).catch(() => setData(null));
+  }, [tipo]);
 
   if (data === undefined) return <LoadingCampaign />;
   if (data === null) return <EmptyCampaign />;

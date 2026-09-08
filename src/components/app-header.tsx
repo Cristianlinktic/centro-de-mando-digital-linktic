@@ -63,11 +63,22 @@ export function AppHeader() {
           {role === "superadmin" ? (
               <Badge variant="neon" className="hidden sm:inline-flex text-[8px] h-4 px-1 font-black">SUPER</Badge>
           ) : role === "admin" ? (
-              <Badge className="hidden sm:inline-flex rounded-[4px] bg-[#0094ff]/12 text-[#75ddff] border-[#0094ff]/30 text-[8px] h-4 px-1 font-black">ADMIN</Badge>
+              <Badge
+                className="hidden sm:inline-flex rounded-[4px] border text-[8px] h-4 px-1 font-black"
+                style={{ backgroundColor: "var(--tab-accent-wash)", color: "var(--tab-accent-soft)", borderColor: "var(--tab-accent-ring)" }}
+              >
+                ADMIN
+              </Badge>
           ) : (
               <Badge className="hidden sm:inline-flex rounded-[4px] bg-[#131a30] text-[#aab3cf] border-[#2a2a4a] text-[8px] h-4 px-1 font-black">LECTOR</Badge>
           )}
-          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#0094ff] to-[#2709cd] flex items-center justify-center text-[11px] font-bold text-white shrink-0 shadow-[0_0_14px_#0094ff73] ring-1 ring-[#2a2a4a]">
+          <div
+            className="h-8 w-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white shrink-0 ring-1 ring-[#2a2a4a]"
+            style={{
+              backgroundImage: "linear-gradient(135deg, var(--tab-accent), var(--tab-accent-2))",
+              boxShadow: "0 0 14px var(--tab-accent-glow)",
+            }}
+          >
             {role === "superadmin" ? "SA" : role === "admin" ? "AD" : "LC"}
           </div>
         </div>

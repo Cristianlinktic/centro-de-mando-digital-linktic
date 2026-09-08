@@ -18,7 +18,7 @@ import { participationSum } from "@/lib/campana/calc";
 import { CHANNELS } from "@/lib/campana/constants";
 import { formatDate, formatPercent } from "@/lib/campana/format";
 import type { CampaignData, DailyActuals, DailyImpressions, DailyPlan } from "@/lib/campana/types";
-import { EmptyCampaign, LoadingCampaign } from "../_shared";
+import { EmptyCampaign, LoadingCampaign, useCategoria } from "../_shared";
 import { toast } from "@/components/ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
@@ -28,10 +28,11 @@ const CHANNEL_KEYS = ["meta", "pilas", "youtube", "google_display"] as const;
 export default function ConfiguracionPage() {
   const { role } = useAuth();
   const editable = canEdit(role);
+  const tipo = useCategoria();
   const [data, setData] = useState<CampaignData | null | undefined>(undefined);
 
-  const load = () => fetchCampaignData().then(setData).catch(() => setData(null));
-  useEffect(() => { load(); }, []);
+  const load = () => fetchCampaignData(tipo).then(setData).catch(() => setData(null));
+  useEffect(() => { setData(undefined); load(); }, [tipo]);
 
   if (data === undefined) return <LoadingCampaign />;
   if (data === null) return <EmptyCampaign />;

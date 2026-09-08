@@ -22,7 +22,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
-import { EmptyCampaign, LoadingCampaign, round } from "../_shared";
+import { EmptyCampaign, LoadingCampaign, round, useCategoria } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSave, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR } from "@/lib/chart-theme";
@@ -32,10 +32,11 @@ const CHANNEL_KEYS = ["meta", "pilas", "youtube", "google_display"] as const;
 
 export default function CanalesPage() {
   const { role } = useAuth();
+  const tipo = useCategoria();
   const [data, setData] = useState<CampaignData | null | undefined>(undefined);
 
-  const load = () => fetchCampaignData().then(setData).catch(() => setData(null));
-  useEffect(() => { load(); }, []);
+  const load = () => fetchCampaignData(tipo).then(setData).catch(() => setData(null));
+  useEffect(() => { setData(undefined); load(); }, [tipo]);
 
   if (data === undefined) return <LoadingCampaign />;
   if (data === null) return <EmptyCampaign />;

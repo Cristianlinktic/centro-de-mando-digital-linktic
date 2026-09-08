@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { parsePautaWorkbook, ExcelParseError } from "@/lib/campana/excel";
 import { replaceCampaignFromPlan } from "@/lib/campana/client-data";
 import { formatCOP, formatDate } from "@/lib/campana/format";
+import { useCategoria } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileArrowUp, faCheck, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
@@ -22,6 +23,7 @@ interface Summary {
 
 export default function ImportarPage() {
   const router = useRouter();
+  const tipo = useCategoria();
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -44,7 +46,7 @@ export default function ImportarPage() {
     try {
       const buffer = await file.arrayBuffer();
       const plan = parsePautaWorkbook(buffer);
-      await replaceCampaignFromPlan(plan);
+      await replaceCampaignFromPlan(plan, tipo);
       setStatus("success");
       setSummary({
         name: plan.name,
@@ -78,9 +80,14 @@ export default function ImportarPage() {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
       <div className="lg:col-span-2">
         <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
-          <h3 className="font-bold text-sm text-[#e4e9f5] mb-1 uppercase tracking-widest">Subir plan de pauta</h3>
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">Subir plan de pauta</h3>
+            <span className="rounded-full bg-[#0094ff]/12 text-[#75ddff] border border-[#0094ff]/30 text-[9px] font-black uppercase px-2 py-0.5">
+              {tipo === "medios" ? "Medios" : "RRSS"}
+            </span>
+          </div>
           <p className="text-xs text-[#8892b0] mb-5">
-            El archivo reemplaza los datos de la campaña actual (la inversión real registrada se conserva).
+            El archivo reemplaza los datos de la campaña de <b>{tipo === "medios" ? "Medios" : "RRSS"}</b> (la inversión real registrada se conserva).
           </p>
 
           <div
@@ -131,7 +138,7 @@ export default function ImportarPage() {
                 <Item label="Canales" value={String(summary.channels)} />
                 <Item label="Días cargados" value={String(summary.days)} />
               </dl>
-              <a href="/interno/estrategia-digital" className="mt-4 inline-block rounded-xl bg-[#0094ff] hover:bg-[#0080e6] px-4 py-2 text-sm font-bold text-white transition-colors">
+              <a href={`/interno/estrategia-digital?tipo=${tipo}`} className="mt-4 inline-block rounded-xl bg-[#0094ff] hover:bg-[#0080e6] px-4 py-2 text-sm font-bold text-white transition-colors">
                 Ver dashboard
               </a>
             </div>

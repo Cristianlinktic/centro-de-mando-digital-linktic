@@ -25,6 +25,19 @@ const AZUL = {
   deep: "#102486", // blue-linktic-300
 } as const;
 
+/** Misma escala, en verde — para la pestaña "Externo" (ver PALETAS y el
+ *  prop `palette` de BackdropOrbs). Mismos roles de tono/brillo que AZUL,
+ *  así que cualquier composición de orbes se ve igual de "leída" en ambas. */
+const VERDE = {
+  cyan: "#2dd4bf",
+  brand: "#10b981",
+  vivid: "#34d399",
+  electric: "#0d9488",
+  deep: "#065f46",
+} as const;
+
+const PALETAS = { azul: AZUL, verde: VERDE } as const;
+
 type Tono = keyof typeof AZUL;
 type Deriva = "a" | "b" | "c" | "d";
 
@@ -76,6 +89,9 @@ interface BackdropOrbsProps {
   /** Rejilla de perspectiva bajo las elipsis. */
   grid?: boolean;
   className?: string;
+  /** "azul" (Interno, por defecto) o "verde" (Externo) — para que cada
+   *  pestaña de alto nivel se distinga también en el fondo del shell. */
+  palette?: keyof typeof PALETAS;
 }
 
 export function BackdropOrbs({
@@ -83,7 +99,9 @@ export function BackdropOrbs({
   fixed = false,
   grid = false,
   className = "",
+  palette = "azul",
 }: BackdropOrbsProps) {
+  const COLORS = PALETAS[palette];
   return (
     <div
       aria-hidden="true"
@@ -97,7 +115,7 @@ export function BackdropOrbs({
           style={
             {
               "--orb-size": `${o.size}px`,
-              "--orb-color": AZUL[o.tono],
+              "--orb-color": COLORS[o.tono],
               "--orb-alpha": o.alpha ?? 0.4,
               "--orb-blur": `${o.blur ?? 64}px`,
               top: o.top,

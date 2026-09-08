@@ -90,7 +90,7 @@ export function AppSidebar() {
             href="/interno/mapa-colombia"
             className={`flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-bold transition-all duration-200 ${
               activeGroup === "interno"
-                ? "bg-gradient-to-r from-[#0094ff] to-[#00e1ff] text-white shadow-[0_0_12px_rgba(0,148,255,0.55)]"
+                ? "bg-gradient-to-r from-[var(--tab-accent)] to-[var(--tab-accent-2)] text-white shadow-[0_0_12px_var(--tab-accent-glow)]"
                 : "text-muted-foreground hover:text-foreground hover:bg-white/5"
             }`}
           >
@@ -101,7 +101,7 @@ export function AppSidebar() {
             href="/externo"
             className={`flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-bold transition-all duration-200 ${
               activeGroup === "externo"
-                ? "bg-gradient-to-r from-[#0094ff] to-[#00e1ff] text-white shadow-[0_0_12px_rgba(0,148,255,0.55)]"
+                ? "bg-gradient-to-r from-[var(--tab-accent)] to-[var(--tab-accent-2)] text-white shadow-[0_0_12px_var(--tab-accent-glow)]"
                 : "text-muted-foreground hover:text-foreground hover:bg-white/5"
             }`}
           >

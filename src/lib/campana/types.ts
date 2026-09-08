@@ -1,5 +1,10 @@
 export type ChannelKey = "meta" | "pilas" | "youtube" | "google_display";
 
+/** Dos pautas independientes conviven en las mismas tablas, distinguidas
+ *  por esta columna en campaign_dash — cada una con sus propios canales,
+ *  plan diario y métricas (todas las tablas hijas ya cuelgan de campaign_id). */
+export type CampaignCategory = "rrss" | "medios";
+
 export const CHANNEL_KEYS: ChannelKey[] = [
   "meta",
   "pilas",
@@ -15,6 +20,7 @@ export interface Campaign {
   duration_days: number;
   start_date: string;
   status: "draft" | "active" | "completed";
+  category: CampaignCategory;
   created_at: string;
   updated_at: string;
 }

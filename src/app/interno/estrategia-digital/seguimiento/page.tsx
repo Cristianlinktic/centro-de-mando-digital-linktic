@@ -11,6 +11,7 @@ import { ADS_FIELDS, META_FIELDS, type ContentTrackingField } from "@/lib/campan
 import { formatNumber } from "@/lib/campana/format";
 import { toast } from "@/components/ui/toast";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useCategoria } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
@@ -29,22 +30,25 @@ const LABELS: Record<ContentTrackingField, string> = {
 
 export default function SeguimientoPage() {
   const { role } = useAuth();
+  const tipo = useCategoria();
   const [campaignId, setCampaignId] = useState<string | null | undefined>(undefined);
   const [values, setValues] = useState<Record<ContentTrackingField, number> | null>(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetchContentTracking().then((data) => {
+    setCampaignId(undefined);
+    setValues(null);
+    fetchContentTracking(tipo).then((data) => {
       if (!data) { setCampaignId(null); return; }
       const { campaignId: id, ...rest } = data;
       setCampaignId(id);
       setValues(rest as Record<ContentTrackingField, number>);
     }).catch(() => setCampaignId(null));
-  }, []);
+  }, [tipo]);
 
   if (campaignId === undefined || !values) {
-    return <TabLoadingScreen section="Seguimiento" fullScreen={false} />;
+    return <TabLoadingScreen section={`Seguimiento · ${tipo === "medios" ? "Medios" : "RRSS"}`} fullScreen={false} />;
   }
   if (campaignId === null) {
     return (
