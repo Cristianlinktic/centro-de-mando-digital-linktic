@@ -143,28 +143,22 @@
   --tab-accent-glow: rgba(0, 148, 255, 0.55);
 
   /* Velo del hero del KV: oscurece arriba, se abre al centro, cierra abajo. */
-  --ff-veil: linear-gradient(
-    180deg,
-    rgba(8, 12, 24, 0.85) 0%,
-    rgba(8, 20, 40, 0.35) 25%,
-    rgba(8, 20, 40, 0.25) 60%,
-    rgb(8, 12, 24) 100%
-  );
+  --ff-veil: linear-gradient(180deg,
+      rgba(8, 12, 24, 0.85) 0%,
+      rgba(8, 20, 40, 0.35) 25%,
+      rgba(8, 20, 40, 0.25) 60%,
+      rgb(8, 12, 24) 100%);
 
   /* Receta de cristal de las píldoras del contador del KV. */
-  --ff-glass-fill: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.03) 40%,
-    rgba(255, 255, 255, 0.01) 100%
-  );
-  --ff-glass-edge: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.12) 35%,
-    rgba(255, 255, 255, 0.04) 60%,
-    rgba(255, 255, 255, 0.2) 100%
-  );
+  --ff-glass-fill: linear-gradient(145deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.03) 40%,
+      rgba(255, 255, 255, 0.01) 100%);
+  --ff-glass-edge: linear-gradient(160deg,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.12) 35%,
+      rgba(255, 255, 255, 0.04) 60%,
+      rgba(255, 255, 255, 0.2) 100%);
   --ff-glass-shadow:
     inset 0 18px 33.77px 10.1px rgba(20, 117, 212, 0.07),
     4px 4px 16px 0 rgba(0, 0, 0, 0.6),
@@ -318,30 +312,72 @@
 
 /* Cuatro derivas de distinta duración y recorrido para que las elipsis
    nunca se muevan en bloque (es lo que delata una animación barata). */
-.orb-drift-a { animation: orb-drift-a 26s ease-in-out infinite; }
-.orb-drift-b { animation: orb-drift-b 34s ease-in-out infinite; }
-.orb-drift-c { animation: orb-drift-c 42s ease-in-out infinite; }
-.orb-drift-d { animation: orb-drift-d 30s ease-in-out infinite; }
+.orb-drift-a {
+  animation: orb-drift-a 26s ease-in-out infinite;
+}
+
+.orb-drift-b {
+  animation: orb-drift-b 34s ease-in-out infinite;
+}
+
+.orb-drift-c {
+  animation: orb-drift-c 42s ease-in-out infinite;
+}
+
+.orb-drift-d {
+  animation: orb-drift-d 30s ease-in-out infinite;
+}
 
 @keyframes orb-drift-a {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(5vw, 4vh, 0) scale(1.14); }
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(5vw, 4vh, 0) scale(1.14);
+  }
 }
 
 @keyframes orb-drift-b {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50%      { transform: translate3d(-4vw, -5vh, 0) scale(1.08); }
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-4vw, -5vh, 0) scale(1.08);
+  }
 }
 
 @keyframes orb-drift-c {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1.06); }
-  33%      { transform: translate3d(3vw, -3vh, 0) scale(0.94); }
-  66%      { transform: translate3d(-3vw, 3vh, 0) scale(1.1); }
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.06);
+  }
+
+  33% {
+    transform: translate3d(3vw, -3vh, 0) scale(0.94);
+  }
+
+  66% {
+    transform: translate3d(-3vw, 3vh, 0) scale(1.1);
+  }
 }
 
 @keyframes orb-drift-d {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(0.96); }
-  50%      { transform: translate3d(-5vw, 3vh, 0) scale(1.16); }
+
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.96);
+  }
+
+  50% {
+    transform: translate3d(-5vw, 3vh, 0) scale(1.16);
+  }
 }
 
 /* Rejilla de perspectiva: el piso técnico que da la lectura futurista
@@ -360,6 +396,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .orb-drift-a,
   .orb-drift-b,
   .orb-drift-c,
@@ -408,7 +445,9 @@
 }
 
 @keyframes accent-bar-flow {
-  to { background-position: -300% 0; }
+  to {
+    background-position: -300% 0;
+  }
 }
 
 .text-glow-blue {
@@ -542,8 +581,8 @@
     radial-gradient(120% 62% at 50% 0%, rgba(0, 148, 255, 0.22), transparent 68%),
     var(--ff-glass-fill),
     linear-gradient(160deg, rgba(16, 20, 42, 0.72), rgba(7, 10, 22, 0.62));
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(6px) saturate(160%);
+  backdrop-filter: blur(6px) saturate(160%);
   /* Sin `border`: el filo va como sombra interior para no ocupar layout. Si
      lleva `border`, un .neon-frame encima dibuja su aro 1px por dentro y se
      ven dos rectángulos con las esquinas descuadradas. */
@@ -875,7 +914,9 @@
 /* Martha chatbot — halo que "respira" detrás del botón, más orgánico que un
    ping mecánico de notificación. */
 @keyframes martha-breathe {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.5;
   }
@@ -941,8 +982,16 @@
 
 /* Parpadeo de los ojos del robot — el detalle "con vida". */
 @keyframes martha-blink {
-  0%, 92%, 100% { transform: scaleY(1); }
-  96% { transform: scaleY(0.15); }
+
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  96% {
+    transform: scaleY(0.15);
+  }
 }
 
 .martha-eye {
@@ -956,6 +1005,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .martha-orbit::before,
   .martha-eye {
     animation: none !important;

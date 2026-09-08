@@ -151,10 +151,6 @@ export default function LoginPage() {
       </div>
 
       <div className="neon-frame glass-strong rounded-3xl p-10 w-full max-w-md flex flex-col items-center z-10">
-        <div className="w-20 h-20 rounded-full bg-[linear-gradient(90deg,#0094ff,#2709cd)] flex items-center justify-center mb-6 shadow-[0_0_28px_rgba(0,148,255,0.45)]">
-          <span className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(0,148,255,0.8)] text-white">LT</span>
-        </div>
-
         <h1 className="font-heading text-2xl font-semibold mb-1 tracking-tight gradient-text text-glow-blue">Centro de Mando Digital LinkTIC</h1>
         <p className="text-[#aab3cf] mb-8 text-center text-sm">Ingresa tus credenciales para acceder al Centro de Mando Digital LinkTIC</p>
         
@@ -162,7 +158,7 @@ export default function LoginPage() {
           <div className="space-y-2">
             <label className="text-[10px] text-[#aab3cf] uppercase tracking-widest font-bold px-1">Usuario</label>
             <div className="relative">
-              <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8892b0] w-4 h-4" />
+              <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-1/2 -translate-y-1/2 text-white w-4 h-4" />
               <Input
                 name="email"
                 type="text"
@@ -177,7 +173,7 @@ export default function LoginPage() {
           <div className="space-y-2">
             <label className="text-[10px] text-[#aab3cf] uppercase tracking-widest font-bold px-1">Contraseña</label>
             <div className="relative">
-              <FontAwesomeIcon icon={faLock} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8892b0] w-4 h-4" />
+              <FontAwesomeIcon icon={faLock} className="absolute left-3 top-1/2 -translate-y-1/2 text-white w-4 h-4" />
               <Input
                 name="password"
                 type="password"
