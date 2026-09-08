@@ -351,15 +351,15 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
         <div>
           <div className="flex gap-2 mb-2">
-            <span className="bg-[#1e293b] text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 uppercase font-black">
+            <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">
               PLANIFICACIÓN DE CONTENIDO
             </span>
-            <span className="bg-[#1e293b] text-slate-400 text-[10px] px-2 py-0.5 rounded-full border border-white/10 uppercase">
+            <span className="bg-[#1e2240] text-[#aab3cf] text-[10px] px-2 py-0.5 rounded-full border border-[#2a2a4a] uppercase">
               {editing ? "MODO EDITOR" : "MODO LECTOR"}
             </span>
           </div>
-          <h1 className="text-3xl font-bold mb-1 gradient-text text-glow-blue">Parrilla de Contenidos</h1>
-          <p className="text-slate-400 text-sm">
+          <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Parrilla de Contenidos</h1>
+          <p className="text-[#aab3cf] text-sm">
             Calendario de publicaciones en redes — Centro de Mando Digital LinkTIC.
           </p>
         </div>
@@ -371,11 +371,11 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
             </Button>
           )}
           {editing && (
-            <Button variant="outline" size="sm" onClick={() => setShowTabPanel((v) => !v)} className="bg-[#0b101d] border-white/10 text-white">
+            <Button variant="outline" size="sm" onClick={() => setShowTabPanel((v) => !v)} className="panel border-[#2a2a4a] text-white">
               <FontAwesomeIcon icon={faLayerGroup} className="mr-2" /> Pestañas
             </Button>
           )}
-          <Button variant="outline" size="sm" onClick={fetchContent} className="bg-[#0b101d] border-white/10 text-white">
+          <Button variant="outline" size="sm" onClick={fetchContent} className="panel border-[#2a2a4a] text-white">
             <FontAwesomeIcon icon={faRotate} />
           </Button>
         </div>
@@ -383,9 +383,9 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
 
       {/* Custom tabs panel (opcional, secundario) */}
       {showTabPanel && editing && (
-        <Card className="bg-[#0b101d] border border-white/5 p-5 rounded-2xl mb-6">
-          <h3 className="text-sm font-bold text-slate-200 mb-1">Pestañas adicionales de parrilla</h3>
-          <p className="text-xs text-slate-500 mb-4">
+        <Card className="panel border border-[#1e2240] p-5 rounded-2xl mb-6">
+          <h3 className="text-sm font-bold text-[#e4e9f5] mb-1">Pestañas adicionales de parrilla</h3>
+          <p className="text-xs text-[#8892b0] mb-4">
             Registra una pestaña nueva (p.ej. para un evento puntual). Esto solo crea el registro — la tabla física
             hay que crearla una vez en el SQL Editor de Supabase con el script que se genera abajo.
           </p>
@@ -394,17 +394,17 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               placeholder="Nombre de la pestaña (ej: Debate 12 de mayo)"
               value={newTabLabel}
               onChange={(e) => setNewTabLabel(e.target.value)}
-              className="bg-[#05080f] border-white/10 h-9 text-sm flex-1"
+              className="well border-[#2a2a4a] h-9 text-sm flex-1"
             />
-            <Button size="sm" onClick={createCustomTab} className="bg-blue-600 hover:bg-blue-700">
+            <Button size="sm" onClick={createCustomTab} className="bg-[#0094ff] hover:bg-[#0080e6]">
               <FontAwesomeIcon icon={faPlus} className="mr-2" /> Registrar
             </Button>
           </div>
           {customTabs.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-4">
               {customTabs.map((t) => (
-                <span key={t.id} className="text-[11px] bg-white/5 border border-white/10 rounded-full px-3 py-1 text-slate-300">
-                  {t.label} <span className="text-slate-600">({t.table_name})</span>
+                <span key={t.id} className="text-[11px] bg-white/5 border border-[#2a2a4a] rounded-full px-3 py-1 text-[#c0c8de]">
+                  {t.label} <span className="text-[#8892b0]">({t.table_name})</span>
                 </span>
               ))}
             </div>
@@ -414,7 +414,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               <p className="text-[11px] font-bold text-amber-400 uppercase tracking-wide mb-2">
                 Corre esto una vez en el SQL Editor de Supabase:
               </p>
-              <pre className="bg-[#05080f] border border-white/10 rounded-lg p-3 text-[11px] text-slate-300 overflow-x-auto whitespace-pre-wrap">
+              <pre className="well border border-[#2a2a4a] rounded-lg p-3 text-[11px] text-[#c0c8de] overflow-x-auto whitespace-pre-wrap">
                 {generatedSql}
               </pre>
             </div>
@@ -425,16 +425,16 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* Barra de navegación del calendario */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={goToday} className="bg-[#0b101d] border-white/10 text-white">
+          <Button variant="outline" size="sm" onClick={goToday} className="panel border-[#2a2a4a] text-white">
             Hoy
           </Button>
-          <Button variant="outline" size="sm" onClick={goPrev} className="bg-[#0b101d] border-white/10 text-white h-8 w-8 p-0">
+          <Button variant="outline" size="sm" onClick={goPrev} className="panel border-[#2a2a4a] text-white h-8 w-8 p-0">
             <FontAwesomeIcon icon={faChevronLeft} className="h-3 w-3" />
           </Button>
-          <Button variant="outline" size="sm" onClick={goNext} className="bg-[#0b101d] border-white/10 text-white h-8 w-8 p-0">
+          <Button variant="outline" size="sm" onClick={goNext} className="panel border-[#2a2a4a] text-white h-8 w-8 p-0">
             <FontAwesomeIcon icon={faChevronRight} className="h-3 w-3" />
           </Button>
-          <h2 className="text-lg font-bold text-slate-100 ml-2 capitalize">{rangeLabel}</h2>
+          <h2 className="text-lg font-bold text-[#ffffff] ml-2 capitalize">{rangeLabel}</h2>
         </div>
         <div className="flex gap-1 rounded-lg bg-white/5 p-1">
           {(["day", "week", "month"] as ViewMode[]).map((v) => (
@@ -442,7 +442,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               key={v}
               onClick={() => setViewMode(v)}
               className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wide transition-colors ${
-                viewMode === v ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
+                viewMode === v ? "bg-[#0094ff] text-white" : "text-[#aab3cf] hover:text-white"
               }`}
             >
               {v === "day" ? "Día" : v === "week" ? "Semana" : "Mes"}
@@ -454,7 +454,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* Leyenda de plataformas */}
       <div className="mb-4 flex flex-wrap gap-3">
         {PLATFORMS.map((p) => (
-          <div key={p.id} className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
+          <div key={p.id} className="flex items-center gap-1.5 text-[11px] font-bold text-[#aab3cf]">
             <FontAwesomeIcon icon={p.icon} className="h-3 w-3" style={{ color: p.color }} />
             {p.name}
           </div>
@@ -501,21 +501,21 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* Add/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4" onClick={() => setIsModalOpen(false)}>
-          <div className="bg-[#0b101d] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between border-b border-white/10 p-5">
+          <div className="panel border border-[#2a2a4a] rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-[#2a2a4a] p-5">
               <h2 className="text-lg font-bold">{form.id ? "Editar Publicación" : "Agregar a Parrilla"}</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-slate-500 hover:text-white">
+              <button onClick={() => setIsModalOpen(false)} className="text-[#8892b0] hover:text-white">
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
             <form onSubmit={saveItem} className="p-5 space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Fecha</label>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Fecha</label>
                   <Input type="date" className={`${inputCls} [color-scheme:dark]`} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Hora</label>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Hora</label>
                   <select className={inputCls} value={form.hour} onChange={(e) => setForm({ ...form, hour: e.target.value })}>
                     {HOURS.map((h) => (
                       <option key={h} value={h.split(":")[0]}>{h.split(":")[0]}:</option>
@@ -523,7 +523,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Minuto</label>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Minuto</label>
                   <select className={inputCls} value={form.minute} onChange={(e) => setForm({ ...form, minute: e.target.value })}>
                     {["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"].map((m) => (
                       <option key={m} value={m}>{m}</option>
@@ -531,11 +531,11 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Duración (min)</label>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Duración (min)</label>
                   <Input type="number" className={inputCls} value={form.duration} onChange={(e) => setForm({ ...form, duration: Number(e.target.value) })} />
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Plataforma</label>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Plataforma</label>
                   <select className={inputCls} value={form.platform} onChange={(e) => setForm({ ...form, platform: e.target.value as PlatformId })}>
                     {PLATFORMS.map((p) => (
                       <option key={p.id} value={p.id}>{p.name}</option>
@@ -543,7 +543,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Tipo</label>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Tipo</label>
                   <select className={inputCls} value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as ContentType })}>
                     {TYPE_OPTIONS.map((t) => (
                       <option key={t} value={t}>{t}</option>
@@ -551,7 +551,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                   </select>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Estado</label>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Estado</label>
                   <select className={inputCls} value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value as ContentStatus })}>
                     {STATUS_OPTIONS.map((s) => (
                       <option key={s} value={s}>{s}</option>
@@ -561,35 +561,35 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">KPI objetivo</label>
+                <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">KPI objetivo</label>
                 <Input className={inputCls} placeholder="Ej: 1000 likes, 500 clics..." value={form.kpi} onChange={(e) => setForm({ ...form, kpi: e.target.value })} />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Copy del contenido</label>
+                <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Copy del contenido</label>
                 <textarea className={`${inputCls} min-h-[100px] resize-y`} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Link de piezas</label>
+                <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Link de piezas</label>
                 <Input type="url" className={inputCls} placeholder="https://..." value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} />
               </div>
 
               <div>
-                <label className="text-[10px] font-bold uppercase text-slate-500 mb-1 block">Comentarios internos</label>
+                <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Comentarios internos</label>
                 <textarea className={`${inputCls} min-h-[70px] resize-y`} value={form.comments} onChange={(e) => setForm({ ...form, comments: e.target.value })} />
               </div>
 
-              <div className="flex justify-end gap-2 pt-2 border-t border-white/10">
-                <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="text-slate-400">
+              <div className="flex justify-end gap-2 pt-2 border-t border-[#2a2a4a]">
+                <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)} className="text-[#aab3cf]">
                   Cancelar
                 </Button>
                 {form.id && (
-                  <Button type="button" variant="outline" onClick={(e: any) => saveItem(e, true)} className="border-blue-500/30 text-blue-400">
+                  <Button type="button" variant="outline" onClick={(e: any) => saveItem(e, true)} className="border-[#0094ff]/30 text-[#75ddff]">
                     Guardar como nuevo
                   </Button>
                 )}
-                <Button type="submit" disabled={saving} className="bg-blue-600 hover:bg-blue-700">
+                <Button type="submit" disabled={saving} className="bg-[#0094ff] hover:bg-[#0080e6]">
                   <FontAwesomeIcon icon={faSave} className="mr-2" /> {form.id ? "Guardar Cambios" : "Guardar"}
                 </Button>
                 {form.id && (
@@ -606,49 +606,49 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* View Modal (lectores) */}
       {viewItem && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4" onClick={() => setViewItem(null)}>
-          <div className="bg-[#0b101d] border border-white/10 rounded-2xl w-full max-w-xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between border-b border-white/10 p-5">
+          <div className="panel border border-[#2a2a4a] rounded-2xl w-full max-w-xl max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-[#2a2a4a] p-5">
               <h2 className="text-lg font-bold">Contenido</h2>
-              <button onClick={() => setViewItem(null)} className="text-slate-500 hover:text-white">
+              <button onClick={() => setViewItem(null)} className="text-[#8892b0] hover:text-white">
                 <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
             <div className="p-5 space-y-4">
               <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white/5 rounded-lg p-3 border border-white/5">
-                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Plataforma</span>
+                <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
+                  <span className="text-[10px] font-bold uppercase text-[#8892b0] block">Plataforma</span>
                   <span className="text-sm capitalize">{platformById[viewItem.platform]?.name}</span>
                 </div>
-                <div className="bg-white/5 rounded-lg p-3 border border-white/5">
-                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Fecha</span>
+                <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
+                  <span className="text-[10px] font-bold uppercase text-[#8892b0] block">Fecha</span>
                   <span className="text-sm">{viewItem.date || "—"}</span>
                 </div>
-                <div className="bg-white/5 rounded-lg p-3 border border-white/5">
-                  <span className="text-[10px] font-bold uppercase text-slate-500 block">Hora</span>
+                <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
+                  <span className="text-[10px] font-bold uppercase text-[#8892b0] block">Hora</span>
                   <span className="text-sm">{viewItem.time}</span>
                 </div>
               </div>
-              <div className="bg-white/5 rounded-lg p-3 border border-white/5">
-                <span className="text-[10px] font-bold uppercase text-slate-500 block mb-1">Copy</span>
+              <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
+                <span className="text-[10px] font-bold uppercase text-[#8892b0] block mb-1">Copy</span>
                 <p className="text-sm whitespace-pre-wrap">{viewItem.description}</p>
               </div>
               {viewItem.url && (
-                <a href={viewItem.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-400 underline break-words block">
+                <a href={viewItem.url} target="_blank" rel="noopener noreferrer" className="text-sm text-[#75ddff] underline break-words block">
                   {viewItem.url}
                 </a>
               )}
 
-              <div className="pt-3 border-t border-white/10 space-y-3">
-                <h3 className="text-xs font-bold uppercase text-slate-400">Comentarios</h3>
+              <div className="pt-3 border-t border-[#2a2a4a] space-y-3">
+                <h3 className="text-xs font-bold uppercase text-[#aab3cf]">Comentarios</h3>
                 <div className="space-y-2 max-h-40 overflow-y-auto">
                   {(viewItem.viewer_comments || []).length === 0 ? (
-                    <p className="text-xs text-slate-500 italic">Sin comentarios aún.</p>
+                    <p className="text-xs text-[#8892b0] italic">Sin comentarios aún.</p>
                   ) : (
                     viewItem.viewer_comments.map((c) => (
-                      <div key={c.id} className="bg-white/5 rounded-lg p-2.5 border border-white/5">
+                      <div key={c.id} className="bg-white/5 rounded-lg p-2.5 border border-[#1e2240]">
                         <div className="flex justify-between text-[11px]">
-                          <span className="font-bold text-blue-400">{c.name}</span>
-                          <span className="text-slate-500">{c.timestamp}</span>
+                          <span className="font-bold text-[#75ddff]">{c.name}</span>
+                          <span className="text-[#8892b0]">{c.timestamp}</span>
                         </div>
                         <p className="text-xs mt-1">{c.comment}</p>
                       </div>
@@ -656,9 +656,9 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <Input placeholder="Tu nombre" value={viewerName} onChange={(e) => setViewerName(e.target.value)} className="bg-[#05080f] border-white/10 h-8 text-xs w-32" />
-                  <Input placeholder="Comentario..." value={viewerComment} onChange={(e) => setViewerComment(e.target.value)} className="bg-[#05080f] border-white/10 h-8 text-xs flex-1" />
-                  <Button size="sm" onClick={addViewerComment} className="bg-blue-600 hover:bg-blue-700 h-8">
+                  <Input placeholder="Tu nombre" value={viewerName} onChange={(e) => setViewerName(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs w-32" />
+                  <Input placeholder="Comentario..." value={viewerComment} onChange={(e) => setViewerComment(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs flex-1" />
+                  <Button size="sm" onClick={addViewerComment} className="bg-[#0094ff] hover:bg-[#0080e6] h-8">
                     Enviar
                   </Button>
                 </div>
@@ -671,15 +671,15 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {/* Delete confirm */}
       {itemToDelete && (
         <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 p-4">
-          <div className="bg-[#0b101d] border border-rose-500/30 rounded-2xl w-full max-w-sm">
+          <div className="panel border border-rose-500/30 rounded-2xl w-full max-w-sm">
             <div className="p-5 border-b border-rose-500/20">
               <h2 className="font-bold text-rose-300">Confirmar eliminación</h2>
             </div>
-            <div className="p-5 text-sm text-slate-300">
+            <div className="p-5 text-sm text-[#c0c8de]">
               ¿Eliminar esta publicación? Esta acción no se puede deshacer.
             </div>
-            <div className="flex justify-end gap-2 p-5 border-t border-white/10">
-              <Button variant="ghost" onClick={() => setItemToDelete(null)} className="text-slate-400">
+            <div className="flex justify-end gap-2 p-5 border-t border-[#2a2a4a]">
+              <Button variant="ghost" onClick={() => setItemToDelete(null)} className="text-[#aab3cf]">
                 Cancelar
               </Button>
               <Button variant="destructive" onClick={confirmDelete}>

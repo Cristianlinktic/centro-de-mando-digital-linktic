@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Globe = dynamic(() => import("@/components/globe").then((m) => m.GlobeComponent), {
   ssr: false,
   loading: () => (
-    <div className="h-full rounded-lg flex items-center justify-center" style={{ background: "radial-gradient(ellipse at 40% 40%, #091428 0%, #030810 100%)" }}>
+    <div className="h-full rounded-lg flex items-center justify-center" style={{ background: "radial-gradient(ellipse at 40% 40%, #070a16 0%, #070a16 100%)" }}>
       <p className="text-muted-foreground text-sm">Cargando mapa...</p>
     </div>
   ),
@@ -42,13 +42,13 @@ const DepartmentDetail = ({ dep }: { dep: any }) => {
   if (!dep) return null;
   const pct = dep.sentimientoPct || { positivo: 0, neutral: 0, negativo: 0 };
   return (
-    <div className="p-5 space-y-4 bg-[#0b101d] border border-white/10 rounded-2xl text-white">
+    <div className="p-5 space-y-4 panel border border-[#2a2a4a] rounded-2xl text-white">
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-2xl font-bold text-slate-400">{dep.id}</span>
+          <span className="font-mono text-2xl font-bold text-[#aab3cf]">{dep.id}</span>
           <div>
             <h3 className="text-xl font-bold leading-tight">{dep.label ?? dep.pais}</h3>
-            <p className="text-xs text-slate-400 flex items-center gap-1">
+            <p className="text-xs text-[#aab3cf] flex items-center gap-1">
               <FontAwesomeIcon icon={faLocationDot} className="w-3 h-3" /> {dep.capital} · {dep.updateTime}
             </p>
           </div>
@@ -58,27 +58,27 @@ const DepartmentDetail = ({ dep }: { dep: any }) => {
         </span>
       </div>
 
-      <div className="bg-[#161d2b] p-4 rounded-xl">
-        <p className="text-xs text-slate-400 mb-1">Tema principal</p>
-        <p className="text-sm font-semibold text-blue-400">{dep.tema}</p>
+      <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
+        <p className="text-xs text-[#aab3cf] mb-1">Tema principal</p>
+        <p className="text-sm font-semibold text-[#75ddff]">{dep.tema}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-[#161d2b] p-4 rounded-xl">
+        <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
           <p className="text-2xl font-bold text-yellow-500">{Number(dep.volumen).toLocaleString()}</p>
-          <p className="text-xs text-slate-400">menciones</p>
+          <p className="text-xs text-[#aab3cf]">menciones</p>
           <p className={`text-xs flex items-center mt-1 ${dep.pctCambio >= 0 ? "text-green-500" : "text-red-500"}`}>
             <FontAwesomeIcon icon={faArrowTrendUp} className="w-3 h-3 mr-1" /> {dep.pctCambio}%
           </p>
         </div>
-        <div className="bg-[#161d2b] p-4 rounded-xl">
-          <p className="text-lg font-bold capitalize" style={{ color: sentimentColors[dep.sentimiento] || "#94a3b8" }}>{dep.sentimiento}</p>
-          <p className="text-xs text-slate-400">Sentimiento</p>
+        <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
+          <p className="text-lg font-bold capitalize" style={{ color: sentimentColors[dep.sentimiento] || "#c0c8de" }}>{dep.sentimiento}</p>
+          <p className="text-xs text-[#aab3cf]">Sentimiento</p>
         </div>
       </div>
 
-      <div className="space-y-2 bg-[#0e1526] p-4 rounded-xl border border-white/5">
-        <p className="text-xs text-slate-400">Distribución de sentimiento</p>
+      <div className="space-y-2 bg-[#10142a] p-4 rounded-xl border border-[#1e2240]">
+        <p className="text-xs text-[#aab3cf]">Distribución de sentimiento</p>
         <SentimentDonut
           positivo={pct.positivo || 0}
           neutral={pct.neutral || 0}
@@ -89,17 +89,17 @@ const DepartmentDetail = ({ dep }: { dep: any }) => {
 
       {dep.topHashtags?.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs text-slate-400">Top hashtags</p>
+          <p className="text-xs text-[#aab3cf]">Top hashtags</p>
           <div className="flex flex-wrap gap-1">
             {dep.topHashtags.map((h: string) => (
-              <span key={h} className="px-2 py-1 rounded bg-[#161d2b] text-[10px] text-yellow-500">{h}</span>
+              <span key={h} className="px-2 py-1 rounded panel-soft text-[10px] text-yellow-500 border border-[#1e2240]">{h}</span>
             ))}
           </div>
         </div>
       )}
 
-      <div className="p-4 rounded-xl bg-[#161d2b] border border-blue-500/20 text-xs text-slate-300 leading-relaxed">
-        <p className="text-slate-400 mb-1">Resumen</p>
+      <div className="p-4 rounded-xl panel-soft border border-[#0094ff]/20 text-xs text-[#c0c8de] leading-relaxed">
+        <p className="text-[#aab3cf] mb-1">Resumen</p>
         {dep.resumen}
       </div>
     </div>
@@ -196,8 +196,8 @@ export default function MapaColombiaPage() {
     <div className="flex flex-col p-6 gap-6 page-bg text-white">
       <div className="space-y-4">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight gradient-text text-glow-blue">Conversación Nacional — Centro de Mando Digital LinkTIC</h1>
-          <p className="text-slate-400 mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+          <h1 className="font-heading text-4xl font-bold tracking-tight gradient-text text-glow-blue">Conversación Nacional — Centro de Mando Digital LinkTIC</h1>
+          <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
         </div>
 
         {sortedDeps.length > 0 && (
@@ -219,14 +219,14 @@ export default function MapaColombiaPage() {
           <span className="text-xs px-3 py-1.5 rounded-md bg-primary/20 border border-primary flex items-center gap-2">
             <FontAwesomeIcon icon={faInstagram} className="w-4 h-4" style={{ color: "#E1306C" }} /> Instagram
           </span>
-          <Button variant="outline" size="sm" className="bg-[#0b101d] border-white/10 text-white" onClick={fetchData}>
+          <Button variant="outline" size="sm" className="panel border-[#2a2a4a] text-white" onClick={fetchData}>
             <FontAwesomeIcon icon={faRotate} className="h-4 w-4 mr-2" /> Actualizar
           </Button>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[600px]">
-        <Card className="lg:col-span-2 overflow-hidden bg-[#05080f] border border-white/5 shadow-none h-[380px] sm:h-[460px] lg:h-full neon-frame rounded-xl">
+        <Card className="lg:col-span-2 overflow-hidden well border border-[#1e2240] shadow-none h-[380px] sm:h-[460px] lg:h-full neon-frame rounded-xl">
           <Suspense fallback={<div className="h-full flex items-center justify-center">Cargando...</div>}>
             <Globe
               className="h-full"
@@ -256,24 +256,24 @@ export default function MapaColombiaPage() {
             {selectedDep ? (
               <DepartmentDetail dep={selectedDep} />
             ) : (
-              <Card className="p-6 h-40 flex flex-col items-center justify-center text-center bg-[#0b101d]/50 border border-white/5 text-white">
+              <Card className="p-6 h-40 flex flex-col items-center justify-center text-center panel border border-[#1e2240] text-white">
                 <FontAwesomeIcon icon={faMapLocationDot} className="w-8 h-8 text-pink-500 mb-2" />
                 <h3 className="font-bold">Selecciona un departamento</h3>
-                <p className="text-xs text-slate-400 mt-1">Haz clic en el mapa o en el ranking para ver el detalle de Instagram.</p>
+                <p className="text-xs text-[#aab3cf] mt-1">Haz clic en el mapa o en el ranking para ver el detalle de Instagram.</p>
               </Card>
             )}
           </div>
 
-          <Card className="bg-[#0b101d] border border-white/10 p-4 text-white flex-1 min-h-0 flex flex-col">
+          <Card className="panel border border-[#2a2a4a] p-4 text-white flex-1 min-h-0 flex flex-col">
             <div className="flex items-center justify-between mb-3 shrink-0">
               <h3 className="font-bold text-sm flex items-center gap-2">
                 <FontAwesomeIcon icon={faInstagram} className="w-4 h-4" style={{ color: "#E1306C" }} /> Ranking por menciones
               </h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 text-slate-400">TOP 10</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 text-[#aab3cf]">TOP 10</span>
             </div>
             <div className="space-y-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
               {sortedDeps.slice(0, 10).map((d, i) => {
-                const rankColor = i === 0 ? "#f3b116" : i === 1 ? "#cbd5e1" : i === 2 ? "#d08b5b" : "#64748b";
+                const rankColor = i === 0 ? "#f3b116" : i === 1 ? "#cbd5e1" : i === 2 ? "#d08b5b" : "#aab3cf";
                 return (
                   <button
                     key={d.id}
@@ -285,7 +285,7 @@ export default function MapaColombiaPage() {
                         <span className="font-mono font-bold w-5 text-center" style={{ color: rankColor }}>{i + 1}</span>
                         <span className="truncate">{d.label ?? d.pais}</span>
                       </span>
-                      <span className="font-mono text-slate-300 shrink-0">{Number(d.volumen).toLocaleString()}</span>
+                      <span className="font-mono text-[#c0c8de] shrink-0">{Number(d.volumen).toLocaleString()}</span>
                     </div>
                     <div className="mt-1 h-1 rounded-full bg-white/5 overflow-hidden">
                       <div className="h-full rounded-full" style={{ width: `${((d.volumen || 0) / maxVolume) * 100}%`, background: "#E1306C" }} />
@@ -304,7 +304,7 @@ export default function MapaColombiaPage() {
           <h2 className="text-lg font-bold flex items-center gap-2">
             <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4 text-pink-500" /> Todos los departamentos
           </h2>
-          <span className="text-xs text-slate-400">{sortedDeps.length} departamentos · orden por menciones</span>
+          <span className="text-xs text-[#aab3cf]">{sortedDeps.length} departamentos · orden por menciones</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
@@ -315,19 +315,19 @@ export default function MapaColombiaPage() {
               <button
                 key={d.id}
                 onClick={() => setSelected(d.id)}
-                className={`text-left p-3 rounded-xl border transition-all ${isSel ? "bg-primary/15 border-primary/50 ring-1 ring-primary/40" : "bg-[#0b101d] border-white/10 hover:border-pink-500/40 hover:bg-white/[0.03]"}`}
+                className={`text-left p-3 rounded-xl border transition-all ${isSel ? "bg-primary/15 border-primary/50 ring-1 ring-primary/40" : "panel border-[#2a2a4a] hover:border-pink-500/40 hover:bg-white/[0.03]"}`}
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-mono text-[10px] text-slate-500">#{i + 1} · {d.id}</span>
+                  <span className="font-mono text-[10px] text-[#8892b0]">#{i + 1} · {d.id}</span>
                   <span
                     className="w-2 h-2 rounded-full shrink-0"
-                    style={{ background: sentimentColors[d.sentimiento] || "#64748b" }}
+                    style={{ background: sentimentColors[d.sentimiento] || "#aab3cf" }}
                     title={d.sentimiento}
                   />
                 </div>
 
                 <h3 className="text-sm font-semibold text-white leading-tight truncate" title={d.label ?? d.pais}>{d.label ?? d.pais}</h3>
-                <p className="text-[10px] text-slate-500 truncate mb-2">{d.capital}</p>
+                <p className="text-[10px] text-[#8892b0] truncate mb-2">{d.capital}</p>
 
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-lg font-bold" style={{ color: "#E1306C" }}>{Number(d.volumen || 0).toLocaleString()}</span>
@@ -336,7 +336,7 @@ export default function MapaColombiaPage() {
                     {Math.abs(d.pctCambio || 0)}%
                   </span>
                 </div>
-                <p className="text-[9px] uppercase tracking-wider text-slate-500">menciones</p>
+                <p className="text-[9px] uppercase tracking-wider text-[#8892b0]">menciones</p>
 
                 <div className="mt-2 h-1 rounded-full bg-white/5 overflow-hidden">
                   <div className="h-full rounded-full" style={{ width: `${((d.volumen || 0) / maxVolume) * 100}%`, background: "#E1306C" }} />

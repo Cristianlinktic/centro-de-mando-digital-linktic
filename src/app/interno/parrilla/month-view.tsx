@@ -25,10 +25,10 @@ export function MonthView({
   const itemsByDay = (day: Date) => items.filter((i) => isSameDay(parseISO(dateOf(i)), day));
 
   return (
-    <div className="bg-[#0b101d] border border-white/5 rounded-2xl neon-frame overflow-hidden">
-      <div className="grid grid-cols-7 border-b border-white/10">
+    <div className="panel border border-[#1e2240] rounded-2xl neon-frame overflow-hidden">
+      <div className="grid grid-cols-7 border-b border-[#2a2a4a]">
         {WEEKDAY_LABELS.map((w) => (
-          <div key={w} className="p-2 text-center text-[10px] font-bold uppercase tracking-wide text-slate-500">
+          <div key={w} className="p-2 text-center text-[10px] font-bold uppercase tracking-wide text-[#8892b0]">
             {w}
           </div>
         ))}
@@ -45,13 +45,13 @@ export function MonthView({
             <button
               key={idx}
               onClick={() => onSelectDay(day)}
-              className={`flex flex-col items-stretch border-b border-r border-white/5 p-1.5 text-left transition-colors hover:bg-white/5 ${
+              className={`flex flex-col items-stretch border-b border-r border-[#1e2240] p-1.5 text-left transition-colors hover:bg-white/5 ${
                 inMonth ? "" : "opacity-40"
               }`}
             >
               <span
                 className={`mb-1 inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-bold ${
-                  isToday ? "bg-blue-500 text-white" : "text-slate-400"
+                  isToday ? "bg-[#0094ff] text-white" : "text-[#aab3cf]"
                 }`}
               >
                 {day.getDate()}
@@ -59,7 +59,7 @@ export function MonthView({
               <div className="space-y-1">
                 {visible.map((item) => {
                   const plat = platformById[item.platform];
-                  const statusColor = STATUS_DOT[item.status] || "#64748b";
+                  const statusColor = STATUS_DOT[item.status] || "#aab3cf";
                   return (
                     <div
                       key={item.id}
@@ -68,7 +68,7 @@ export function MonthView({
                         onItemClick(item);
                       }}
                       title={item.status}
-                      className="flex items-center gap-1 rounded px-1 py-0.5 text-[10px] text-slate-200 hover:brightness-125"
+                      className="flex items-center gap-1 rounded px-1 py-0.5 text-[10px] text-[#e4e9f5] hover:brightness-125"
                       style={{ backgroundColor: `${plat.color}22`, borderLeft: `2px solid ${plat.color}` }}
                     >
                       <FontAwesomeIcon icon={plat.icon} className="h-2.5 w-2.5 shrink-0" style={{ color: plat.color }} />
@@ -81,7 +81,7 @@ export function MonthView({
                   );
                 })}
                 {overflow > 0 && (
-                  <span className="block px-1 text-[10px] font-bold text-slate-500">+{overflow} más</span>
+                  <span className="block px-1 text-[10px] font-bold text-[#8892b0]">+{overflow} más</span>
                 )}
               </div>
             </button>

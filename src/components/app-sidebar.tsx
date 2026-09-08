@@ -39,11 +39,11 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
 
 // Navegación de la pestaña "Interno" — Centro de Mando Digital LinkTIC
 const navItems = [
-  { path: "/interno/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
+  { path: "/interno/mapa", label: "Mapa Global", icon: "Globe2", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
+  { path: "/interno/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
   { path: "/interno/medios", label: "Conversación en Medios", icon: "Newspaper" },
-  { path: "/interno/social", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
-  { path: "/interno/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#E1306C" },
-  { path: "/interno/instagram", label: "Instagram", icon: "Instagram" },
+  { path: "/interno/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#e1306c" },
+  { path: "/interno/instagram", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
   { path: "/interno/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays" },
   { path: "/interno/estrategia-digital", label: "Estrategia Publicitaria", icon: "Target" },
 ];
@@ -64,8 +64,8 @@ export function AppSidebar() {
   const visibleItems = navItems.filter((item) => canSee(item.path));
 
   return (
-    <Sidebar collapsible="icon" className="glass border-r border-border/60">
-      <SidebarHeader className="border-b border-border/40 px-4 py-4">
+    <Sidebar collapsible="icon" className="glass border-r border-[#1e2240] [&>[data-slot=sidebar-inner]]:bg-transparent">
+      <SidebarHeader className="border-b border-[#1e2240] px-4 py-4">
         <div className="flex items-center gap-2">
           {/* Cabecera estática: Centro de Mando Digital LinkTIC */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -129,7 +129,7 @@ export function AppSidebar() {
                   className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${isActive && item.icon === "Instagram"
                       ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)]"
                       : isActive
-                        ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)]"
+                        ? "active bg-[#0094ff26] text-[#0094ff] border-l-2 border-[#0094ff] pl-[calc(0.75rem-2px)]"
                         : "text-muted-foreground hover:bg-accent hover:text-foreground"
                     }`}
                 >
@@ -139,7 +139,7 @@ export function AppSidebar() {
                       className={`h-4 w-4 shrink-0 ${isActive ? "text-[#E1306C]" : ""}`}
                     />
                   ) : Icon ? (
-                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[hsl(213_85%_48%)]" : ""}`} />
+                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#0094ff]" : ""}`} />
                   ) : null}
                   <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">
                     {item.label}
@@ -175,11 +175,11 @@ export function AppSidebar() {
                 href="/admin/usuarios"
                 className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                   pathname.startsWith("/admin/usuarios")
-                    ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)]"
+                    ? "active bg-[#0094ff26] text-[#0094ff] border-l-2 border-[#0094ff] pl-[calc(0.75rem-2px)]"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
-                <Users className={`h-4 w-4 shrink-0 ${pathname.startsWith("/admin/usuarios") ? "text-[hsl(213_85%_48%)]" : ""}`} />
+                <Users className={`h-4 w-4 shrink-0 ${pathname.startsWith("/admin/usuarios") ? "text-[#0094ff]" : ""}`} />
                 <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">Usuarios</span>
               </Link>
             </nav>
@@ -187,7 +187,7 @@ export function AppSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border/40 px-4 py-3 group-data-[collapsible=icon]:hidden">
+      <SidebarFooter className="border-t border-[#1e2240] px-4 py-3 group-data-[collapsible=icon]:hidden">
         <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
           <Copyright className="h-3 w-3" />
           <span>By LinkTIC © 2026</span>

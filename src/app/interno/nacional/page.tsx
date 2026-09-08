@@ -21,7 +21,7 @@ import { ExternalLink } from "lucide-react";
 const Globe = dynamic(() => import("@/components/globe").then((m) => m.GlobeComponent), {
   ssr: false,
   loading: () => (
-    <div className="h-full rounded-lg flex items-center justify-center" style={{ background: "radial-gradient(ellipse at 40% 40%, #091428 0%, #030810 100%)" }}>
+    <div className="h-full rounded-lg flex items-center justify-center" style={{ background: "radial-gradient(ellipse at 40% 40%, #070a16 0%, #070a16 100%)" }}>
       <p className="text-muted-foreground text-sm">Cargando mapa...</p>
     </div>
   ),
@@ -183,20 +183,20 @@ const DepartmentDetail = ({ dep, selectedTone }: { dep: DeptData; selectedTone: 
   );
 
   return (
-    <div className="p-5 space-y-4 bg-[#0b101d] border border-white/10 rounded-2xl text-white">
+    <div className="p-5 space-y-4 panel border border-[#2a2a4a] rounded-2xl text-white">
       {/* Header */}
       <div>
         <h3 className="text-xl font-bold leading-tight">{dep.label ?? dep.pais}</h3>
-        <p className="text-xs text-slate-400 mt-0.5">{dep.capital}</p>
+        <p className="text-xs text-[#aab3cf] mt-0.5">{dep.capital}</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-[#161d2b] p-3 rounded-xl">
+        <div className="panel-soft p-3 rounded-xl border border-[#1e2240]">
           <p className="text-2xl font-bold text-yellow-500">{dep.volumen.toLocaleString()}</p>
-          <p className="text-xs text-slate-400">artículos</p>
+          <p className="text-xs text-[#aab3cf]">artículos</p>
         </div>
-        <div className="bg-[#161d2b] p-3 rounded-xl">
+        <div className="panel-soft p-3 rounded-xl border border-[#1e2240]">
           <SentimentDonut
             positivo={positivo || 0}
             neutral={neutral || 0}
@@ -208,22 +208,22 @@ const DepartmentDetail = ({ dep, selectedTone }: { dep: DeptData; selectedTone: 
 
       {/* Article list */}
       {articles.length === 0 ? (
-        <p className="text-xs text-slate-500 italic">Sin artículos para este departamento.</p>
+        <p className="text-xs text-[#8892b0] italic">Sin artículos para este departamento.</p>
       ) : (
         <div className="space-y-2">
-          <p className="text-xs text-slate-400">{articles.length} {articles.length === 1 ? "artículo" : "artículos"}</p>
+          <p className="text-xs text-[#aab3cf]">{articles.length} {articles.length === 1 ? "artículo" : "artículos"}</p>
           <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
             {articles.map((a) => (
-              <div key={a.id} className="p-3 rounded-xl bg-[#0e1526] border border-white/5 space-y-1.5">
+              <div key={a.id} className="p-3 rounded-xl bg-[#10142a] border border-[#1e2240] space-y-1.5">
                 {/* Tone + media row */}
                 <div className="flex items-center justify-between gap-2">
                   {a.tone && (
-                    <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border shrink-0 ${toneBadge[a.tone] ?? "bg-slate-500/10 text-slate-400 border-slate-500/20"}`}>
+                    <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-lg border shrink-0 ${toneBadge[a.tone] ?? "bg-[#8892b0]/10 text-[#aab3cf] border-[#8892b0]/20"}`}>
                       {a.tone}
                     </span>
                   )}
                   {a.media && (
-                    <span className="text-[9px] font-semibold text-slate-500 uppercase tracking-wider truncate">
+                    <span className="text-[9px] font-semibold text-[#8892b0] uppercase tracking-wider truncate">
                       {a.media}
                     </span>
                   )}
@@ -231,13 +231,13 @@ const DepartmentDetail = ({ dep, selectedTone }: { dep: DeptData; selectedTone: 
 
                 {/* Title */}
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-xs font-bold text-slate-100 leading-snug">{a.title}</p>
+                  <p className="text-xs font-bold text-[#ffffff] leading-snug">{a.title}</p>
                   {a.url && (
                     <a
                       href={a.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="shrink-0 text-indigo-400 hover:text-indigo-300 transition-colors mt-0.5"
+                      className="shrink-0 text-[#6d5cf5] hover:text-[#6d5cf5] transition-colors mt-0.5"
                     >
                       <ExternalLink size={11} />
                     </a>
@@ -246,7 +246,7 @@ const DepartmentDetail = ({ dep, selectedTone }: { dep: DeptData; selectedTone: 
 
                 {/* Summary */}
                 {a.summary && (
-                  <p className="text-[10px] text-slate-400 leading-relaxed line-clamp-2">{a.summary}</p>
+                  <p className="text-[10px] text-[#aab3cf] leading-relaxed line-clamp-2">{a.summary}</p>
                 )}
               </div>
             ))}
@@ -394,17 +394,17 @@ export default function NacionalPage() {
     <div className="flex flex-col p-6 gap-6 page-bg text-white">
       <div className="space-y-4">
         <div className="flex gap-2 flex-wrap">
-          <span className="bg-[#1e293b] text-blue-400 text-xs px-2 py-1 rounded-full border border-blue-500/20">🇨🇴 MAPA NACIONAL</span>
+          <span className="bg-[#1e2240] text-[#75ddff] text-xs px-2 py-1 rounded-full border border-[#0094ff]/20">🇨🇴 MAPA NACIONAL</span>
           <span className="inline-flex items-center gap-2 bg-[#0f291e] text-green-400 text-xs px-2.5 py-1 rounded-full border border-green-500/20">
             <FontAwesomeIcon icon={faNewspaper} className="w-3 h-3" /> MONITOREO DE PRENSA
           </span>
         </div>
 
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">
+          <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">
             Conversación Nacional — Centro de Mando Digital LinkTIC
           </h1>
-          <p className="text-slate-400 mt-2">
+          <p className="text-[#aab3cf] mt-2">
             Hola {firstName}, bienvenido. Cobertura de prensa por departamento. Haz clic en un departamento para ver los artículos.
           </p>
         </div>
@@ -422,7 +422,7 @@ export default function NacionalPage() {
                 pct: tickerTotal > 0 ? Math.round((volOf(d) / tickerTotal) * 100 * 10) / 10 : 0,
                 color: selectedTone
                   ? toneColors[selectedTone]
-                  : (sentimentColors[d.sentimiento] || "#3b82f6"),
+                  : (sentimentColors[d.sentimiento] || "#0094ff"),
               }))}
             />
           );
@@ -433,7 +433,7 @@ export default function NacionalPage() {
         <div className="flex flex-wrap gap-2 items-center mt-2">
           <Button
             variant="outline" size="sm"
-            className={`bg-[#0b101d] border-white/10 ${!selectedTone ? "bg-primary/20 border-primary" : "text-white"}`}
+            className={`panel border-[#2a2a4a] ${!selectedTone ? "bg-primary/20 border-primary" : "text-white"}`}
             onClick={() => setSelectedTone(null)}
           >
             Todos
@@ -441,7 +441,7 @@ export default function NacionalPage() {
           {(["Positivo", "Negativo", "Neutro"] as const).map((tone) => (
             <Button
               key={tone} variant="outline" size="sm"
-              className={`bg-[#0b101d] border-white/10 ${selectedTone === tone ? "bg-primary/20 border-primary" : "text-white"}`}
+              className={`panel border-[#2a2a4a] ${selectedTone === tone ? "bg-primary/20 border-primary" : "text-white"}`}
               onClick={() => setSelectedTone(tone)}
             >
               <span className="w-2 h-2 rounded-full mr-2 inline-block" style={{ background: toneColors[tone] }} />
@@ -450,7 +450,7 @@ export default function NacionalPage() {
           ))}
           <Button
             variant="outline" size="sm"
-            className="bg-[#0b101d] border-white/10 text-white"
+            className="panel border-[#2a2a4a] text-white"
             onClick={() => fetchData()}
           >
             <FontAwesomeIcon icon={faRotate} className="h-4 w-4 mr-2" /> Actualizar
@@ -459,7 +459,7 @@ export default function NacionalPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[600px]">
-        <Card className="lg:col-span-2 overflow-hidden bg-[#05080f] border border-white/5 shadow-none h-[380px] sm:h-[460px] lg:h-full neon-frame rounded-xl">
+        <Card className="lg:col-span-2 overflow-hidden well border border-[#1e2240] shadow-none h-[380px] sm:h-[460px] lg:h-full neon-frame rounded-xl">
           <Suspense fallback={<div className="h-full flex items-center justify-center">Cargando...</div>}>
             <Globe
               className="h-full"
@@ -489,24 +489,24 @@ export default function NacionalPage() {
             {selectedDep ? (
               <DepartmentDetail dep={selectedDep} selectedTone={selectedTone} />
             ) : (
-              <Card className="p-6 h-40 flex flex-col items-center justify-center text-center bg-[#0b101d]/50 border border-white/5 text-white">
-                <FontAwesomeIcon icon={faMapLocationDot} className="w-8 h-8 text-blue-500 mb-2" />
+              <Card className="p-6 h-40 flex flex-col items-center justify-center text-center panel border border-[#1e2240] text-white">
+                <FontAwesomeIcon icon={faMapLocationDot} className="w-8 h-8 text-[#0094ff] mb-2" />
                 <h3 className="font-bold">Selecciona un departamento</h3>
-                <p className="text-xs text-slate-400 mt-1">Haz clic en el mapa o en el ranking para ver los artículos de prensa.</p>
+                <p className="text-xs text-[#aab3cf] mt-1">Haz clic en el mapa o en el ranking para ver los artículos de prensa.</p>
               </Card>
             )}
           </div>
 
-          <Card className="bg-[#0b101d] border border-white/10 p-4 text-white flex-1 min-h-0 flex flex-col">
+          <Card className="panel border border-[#2a2a4a] p-4 text-white flex-1 min-h-0 flex flex-col">
             <div className="flex items-center justify-between mb-3 shrink-0">
               <h3 className="font-bold text-sm flex items-center gap-2">
-                <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4 text-blue-400" /> Ranking por artículos
+                <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4 text-[#75ddff]" /> Ranking por artículos
               </h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 text-slate-400">TOP 10</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 text-[#aab3cf]">TOP 10</span>
             </div>
             <div className="space-y-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
               {sortedDeps.slice(0, 10).map((d, i) => {
-                const rankColor = i === 0 ? "#f3b116" : i === 1 ? "#cbd5e1" : i === 2 ? "#d08b5b" : "#64748b";
+                const rankColor = i === 0 ? "#f3b116" : i === 1 ? "#cbd5e1" : i === 2 ? "#d08b5b" : "#aab3cf";
                 return (
                   <button
                     key={d.id}
@@ -518,10 +518,10 @@ export default function NacionalPage() {
                         <span className="font-mono font-bold w-5 text-center" style={{ color: rankColor }}>{i + 1}</span>
                         <span className="truncate">{d.label ?? d.pais}</span>
                       </span>
-                      <span className="font-mono text-slate-300 shrink-0">{Number(volOf(d)).toLocaleString()}</span>
+                      <span className="font-mono text-[#c0c8de] shrink-0">{Number(volOf(d)).toLocaleString()}</span>
                     </div>
                     <div className="mt-1 h-1 rounded-full bg-white/5 overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${(volOf(d) / maxVolume) * 100}%`, background: "#3b82f6" }} />
+                      <div className="h-full rounded-full" style={{ width: `${(volOf(d) / maxVolume) * 100}%`, background: "#0094ff" }} />
                     </div>
                   </button>
                 );
@@ -535,9 +535,9 @@ export default function NacionalPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold flex items-center gap-2">
-            <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4 text-blue-400" /> Todos los departamentos
+            <FontAwesomeIcon icon={faLayerGroup} className="w-4 h-4 text-[#75ddff]" /> Todos los departamentos
           </h2>
-          <span className="text-xs text-slate-400">{sortedDeps.length} departamentos · orden por artículos</span>
+          <span className="text-xs text-[#aab3cf]">{sortedDeps.length} departamentos · orden por artículos</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
@@ -548,24 +548,24 @@ export default function NacionalPage() {
               <button
                 key={d.id}
                 onClick={() => setSelected(d.id)}
-                className={`text-left p-3 rounded-xl border transition-all ${isSel ? "bg-primary/15 border-primary/50 ring-1 ring-primary/40" : "bg-[#0b101d] border-white/10 hover:border-blue-500/40 hover:bg-white/[0.03]"}`}
+                className={`text-left p-3 rounded-xl border transition-all ${isSel ? "bg-primary/15 border-primary/50 ring-1 ring-primary/40" : "panel border-[#2a2a4a] hover:border-[#0094ff]/40 hover:bg-white/[0.03]"}`}
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-mono text-[10px] text-slate-500">#{i + 1} · {d.id}</span>
+                  <span className="font-mono text-[10px] text-[#8892b0]">#{i + 1} · {d.id}</span>
                   <span
                     className="w-2 h-2 rounded-full shrink-0"
-                    style={{ background: selectedTone ? toneColors[selectedTone] : (sentimentColors[d.sentimiento] || "#64748b") }}
+                    style={{ background: selectedTone ? toneColors[selectedTone] : (sentimentColors[d.sentimiento] || "#aab3cf") }}
                     title={selectedTone ?? d.sentimiento}
                   />
                 </div>
                 <h3 className="text-sm font-semibold text-white leading-tight truncate" title={d.label ?? d.pais}>
                   {d.label ?? d.pais}
                 </h3>
-                <p className="text-[10px] text-slate-500 truncate mb-2">{d.capital}</p>
-                <span className="text-lg font-bold" style={{ color: "#3b82f6" }}>{count.toLocaleString()}</span>
-                <p className="text-[9px] uppercase tracking-wider text-slate-500">artículos</p>
+                <p className="text-[10px] text-[#8892b0] truncate mb-2">{d.capital}</p>
+                <span className="text-lg font-bold" style={{ color: "#0094ff" }}>{count.toLocaleString()}</span>
+                <p className="text-[9px] uppercase tracking-wider text-[#8892b0]">artículos</p>
                 <div className="mt-2 h-1 rounded-full bg-white/5 overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: `${maxVolume > 0 ? (count / maxVolume) * 100 : 0}%`, background: "#3b82f6" }} />
+                  <div className="h-full rounded-full" style={{ width: `${maxVolume > 0 ? (count / maxVolume) * 100 : 0}%`, background: "#0094ff" }} />
                 </div>
               </button>
             );

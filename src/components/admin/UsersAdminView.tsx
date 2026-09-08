@@ -26,7 +26,7 @@ function roleLabel(role: string): string {
 function roleBadgeClass(role: string): string {
   if (role === "superadmin") return "bg-fuchsia-500/10 text-fuchsia-300 border-fuchsia-500/20";
   if (role === "admin") return "bg-emerald-500/10 text-emerald-300 border-emerald-500/20";
-  return "bg-white/5 text-slate-400 border-white/10";
+  return "bg-white/5 text-[#aab3cf] border-[#2a2a4a]";
 }
 
 /* ------------------------------ Notificaciones ------------------------------ */
@@ -109,39 +109,41 @@ export function UsersAdminView() {
   };
 
   return (
-    <div className="space-y-8 p-6 pb-12">
+    <div className="space-y-8 p-6 pb-12 page-bg">
       {notesView}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="flex items-center gap-2 text-2xl font-black text-white">
-            <ShieldCheck className="h-6 w-6 text-[hsl(213_85%_60%)]" /> Administración de Usuarios
+          <h1 className="font-heading flex items-center gap-2 text-2xl font-bold">
+            <ShieldCheck className="h-6 w-6 text-[#0094ff]" />
+            <span className="gradient-text">Administración de Usuarios</span>
           </h1>
-          <p className="text-slate-400 font-medium text-sm">
+          <div className="accent-bar accent-bar-anim mt-2 mb-1" />
+          <p className="text-[#aab3cf] font-medium text-sm">
             Crea usuarios, asigna roles y controla a qué pantallas accede cada uno.
           </p>
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 bg-[hsl(213_85%_48%)] hover:bg-[hsl(213_85%_42%)] text-white px-5 py-2.5 rounded-xl font-bold transition-all"
+          className="flex items-center gap-2 bg-[#0094ff] hover:bg-[#00e1ff] text-white px-5 py-2.5 rounded-xl font-bold transition-all"
         >
           <Plus className="h-4 w-4" /> Nuevo usuario
         </button>
       </div>
 
-      <div className="glass rounded-2xl overflow-hidden border border-white/10">
+      <div className="glass rounded-2xl overflow-hidden border border-[#2a2a4a]">
         {loading ? (
-          <div className="flex items-center justify-center gap-3 py-16 text-slate-400">
+          <div className="flex items-center justify-center gap-3 py-16 text-[#aab3cf]">
             <Loader2 className="h-5 w-5 animate-spin" /> Cargando usuarios…
           </div>
         ) : users.length === 0 ? (
-          <div className="flex flex-col items-center gap-3 py-16 text-slate-400">
+          <div className="flex flex-col items-center gap-3 py-16 text-[#aab3cf]">
             <Users className="h-10 w-10 opacity-20" />
             <p className="font-bold text-sm">No hay usuarios</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs uppercase text-slate-400 bg-white/5 border-b border-white/10">
+              <thead className="text-xs uppercase text-[#aab3cf] bg-white/5 border-b border-[#2a2a4a]">
                 <tr>
                   <th className="px-4 py-3">Usuario</th>
                   <th className="px-4 py-3">Rol</th>
@@ -151,31 +153,31 @@ export function UsersAdminView() {
               </thead>
               <tbody>
                 {users.map((u) => (
-                  <tr key={u.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <tr key={u.id} className="border-b border-[#1e2240] hover:bg-white/5 transition-colors">
                     <td className="px-4 py-3">
                       <div className="font-bold text-white">{u.full_name || u.email.split("@")[0]}</div>
-                      <div className="text-xs text-slate-500">{u.email}</div>
+                      <div className="text-xs text-[#8892b0]">{u.email}</div>
                     </td>
                     <td className="px-4 py-3">
                       <span className={cn("px-2.5 py-1 rounded-full text-xs font-bold border", roleBadgeClass(u.role))}>
                         {roleLabel(u.role)}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-400 font-medium">
+                    <td className="px-4 py-3 text-[#aab3cf] font-medium">
                       {u.role === "superadmin" ? "Todas" : `${u.screens.length}`}
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEdit(u)}
-                          className="p-2 rounded-lg bg-white/5 text-slate-400 hover:text-[hsl(213_85%_60%)] transition-colors"
+                          className="p-2 rounded-lg bg-white/5 text-[#aab3cf] hover:text-[#75ddff] transition-colors"
                           title="Editar"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(u)}
-                          className="p-2 rounded-lg bg-white/5 text-slate-400 hover:text-rose-400 transition-colors"
+                          className="p-2 rounded-lg bg-white/5 text-[#aab3cf] hover:text-rose-400 transition-colors"
                           title="Eliminar"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -288,21 +290,21 @@ function UserFormModal({
 
   const screensDisabled = role === "superadmin";
   const inputCls =
-    "w-full rounded-xl px-3 py-2.5 text-sm text-white bg-white/5 border border-white/10 focus:border-[hsl(213_85%_48%)] focus:outline-none disabled:opacity-50";
+    "w-full rounded-xl px-3 py-2.5 text-sm text-white bg-white/5 border border-[#2a2a4a] focus:border-[#0094ff] focus:outline-none disabled:opacity-50";
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 bg-[#0b101d] border border-white/10 shadow-2xl">
+      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 panel border border-[#2a2a4a] shadow-2xl">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-black text-white">{isEdit ? "Editar usuario" : "Nuevo usuario"}</h2>
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white">
+          <button onClick={onClose} className="p-1.5 text-[#aab3cf] hover:text-white">
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Usuario / correo</label>
+            <label className="text-xs font-bold text-[#aab3cf] uppercase tracking-wider">Usuario / correo</label>
             <input
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -312,7 +314,7 @@ function UserFormModal({
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Nombre visible</label>
+            <label className="text-xs font-bold text-[#aab3cf] uppercase tracking-wider">Nombre visible</label>
             <input
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
@@ -321,7 +323,7 @@ function UserFormModal({
             />
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Rol</label>
+            <label className="text-xs font-bold text-[#aab3cf] uppercase tracking-wider">Rol</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as AppRole)}
@@ -335,7 +337,7 @@ function UserFormModal({
             </select>
           </div>
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            <label className="text-xs font-bold text-[#aab3cf] uppercase tracking-wider">
               {isEdit ? "Nueva contraseña (opcional)" : "Contraseña"}
             </label>
             <input
@@ -349,26 +351,26 @@ function UserFormModal({
         </div>
 
         <div className="mb-2 flex items-center justify-between">
-          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Pantallas con acceso</label>
+          <label className="text-xs font-bold text-[#aab3cf] uppercase tracking-wider">Pantallas con acceso</label>
           {screensDisabled && (
             <span className="text-[11px] text-fuchsia-300 font-semibold">El superadministrador accede a todo</span>
           )}
         </div>
-        <div className={cn("space-y-4 rounded-xl border border-white/10 bg-white/5 p-4", screensDisabled && "opacity-40 pointer-events-none")}>
+        <div className={cn("space-y-4 rounded-xl border border-[#2a2a4a] bg-white/5 p-4", screensDisabled && "opacity-40 pointer-events-none")}>
           {grouped.map(([group, items]) => (
             <div key={group}>
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">{group}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-[#8892b0] mb-2">{group}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {items.map((s) => (
                   <label
                     key={s.key}
-                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 bg-white/5 border border-white/10 cursor-pointer hover:border-[hsl(213_85%_48%)] transition-all"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 bg-white/5 border border-[#2a2a4a] cursor-pointer hover:border-[#0094ff] transition-all"
                   >
                     <input
                       type="checkbox"
                       checked={selected.has(s.key)}
                       onChange={() => toggle(s.key)}
-                      className="accent-[hsl(213_85%_48%)] h-4 w-4"
+                      className="accent-[#0094ff] h-4 w-4"
                     />
                     <span className="text-sm font-semibold text-white">{s.title}</span>
                   </label>
@@ -381,14 +383,14 @@ function UserFormModal({
         <div className="mt-6 flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="px-5 py-2.5 rounded-xl bg-white/5 text-slate-300 hover:text-white font-bold transition-all"
+            className="px-5 py-2.5 rounded-xl bg-white/5 text-[#c0c8de] hover:text-white font-bold transition-all"
           >
             Cancelar
           </button>
           <button
             onClick={save}
             disabled={saving}
-            className="flex items-center gap-2 bg-[hsl(213_85%_48%)] hover:bg-[hsl(213_85%_42%)] text-white px-5 py-2.5 rounded-xl font-bold transition-all disabled:opacity-50"
+            className="flex items-center gap-2 bg-[#0094ff] hover:bg-[#00e1ff] text-white px-5 py-2.5 rounded-xl font-bold transition-all disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             {isEdit ? "Guardar cambios" : "Crear usuario"}

@@ -30,7 +30,7 @@ export function ReachChart({ posts, onSelect }: { posts: Post[]; onSelect: (p: P
               height={h}
               rx={0.3}
               className={`cursor-pointer transition-opacity ${
-                isReel ? "fill-fuchsia-500" : "fill-sky-400"
+                isReel ? "fill-fuchsia-500" : "fill-[#00e1ff]"
               } ${hover === null || hover === i ? "opacity-100" : "opacity-40"}`}
               onMouseEnter={() => setHover(i)}
               onMouseLeave={() => setHover(null)}
@@ -40,22 +40,22 @@ export function ReachChart({ posts, onSelect }: { posts: Post[]; onSelect: (p: P
         })}
       </svg>
       {hover !== null && (
-        <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 rounded-lg border border-white/10 bg-neutral-900/95 px-3 py-2 text-xs shadow-xl">
+        <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 rounded-lg border border-[#2a2a4a] bg-[#0a0a1c]/95 px-3 py-2 text-xs shadow-xl">
           <div className="font-medium text-white">{formatDate(ordered[hover].date)}</div>
-          <div className="text-neutral-400">
+          <div className="text-[#aab3cf]">
             {typeLabel(ordered[hover].type)} · Alcance{" "}
             <span className="text-white">{formatNumber(ordered[hover].reach)}</span>
           </div>
         </div>
       )}
-      <div className="mt-2 flex items-center justify-between text-xs text-neutral-500">
+      <div className="mt-2 flex items-center justify-between text-xs text-[#8892b0]">
         <span>{formatDate(ordered[0].date)}</span>
         <div className="flex gap-4">
           <span className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-sm bg-fuchsia-500" /> Reel
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-sm bg-sky-400" /> Carrusel
+            <span className="h-2 w-2 rounded-sm bg-[#00e1ff]" /> Carrusel
           </span>
         </div>
         <span>{formatDate(ordered[ordered.length - 1].date)}</span>

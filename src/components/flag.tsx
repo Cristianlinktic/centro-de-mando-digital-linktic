@@ -19,7 +19,7 @@ export function Flag({
 
   if (!isIso2) {
     return showCodeFallback ? (
-      <span className="font-mono text-slate-500">{code}</span>
+      <span className="font-mono text-[#8892b0]">{code}</span>
     ) : null;
   }
 

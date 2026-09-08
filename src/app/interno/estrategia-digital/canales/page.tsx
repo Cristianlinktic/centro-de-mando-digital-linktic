@@ -25,6 +25,7 @@ import {
 import { EmptyCampaign, LoadingCampaign, round } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSave, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
 
 const CHANNEL_KEYS = ["meta", "pilas", "youtube", "google_display"] as const;
 
@@ -46,14 +47,14 @@ export default function CanalesPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <Card className="bg-[#0b101d] border border-white/5 rounded-2xl overflow-hidden">
+      <Card className="panel border border-[#1e2240] rounded-2xl overflow-hidden">
         <div className="p-6 pb-3">
-          <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">Presupuesto y proyección por canal</h3>
+          <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">Presupuesto y proyección por canal</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px] text-sm">
             <thead>
-              <tr className="border-b border-white/5 text-left text-[10px] uppercase tracking-wider text-slate-500">
+              <tr className="border-b border-[#1e2240] text-left text-[10px] uppercase tracking-wider text-[#8892b0]">
                 <th className="px-4 py-2 font-bold">Canal</th>
                 <th className="px-4 py-2 text-right font-bold">%</th>
                 <th className="px-4 py-2 text-right font-bold">Presupuesto</th>
@@ -68,22 +69,22 @@ export default function CanalesPage() {
             </thead>
             <tbody>
               {channels.map((c) => (
-                <tr key={c.channel} className="border-b border-white/5 hover:bg-white/3">
-                  <td className="px-4 py-2 font-semibold text-slate-200">{CHANNELS[c.channel].label}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatPercent(c.participationPct, 0)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums font-bold text-slate-200">{formatCOP(c.plannedBudget)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatCOP(c.dailyBudget)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatCOP(c.cpm)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatNumber(c.impressions)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatPercent(c.ctr)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatNumber(c.clicks)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatCOP(c.cpc)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatNumber(c.reach)}</td>
+                <tr key={c.channel} className="border-b border-[#1e2240] hover:bg-white/3">
+                  <td className="px-4 py-2 font-semibold text-[#e4e9f5]">{CHANNELS[c.channel].label}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatPercent(c.participationPct, 0)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums font-bold text-[#e4e9f5]">{formatCOP(c.plannedBudget)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatCOP(c.dailyBudget)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatCOP(c.cpm)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatNumber(c.impressions)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatPercent(c.ctr)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatNumber(c.clicks)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatCOP(c.cpc)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatNumber(c.reach)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t-2 border-white/10 font-bold text-slate-100">
+              <tr className="border-t-2 border-[#2a2a4a] font-bold text-[#ffffff]">
                 <td className="px-4 py-2">Total</td>
                 <td className="px-4 py-2 text-right tabular-nums">100%</td>
                 <td className="px-4 py-2 text-right tabular-nums">{formatCOP(totals.plannedBudget)}</td>
@@ -98,18 +99,18 @@ export default function CanalesPage() {
             </tfoot>
           </table>
         </div>
-        <div className="border-t border-white/5 px-6 py-3 text-[11px] text-slate-500">
+        <div className="border-t border-[#1e2240] px-6 py-3 text-[11px] text-[#8892b0]">
           * Alcance estimado = impresiones ÷ frecuencia por canal (frecuencia promedio {formatDecimal(channels.reduce((a, c) => a + c.frequency, 0) / (channels.length || 1))}x).
         </div>
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
-          <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Impresiones por canal</h3>
+        <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+          <h3 className="font-bold text-sm text-[#e4e9f5] mb-4 uppercase tracking-widest">Impresiones por canal</h3>
           <MiniBar data={impressionsData} />
         </Card>
-        <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
-          <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Clicks por canal</h3>
+        <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+          <h3 className="font-bold text-sm text-[#e4e9f5] mb-4 uppercase tracking-widest">Clicks por canal</h3>
           <MiniBar data={clicksData} />
         </Card>
       </div>
@@ -128,10 +129,10 @@ function MiniBar({ data }: { data: { name: string; value: number; color: string 
     <div className="h-56">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
-          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
-          <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
-          <Tooltip contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }} />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
+          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
+          <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
+          <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
           <Bar dataKey="value" radius={[4, 4, 0, 0]}>
             {data.map((d) => <Cell key={d.name} fill={d.color} />)}
           </Bar>
@@ -183,16 +184,16 @@ function ChannelCard({
   };
 
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-5 rounded-2xl" style={{ borderTop: `3px solid ${meta.color}` }}>
+    <Card className="panel border border-[#1e2240] p-5 rounded-2xl" style={{ borderTop: `3px solid ${meta.color}` }}>
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="font-bold text-slate-100">{meta.label}</p>
-          <p className="text-[11px] text-slate-500">{meta.subtitle}</p>
+          <p className="font-bold text-[#ffffff]">{meta.label}</p>
+          <p className="text-[11px] text-[#8892b0]">{meta.subtitle}</p>
         </div>
         {canEditChannel && (
           editing ? (
             <div className="flex gap-1">
-              <Button size="sm" variant="ghost" onClick={() => setEditing(false)} className="h-7 w-7 p-0 text-slate-400">
+              <Button size="sm" variant="ghost" onClick={() => setEditing(false)} className="h-7 w-7 p-0 text-[#aab3cf]">
                 <FontAwesomeIcon icon={faXmark} className="w-3 h-3" />
               </Button>
               <Button size="sm" onClick={save} disabled={saving} className="h-7 px-2 bg-green-600 hover:bg-green-700">
@@ -200,7 +201,7 @@ function ChannelCard({
               </Button>
             </div>
           ) : (
-            <Button size="sm" variant="ghost" onClick={() => setEditing(true)} className="h-7 w-7 p-0 text-blue-400">
+            <Button size="sm" variant="ghost" onClick={() => setEditing(true)} className="h-7 w-7 p-0 text-[#75ddff]">
               <FontAwesomeIcon icon={faPen} className="w-3 h-3" />
             </Button>
           )
@@ -216,16 +217,16 @@ function ChannelCard({
             <LabeledInput label="Frecuencia" type="number" value={form.frequency} onChange={(v) => setForm({ ...form, frequency: v })} />
           </div>
           <div className="space-y-1">
-            <label className="text-[10px] uppercase font-bold text-slate-500">Objetivo</label>
-            <Input value={form.objective} onChange={(e) => setForm({ ...form, objective: e.target.value })} className="bg-white/5 border-white/10 h-8 text-xs" />
+            <label className="text-[10px] uppercase font-bold text-[#8892b0]">Objetivo</label>
+            <Input value={form.objective} onChange={(e) => setForm({ ...form, objective: e.target.value })} className="bg-white/5 border-[#2a2a4a] h-8 text-xs" />
           </div>
           <div className="space-y-1">
-            <label className="text-[10px] uppercase font-bold text-slate-500">Público objetivo</label>
-            <Input value={form.target_audience} onChange={(e) => setForm({ ...form, target_audience: e.target.value })} className="bg-white/5 border-white/10 h-8 text-xs" />
+            <label className="text-[10px] uppercase font-bold text-[#8892b0]">Público objetivo</label>
+            <Input value={form.target_audience} onChange={(e) => setForm({ ...form, target_audience: e.target.value })} className="bg-white/5 border-[#2a2a4a] h-8 text-xs" />
           </div>
           <div className="space-y-1">
-            <label className="text-[10px] uppercase font-bold text-slate-500">KPI principal</label>
-            <Input value={form.main_kpi} onChange={(e) => setForm({ ...form, main_kpi: e.target.value })} className="bg-white/5 border-white/10 h-8 text-xs" />
+            <label className="text-[10px] uppercase font-bold text-[#8892b0]">KPI principal</label>
+            <Input value={form.main_kpi} onChange={(e) => setForm({ ...form, main_kpi: e.target.value })} className="bg-white/5 border-[#2a2a4a] h-8 text-xs" />
           </div>
         </div>
       ) : (
@@ -243,8 +244,8 @@ function ChannelCard({
 function LabeledInput({ label, type, value, onChange }: { label: string; type: string; value: number; onChange: (v: number) => void }) {
   return (
     <div className="space-y-1">
-      <label className="text-[10px] uppercase font-bold text-slate-500">{label}</label>
-      <Input type={type} value={value} onChange={(e) => onChange(parseFloat(e.target.value) || 0)} className="bg-white/5 border-white/10 h-8 text-xs" />
+      <label className="text-[10px] uppercase font-bold text-[#8892b0]">{label}</label>
+      <Input type={type} value={value} onChange={(e) => onChange(parseFloat(e.target.value) || 0)} className="bg-white/5 border-[#2a2a4a] h-8 text-xs" />
     </div>
   );
 }
@@ -252,8 +253,8 @@ function LabeledInput({ label, type, value, onChange }: { label: string; type: s
 function Field({ label, value }: { label: string; value: string | null }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{label}</dt>
-      <dd className="text-slate-200 text-xs">{value ?? "—"}</dd>
+      <dt className="text-[10px] font-bold uppercase tracking-wider text-[#8892b0]">{label}</dt>
+      <dd className="text-[#e4e9f5] text-xs">{value ?? "—"}</dd>
     </div>
   );
 }

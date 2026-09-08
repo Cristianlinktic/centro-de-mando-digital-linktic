@@ -4,12 +4,40 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================================
+   SISTEMA VISUAL — KV "LinkTIC Future Forum 2026"
+   ----------------------------------------------------------------------------
+   Valores tomados uno a uno del KV de
+   https://linktic.com/linktic-future-forum-2026/#formulario-evento-future
+   (hoja post-47523.min.css del sitio). No son aproximaciones:
+
+     Tintas    #0A0A1C (sección) · #070A16 (fondo) · #0D1120 (panel)
+               #10142A (panel activo) · #131A30 (fila)
+     Líneas    #1E2240 · #2A2A4A · #2B62FF · rgba(43,98,255,.35)
+     Marca     #0094FF · #00E1FF (hover) · #2709CD (índigo) · #75DDFF (cielo)
+     Texto     #FFFFFF · #AAB3CF · #6B7280
+     Degradados
+               90deg #0094FF -> #2709CD   (chips, títulos claros, bordes)
+               90deg #0094FF -> #00E1FF   (hover de botones)
+               90deg #75DDFF -> #FFFFFF   (títulos sobre oscuro)
+     Radios    4px inputs · 16-18px tarjetas · 100px botones píldora
+   ============================================================================ */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Satoshi", "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
-  --font-heading: "DM Serif Display", Georgia, serif;
+  /* Nexa para todo el texto; Clash Display solo para los títulos grandes.
+     Ambas se auto-hospedan vía next/font/local (ver app/layout.tsx). */
+  --font-sans: var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
+  /* Sin tercera fuente: lo "monoespaciado" también es Nexa. Nexa Regular
+     trae la feature OpenType `tnum`, así que `tabular-nums` sigue
+     alineando cifras en columna (en Bold no hay tnum: ver README). */
+  --font-mono: var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-clash), var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
+  /* Preflight de Tailwind: sin esto, <code>/<pre>/<kbd>/<samp> traen su
+     propia pila monoespaciada y se colaría una tercera fuente. */
+  --default-font-family: var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
+  --default-mono-font-family: var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,123 +67,465 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --radius-sm: calc(var(--radius) * 0.35);
+  --radius-md: calc(var(--radius) * 0.6);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 1.9);
+  --radius-4xl: calc(var(--radius) * 8.33);
 
-  --color-linktic-blue: hsl(213 85% 48%);
-  --color-linktic-gold: hsl(42 90% 52%);
-  --color-linktic-green: hsl(160 60% 45%);
-  --color-linktic-red: hsl(0 72% 51%);
-  --color-linktic-purple: hsl(280 65% 60%);
+  /* Marca — hexadecimales exactos del Future Forum. */
+  --color-linktic-blue: #0094ff;
+  --color-linktic-cyan: #00e1ff;
+  --color-linktic-indigo: #2709cd;
+  --color-linktic-sky: #75ddff;
+  --color-linktic-edge: #2b62ff;
+  /* El dorado, el verde y el rojo NO están en el KV: se conservan porque
+     codifican datos (tono neutro, tendencia al alza / a la baja), no estilo. */
+  --color-linktic-gold: #f3b116;
+  --color-linktic-green: #2eb88a;
+  --color-linktic-red: #df3a3a;
+  --color-linktic-purple: #a78bfa;
 }
 
-/* Exact palette from the original bundle */
 :root {
-  --background: hsl(222 47% 6%);
-  --foreground: hsl(210 20% 92%);
-  --card: hsl(222 40% 9%);
-  --card-foreground: hsl(210 20% 92%);
-  --popover: hsl(222 40% 9%);
-  --popover-foreground: hsl(210 20% 92%);
-  --primary: hsl(213 85% 48%);
-  --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(42 90% 52%);
-  --secondary-foreground: hsl(222 47% 6%);
-  --muted: hsl(222 30% 14%);
-  --muted-foreground: hsl(213 15% 55%);
-  --accent: hsl(213 60% 18%);
-  --accent-foreground: hsl(210 20% 92%);
-  --destructive: hsl(0 72% 51%);
-  --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(222 30% 18%);
-  --input: hsl(222 30% 14%);
-  --ring: hsl(213 85% 48%);
-  --chart-1: hsl(213 85% 55%);
-  --chart-2: hsl(42 90% 52%);
-  --chart-3: hsl(160 60% 45%);
-  --chart-4: hsl(280 65% 60%);
-  --chart-5: hsl(10 75% 55%);
-  --radius: 0.5rem;
-  --sidebar: hsl(222 40% 9%);
-  --sidebar-foreground: hsl(213 15% 55%);
-  --sidebar-primary: hsl(213 85% 48%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(213 60% 18%);
-  --sidebar-accent-foreground: hsl(210 20% 92%);
-  --sidebar-border: hsl(222 30% 18%);
-  --sidebar-ring: hsl(213 85% 48%);
+  /* --- Paleta cruda del KV, disponible para cualquier componente --- */
+  --ff-ink: #0a0a1c;
+  --ff-ink-deep: #070a16;
+  --ff-panel: #0d1120;
+  --ff-panel-hi: #10142a;
+  --ff-row: #131a30;
+  --ff-line: #1e2240;
+  --ff-line-soft: #2a2a4a;
+  --ff-line-glow: rgba(43, 98, 255, 0.35);
+  /* Escala azul oficial de LinkTIC (--color-blue-linktic-* de su Tailwind). */
+  --blue-linktic-10: #def0ff;
+  --blue-linktic-30: #b7e6fc;
+  --blue-linktic-40: #2c80ff;
+  --blue-linktic-50: #01d9ff;
+  --blue-linktic-60: #274ff5;
+  --blue-linktic-70: #1f3fc4;
+  --blue-linktic-90: #172f93;
+  --blue-linktic-100: #0094ff;
+  --blue-linktic-200: #015999;
+  --blue-linktic-300: #102486;
+  --blue-linktic-400: #0e1c56;
+
+  --ff-blue: #0094ff;
+  --ff-cyan: #00e1ff;
+  --ff-indigo: #2709cd;
+  --ff-sky: #75ddff;
+  --ff-edge: #2b62ff;
+  /* Rampa de texto secundario. #AAB3CF y #6B7280 son del KV; los dos tonos
+     intermedios se derivan sobre el mismo eje azul-violeta porque un tablero
+     necesita más jerarquía que una landing (títulos > dato > etiqueta > pie). */
+  --ff-muted-hi: #c0c8de;
+  --ff-muted: #aab3cf;
+  --ff-muted-lo: #8892b0;
+  --ff-muted-deep: #6b7280;
+
+  --ff-grad: linear-gradient(90deg, #0094ff 0%, #2709cd 100%);
+  --ff-grad-hot: linear-gradient(90deg, #0094ff 0%, #00e1ff 100%);
+  --ff-grad-title: linear-gradient(90deg, #75ddff 0%, #ffffff 100%);
+  --ff-grad-title-light: linear-gradient(90deg, #0094ff 0%, #2709cd 100%);
+
+  /* Velo del hero del KV: oscurece arriba, se abre al centro, cierra abajo. */
+  --ff-veil: linear-gradient(
+    180deg,
+    rgba(8, 12, 24, 0.85) 0%,
+    rgba(8, 20, 40, 0.35) 25%,
+    rgba(8, 20, 40, 0.25) 60%,
+    rgb(8, 12, 24) 100%
+  );
+
+  /* Receta de cristal de las píldoras del contador del KV. */
+  --ff-glass-fill: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  --ff-glass-edge: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.12) 35%,
+    rgba(255, 255, 255, 0.04) 60%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  --ff-glass-shadow:
+    inset 0 18px 33.77px 10.1px rgba(20, 117, 212, 0.07),
+    4px 4px 16px 0 rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+
+  /* --- Tokens de shadcn mapeados al KV --- */
+  --background: #0a0a1c;
+  --foreground: #ffffff;
+  --card: #0d1120;
+  --card-foreground: #ffffff;
+  --popover: #10142a;
+  --popover-foreground: #ffffff;
+  --primary: #0094ff;
+  --primary-foreground: #ffffff;
+  --secondary: #2709cd;
+  --secondary-foreground: #ffffff;
+  --muted: #131a30;
+  --muted-foreground: #aab3cf;
+  --accent: #10142a;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #1e2240;
+  --input: #131a30;
+  --ring: #0094ff;
+  /* Series de datos: arranca en la rampa del KV y se abre a dos matices
+     ajenos para que las categorías sigan siendo distinguibles. */
+  --chart-1: #0094ff;
+  --chart-2: #00e1ff;
+  --chart-3: #75ddff;
+  --chart-4: #6d5cf5;
+  --chart-5: #f3b116;
+  /* 12px: el punto medio entre los 16-18px de tarjeta y los 4px de input
+     del KV; radius-xl (x1.4) aterriza en ~17px, el radio de las tarjetas. */
+  --radius: 0.75rem;
+  --sidebar: #0a0a1c;
+  --sidebar-foreground: #aab3cf;
+  --sidebar-primary: #0094ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #10142a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #1e2240;
+  --sidebar-ring: #0094ff;
 }
 
+/* ============================================================
+   Superficies
+   ============================================================ */
+
+/* Cristal base para el "chrome" (header, sidebar, popovers): la mezcla del KV
+   sin pseudo-elementos, para poder combinarse con .neon-frame. */
 .glass {
-  background: linear-gradient(180deg, hsl(222 40% 11% / 0.72), hsl(222 44% 7% / 0.72));
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
-  border-color: hsl(222 30% 24% / 0.6);
-  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.04);
-}
-
-/* Fondo de página con profundidad: auroras sutiles en azul/púrpura/dorado de LinkTIC
-   sobre un azul-noche profundo. Reemplaza el negro plano #03060d en cada vista. */
-.page-bg {
-  background-color: hsl(222 47% 5%);
-  background-image:
-    radial-gradient(1100px 560px at 12% -12%, hsl(213 85% 48% / 0.12), transparent 60%),
-    radial-gradient(1000px 520px at 112% 6%, hsl(280 65% 60% / 0.10), transparent 55%),
-    radial-gradient(900px 620px at 50% 122%, hsl(42 90% 52% / 0.07), transparent 55%);
-  background-attachment: fixed;
-}
-
-/* Capa de aurora animada (muy sutil), detrás de todo el contenido del shell. */
-.app-aurora {
-  position: fixed;
-  inset: -20%;
-  z-index: 0;
-  pointer-events: none;
   background:
-    radial-gradient(40% 40% at 20% 25%, hsl(213 85% 48% / 0.18), transparent 70%),
-    radial-gradient(38% 38% at 82% 18%, hsl(280 65% 60% / 0.14), transparent 70%),
-    radial-gradient(45% 45% at 60% 95%, hsl(42 90% 52% / 0.10), transparent 70%);
-  filter: blur(40px);
-  opacity: 0.55;
+    var(--ff-glass-fill),
+    linear-gradient(180deg, rgba(13, 17, 32, 0.86), rgba(10, 10, 28, 0.82));
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  border-color: var(--ff-line);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
 }
 
-/* Texto con degradado (títulos): sheen blanco -> azul -> dorado de LinkTIC. */
+/* Fondo de página: la tinta #0A0A1C del KV, el velo del hero y las "eclipse"
+   azul/índigo que LinkTIC coloca como PNG decorativos (eclipe-*.png). */
+.page-bg {
+  /* Sin color de fondo a propósito: <body> ya pinta --background (#0A0A1C)
+     y así el campo de elipsis fijo del shell se ve por detrás.
+
+     Estas elipsis son las que SÍ acompañan al scroll: el campo del shell
+     va en `fixed`, así que en pantallas largas la mitad de abajo se
+     quedaba plana. Colores de la escala azul oficial de LinkTIC. */
+  background-image:
+    radial-gradient(760px 520px at 8% 4%, rgba(0, 148, 255, 0.1), transparent 62%),
+    radial-gradient(820px 560px at 96% 26%, rgba(39, 79, 245, 0.1), transparent 60%),
+    radial-gradient(700px 520px at 12% 58%, rgba(1, 217, 255, 0.055), transparent 62%),
+    radial-gradient(900px 620px at 88% 82%, rgba(16, 36, 134, 0.16), transparent 62%),
+    radial-gradient(680px 480px at 40% 100%, rgba(0, 148, 255, 0.07), transparent 60%);
+  background-repeat: no-repeat;
+}
+
+/* ============================================================
+   ELIPSIS AZULES — el recurso decorativo del Future Forum.
+   ------------------------------------------------------------
+   Receta original, tal cual la usa LinkTIC:
+
+     <div class="absolute w-69 h-69 bg-blue-linktic-100/80
+                 rounded-full blur-3xl -top-15 -right-30
+                 opacity-40 z-0"></div>
+
+   Con --spacing: 4px de su Tailwind eso resuelve a un círculo de
+   276px de #0094FF al 80%, desenfocado 64px, al 40% de opacidad,
+   asomando 60px por arriba y 120px por la derecha.
+
+   Aquí queda parametrizado: --orb-size, --orb-color, --orb-blur y
+   --orb-alpha. La deriva lenta es añadida nuestra — la del sitio
+   es estática, pero en un tablero que se mira durante horas el
+   movimiento sutil es lo que lo hace sentir vivo.
+   ============================================================ */
+
+.orb {
+  position: absolute;
+  width: var(--orb-size, 276px);
+  height: var(--orb-size, 276px);
+  border-radius: 9999px;
+  background: var(--orb-color, #0094ff);
+  opacity: var(--orb-alpha, 0.4);
+  filter: blur(var(--orb-blur, 64px));
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* Capa contenedora: recorta las elipsis y las manda al fondo. */
+.orb-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb-field-fixed {
+  position: fixed;
+}
+
+/* Cuatro derivas de distinta duración y recorrido para que las elipsis
+   nunca se muevan en bloque (es lo que delata una animación barata). */
+.orb-drift-a { animation: orb-drift-a 26s ease-in-out infinite; }
+.orb-drift-b { animation: orb-drift-b 34s ease-in-out infinite; }
+.orb-drift-c { animation: orb-drift-c 42s ease-in-out infinite; }
+.orb-drift-d { animation: orb-drift-d 30s ease-in-out infinite; }
+
+@keyframes orb-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(5vw, 4vh, 0) scale(1.14); }
+}
+
+@keyframes orb-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-4vw, -5vh, 0) scale(1.08); }
+}
+
+@keyframes orb-drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.06); }
+  33%      { transform: translate3d(3vw, -3vh, 0) scale(0.94); }
+  66%      { transform: translate3d(-3vw, 3vh, 0) scale(1.1); }
+}
+
+@keyframes orb-drift-d {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.96); }
+  50%      { transform: translate3d(-5vw, 3vh, 0) scale(1.16); }
+}
+
+/* Rejilla de perspectiva: el piso técnico que da la lectura futurista
+   bajo las elipsis. Se desvanece hacia arriba para no ensuciar el centro. */
+.grid-floor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(0, 148, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 148, 255, 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 105%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(120% 90% at 50% 105%, #000 0%, transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-drift-a,
+  .orb-drift-b,
+  .orb-drift-c,
+  .orb-drift-d {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   Tipografía de marca
+   ============================================================ */
+
+/* Título sobre oscuro: el sheen cielo -> blanco del "LinkTIC Future Forum". */
 .gradient-text {
-  background: linear-gradient(120deg, #ffffff 0%, hsl(213 90% 78%) 55%, hsl(42 92% 62%) 115%);
+  background: var(--ff-grad-title);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  text-align: center;
+  letter-spacing: -0.03em;
 }
 
-/* Barra de acento animada bajo los títulos de sección. */
+/* Variante sobre superficies claras: azul -> índigo ("Explora la innovación"). */
+.gradient-text-brand {
+  background: var(--ff-grad-title-light);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  letter-spacing: -0.03em;
+}
+
+/* Barra de acento bajo los títulos: el mismo degradado del divider del KV. */
 .accent-bar {
   height: 3px;
   width: 44px;
   border-radius: 999px;
-  background: linear-gradient(90deg, hsl(213 85% 55%), hsl(42 90% 52%));
-  box-shadow: 0 0 12px hsl(213 85% 55% / 0.6);
+  background: var(--ff-grad);
+  box-shadow: 0 0 12px rgba(0, 148, 255, 0.6);
 }
 
-/* Glow al pasar sobre tarjetas. */
+.accent-bar-anim {
+  background: linear-gradient(90deg, #0094ff, #2709cd, #0094ff);
+  background-size: 300% 100%;
+  animation: accent-bar-flow 4s linear infinite;
+}
+
+@keyframes accent-bar-flow {
+  to { background-position: -300% 0; }
+}
+
+.text-glow-blue {
+  text-shadow: 0 0 12px rgba(0, 148, 255, 0.7), 0 0 28px rgba(0, 148, 255, 0.35);
+}
+
+/* ============================================================
+   Tarjetas de cristal — receta exacta de las píldoras del contador del KV:
+   relleno 145deg, filo 1px en degradado (::after) y brillo superior (::before).
+   ============================================================ */
+
+.card-glass,
+.kpi-card {
+  position: relative;
+  isolation: isolate;
+  background: var(--ff-glass-fill);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  box-shadow: var(--ff-glass-shadow);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+/* Filo de 1px en degradado, recortado con máscara (no un border plano). */
+.card-glass::after,
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--ff-glass-edge);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Brillo curvo en el borde superior, como el reflejo de un cristal. */
+.card-glass::before,
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45%;
+  border-radius: inherit;
+  border-bottom-left-radius: 50% 100%;
+  border-bottom-right-radius: 50% 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card-glass:hover,
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 18px 33.77px 10.1px rgba(20, 117, 212, 0.14),
+    4px 4px 16px 0 rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    0 16px 48px rgba(0, 148, 255, 0.18);
+}
+
+/* ============================================================
+   Superficies del tablero — la jerarquía del KV en tres niveles.
+   ------------------------------------------------------------
+   Ninguna fija `border`: el borde sigue siendo una clase de Tailwind
+   para que un panel pueda llevar filo de acento (#0094FF, #E1306C…)
+   sin que el sistema se lo pise. Tampoco usan ::before/::after, así
+   que se pueden aplicar a <select>, <input> o <table>.
+   ============================================================ */
+
+/* Nivel 1 — el panel que contiene una sección. */
+.panel {
+  background:
+    var(--ff-glass-fill),
+    linear-gradient(180deg, rgba(13, 17, 32, 0.78), rgba(10, 10, 28, 0.72));
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  box-shadow:
+    inset 0 18px 33.77px 10.1px rgba(20, 117, 212, 0.07),
+    inset 0 1px 1px rgba(255, 255, 255, 0.16),
+    0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+/* Nivel 2 — bloque anidado dentro de un panel (cifras, cajas, filas). */
+.panel-soft {
+  background:
+    var(--ff-glass-fill),
+    linear-gradient(180deg, rgba(19, 26, 48, 0.72), rgba(16, 20, 42, 0.68));
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  backdrop-filter: blur(10px) saturate(150%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Nivel 3 — pozo profundo: mapas, globo, lienzos, campos de formulario. */
+.well {
+  background: linear-gradient(180deg, #070a16, #0a0a1c);
+  box-shadow: inset 0 2px 18px rgba(0, 0, 0, 0.55);
+}
+
+/* Fila de lista sobre un panel. */
+.row-soft {
+  background: rgba(19, 26, 48, 0.6);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.row-soft:hover {
+  background: rgba(16, 20, 42, 0.85);
+}
+
+/* Cabecera de tabla del sistema. */
+.th-kv {
+  color: var(--ff-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--ff-line);
+}
+
+/* Panel de cristal más pronunciado (hero / CTA / login). Sin pseudo-elementos
+   a propósito: se combina con .neon-frame, que ya usa ::before y ::after. */
+.glass-strong {
+  background:
+    radial-gradient(120% 62% at 50% 0%, rgba(0, 148, 255, 0.22), transparent 68%),
+    var(--ff-glass-fill),
+    linear-gradient(160deg, rgba(16, 20, 42, 0.72), rgba(7, 10, 22, 0.62));
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  backdrop-filter: blur(22px) saturate(160%);
+  /* Sin `border`: el filo va como sombra interior para no ocupar layout. Si
+     lleva `border`, un .neon-frame encima dibuja su aro 1px por dentro y se
+     ven dos rectángulos con las esquinas descuadradas. */
+  border: 0;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    var(--ff-glass-shadow),
+    0 20px 60px rgba(7, 10, 22, 0.55);
+}
+
 .glow-card {
   transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .glow-card:hover {
-  border-color: hsl(213 85% 55% / 0.4);
-  box-shadow: 0 10px 40px hsl(213 85% 48% / 0.18);
+  border-color: rgba(0, 148, 255, 0.45);
+  box-shadow: 0 10px 40px rgba(0, 148, 255, 0.2);
 }
 
-/* Skeleton/shimmer reutilizable. */
 .shimmer {
-  background: linear-gradient(100deg, hsl(222 30% 14%) 30%, hsl(222 30% 22%) 50%, hsl(222 30% 14%) 70%);
+  background: linear-gradient(100deg, #131a30 30%, #1e2240 50%, #131a30 70%);
   background-size: 200% 100%;
   animation: shimmer 1.6s infinite linear;
 }
@@ -164,6 +534,79 @@
   to {
     background-position: -200% 0;
   }
+}
+
+/* ============================================================
+   Controles: botón píldora, chip y campo
+   ============================================================ */
+
+/* "Reserva tu lugar" del KV: píldora de 100px en #0094FF que al pasar el
+   mouse desliza el degradado hacia el cian #00E1FF. */
+.neon-btn {
+  position: relative;
+  border-radius: 100px;
+  background-color: #0094ff;
+  background-image: linear-gradient(90deg, #0094ff 0%, #0094ff 100%);
+  background-size: 200% 100%;
+  background-position: left center;
+  color: #fff;
+  border: 1px solid transparent;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 16px rgba(0, 148, 255, 0.28);
+  transition: background-position 0.5s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.neon-btn:hover {
+  background-image: var(--ff-grad-hot);
+  background-position: right center;
+  box-shadow: 0 6px 22px rgba(0, 148, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.neon-btn:active {
+  transform: translateY(0);
+}
+
+/* Chip del KV ("24 de septiembre"): degradado azul -> índigo, radio 4px. */
+.badge-neon {
+  background-image: var(--ff-grad);
+  color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px var(--badge-neon-color, rgba(0, 148, 255, 0.4));
+}
+
+/* Píldora de acento ("en acción"): mismo degradado, radio 100px. */
+.pill-neon {
+  background-image: var(--ff-grad);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 700;
+}
+
+/* Marco de 1px en degradado azul -> índigo, como los recuadros con icono
+   del KV ("Talento LinkTIC, conocimiento experto..."). */
+.frame-brand {
+  border: 1px solid #0094ff;
+  border-radius: 8px;
+}
+
+/* Campo de formulario del KV: fondo claro, filo #1E2240, radio 4px.
+   Aquí en versión oscura, conservando el radio y el filo. */
+.input-glass {
+  background: rgba(19, 26, 48, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-color: var(--ff-line);
+  border-radius: 4px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.input-glass:focus-within,
+.input-glass:focus {
+  border-color: rgba(0, 148, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(0, 148, 255, 0.18), 0 0 24px rgba(0, 148, 255, 0.2);
+  background: rgba(16, 20, 42, 0.85);
 }
 
 /* Micro-interacción de los ítems del sidebar. */
@@ -176,10 +619,12 @@
 }
 
 .sidebar-item.active {
-  box-shadow: inset 0 0 24px hsl(213 85% 48% / 0.14);
+  box-shadow: inset 0 0 24px rgba(0, 148, 255, 0.16);
 }
 
-/* === Marco neón animado (chase light) para contenedores destacados === */
+/* ============================================================
+   Marco neón animado (chase light) — degradado #0094FF -> #2709CD del KV
+   ============================================================ */
 @property --neon-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -199,12 +644,12 @@
   padding: 1.5px;
   background: conic-gradient(from var(--neon-angle),
       transparent 0%,
-      hsl(213 90% 60%) 12%,
-      hsl(280 70% 65%) 28%,
-      transparent 42%,
-      transparent 60%,
-      hsl(42 95% 58%) 78%,
-      transparent 92%);
+      #0094ff 16%,
+      #2709cd 34%,
+      transparent 48%,
+      transparent 64%,
+      #00e1ff 88%,
+      transparent 100%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -221,12 +666,12 @@
   border-radius: inherit;
   background: conic-gradient(from var(--neon-angle),
       transparent 0%,
-      hsl(213 90% 60% / 0.6) 14%,
-      hsl(280 70% 65% / 0.5) 28%,
-      transparent 42%,
-      transparent 60%,
-      hsl(42 95% 58% / 0.5) 78%,
-      transparent 92%);
+      rgba(0, 148, 255, 0.6) 16%,
+      rgba(39, 9, 205, 0.5) 34%,
+      transparent 48%,
+      transparent 64%,
+      rgba(0, 225, 255, 0.5) 88%,
+      transparent 100%);
   filter: blur(14px);
   opacity: 0.5;
   animation: neon-spin 7s linear infinite;
@@ -270,19 +715,14 @@
   }
 }
 
-/* === Texto con brillo de neón pulsante === */
-.text-glow-blue {
-  text-shadow: 0 0 12px hsl(213 90% 60% / 0.7), 0 0 28px hsl(213 90% 55% / 0.35);
-}
-
 .live-dot {
   position: relative;
   display: inline-block;
   width: 7px;
   height: 7px;
   border-radius: 999px;
-  background: hsl(0 80% 58%);
-  box-shadow: 0 0 8px hsl(0 80% 58%);
+  background: #df3a3a;
+  box-shadow: 0 0 8px #df3a3a;
 }
 
 .live-dot::after {
@@ -290,7 +730,7 @@
   position: absolute;
   inset: -4px;
   border-radius: 999px;
-  border: 1.5px solid hsl(0 80% 58% / 0.6);
+  border: 1.5px solid rgba(223, 58, 58, 0.6);
   animation: live-ping 1.6s ease-out infinite;
 }
 
@@ -306,7 +746,7 @@
   }
 }
 
-/* Anillo de carga (login): círculo giratorio azul/morado/dorado alrededor del ave. */
+/* Anillo de carga (login): azul -> índigo -> cian del KV. */
 .loading-ring {
   position: relative;
 }
@@ -319,10 +759,10 @@
   padding: 3px;
   background: conic-gradient(from 0deg,
       transparent 0%,
-      hsl(213 90% 60%) 20%,
-      hsl(280 70% 65%) 45%,
-      hsl(42 95% 58%) 70%,
-      transparent 92%);
+      #0094ff 20%,
+      #2709cd 50%,
+      #00e1ff 80%,
+      transparent 96%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -393,47 +833,6 @@
   animation: intro-letter-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-  .app-aurora,
-  .shimmer,
-  .marquee-track,
-  .neon-frame::before,
-  .neon-frame::after,
-  .live-dot::after,
-  .loading-ring::before,
-  .intro-bird-enter,
-  .intro-fade,
-  .intro-letter {
-    animation: none !important;
-    opacity: 1 !important;
-  }
-
-  .sidebar-item:hover {
-    transform: none;
-  }
-}
-
-.kpi-card {
-  background: linear-gradient(135deg, hsl(222 40% 9%), hsl(213 60% 18% / 0.4));
-  border: 1px solid hsl(222 30% 18%);
-  box-shadow: 0 8px 32px hsl(213 85% 48% / 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.kpi-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px hsl(213 85% 48% / 0.25);
-}
-
-.trend-up {
-  color: #2eb88a;
-}
-
-.trend-down {
-  color: #dc2828;
-}
-
 /* Martha chatbot — ring ping */
 @keyframes martha-ring {
   0% {
@@ -455,6 +854,41 @@
   animation: martha-ring 2s ease-out 0.8s infinite;
 }
 
+/* Tendencias: semántica de dato, fuera de la paleta del KV a propósito. */
+.trend-up {
+  color: #2eb88a;
+}
+
+.trend-down {
+  color: #df3a3a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .shimmer,
+  .marquee-track,
+  .neon-frame::before,
+  .neon-frame::after,
+  .live-dot::after,
+  .loading-ring::before,
+  .intro-bird-enter,
+  .intro-fade,
+  .intro-letter,
+  .accent-bar-anim,
+  .martha-ring-1,
+  .martha-ring-2 {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .sidebar-item:hover,
+  .card-glass:hover,
+  .kpi-card:hover,
+  .neon-btn:hover {
+    transform: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -468,6 +902,12 @@
     @apply font-sans;
   }
 
+  /* Los títulos del KV van en 700 con tracking cerrado (-2px sobre 48px). */
+  .font-heading {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
   ::-webkit-scrollbar {
     width: 4px;
     height: 4px;
@@ -478,11 +918,11 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(222 30% 18%);
+    background: var(--ff-line);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(213 15% 55%);
+    background: var(--ff-edge);
   }
 }

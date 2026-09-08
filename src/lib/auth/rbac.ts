@@ -34,11 +34,14 @@ export interface ScreenDef {
  *  todavía no tiene pantallas propias (placeholder, abierto a cualquier
  *  autenticado — ver isPathAllowed). */
 const SCREENS: ScreenDef[] = [
+  { key: "lt-tab:mapa", path: "/interno/mapa", title: "Mapa Global", group: "Interno" },
   { key: "lt-tab:nacional", path: "/interno/nacional", title: "Conversación Nacional", group: "Interno" },
   { key: "lt-tab:medios", path: "/interno/medios", title: "Conversación en Medios", group: "Interno" },
-  { key: "lt-tab:social", path: "/interno/social", title: "Conversación en Redes", group: "Interno" },
   { key: "lt-tab:actores-mapa", path: "/interno/mapa-colombia", title: "Mapa de Colombia", group: "Interno" },
-  { key: "lt-tab:actores-perfiles", path: "/interno/instagram", title: "Instagram", group: "Interno" },
+  // La pantalla de Instagram pasa a ser "Conversación en Redes" (la anterior,
+  // lt-tab:social, se retiró). Se conserva la clave para no invalidar los
+  // permisos ya concedidos en user_screen_access.
+  { key: "lt-tab:actores-perfiles", path: "/interno/instagram", title: "Conversación en Redes", group: "Interno" },
   { key: "lt-tab:parrilla", path: "/interno/parrilla", title: "Parrilla de Contenidos", group: "Interno" },
   { key: "lt-tab:estrategia-digital", path: "/interno/estrategia-digital", title: "Estrategia Publicitaria", group: "Interno" },
 ];

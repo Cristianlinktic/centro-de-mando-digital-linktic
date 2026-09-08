@@ -79,16 +79,16 @@ const monthISO = () => new Date().toISOString().slice(0, 7);
 const fmtNum = (n: number | undefined | null) => (n ?? 0).toLocaleString("es-CO");
 const fmtCOP = (n: number | undefined | null) => `$${(n ?? 0).toLocaleString("es-CO")}`;
 
-const SENTIMENT_COLORS = { positivo: "#2eb88a", negativo: "#df3a3a", neutral: "#64748b" };
-const COVERAGE_COLORS = ["#3b82f6", "#a78bfa", "#f3b116", "#2eb88a"];
-const TIER_COLORS = ["#fbbf24", "#94a3b8", "#78716c"];
+const SENTIMENT_COLORS = { positivo: "#2eb88a", negativo: "#df3a3a", neutral: "#aab3cf" };
+const COVERAGE_COLORS = ["#0094ff", "#a78bfa", "#f3b116", "#2eb88a"];
+const TIER_COLORS = ["#fbbf24", "#c0c8de", "#78716c"];
 
 function KpiCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <Card className="bg-[#0b101d] border-white/5 p-5 rounded-2xl">
-      <p className="text-[10px] font-bold text-slate-500 tracking-wider mb-2">{label.toUpperCase()}</p>
-      <p className="text-2xl font-bold text-blue-500">{value}</p>
-      {hint && <p className="text-[10px] text-slate-500 mt-1">{hint}</p>}
+    <Card className="panel border-[#1e2240] p-5 rounded-2xl">
+      <p className="text-[10px] font-bold text-[#8892b0] tracking-wider mb-2">{label.toUpperCase()}</p>
+      <p className="text-2xl font-bold text-[#0094ff]">{value}</p>
+      {hint && <p className="text-[10px] text-[#8892b0] mt-1">{hint}</p>}
     </Card>
   );
 }
@@ -101,8 +101,8 @@ function SentimentDonut({ positivo, negativo }: { positivo: number; negativo: nu
     { name: "Neutral", value: neutral, color: SENTIMENT_COLORS.neutral },
   ];
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
-      <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Sentimiento</h3>
+    <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+      <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Sentimiento</h3>
       <div className="h-40">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -111,14 +111,14 @@ function SentimentDonut({ positivo, negativo }: { positivo: number; negativo: nu
                 <Cell key={d.name} fill={d.color} stroke="none" />
               ))}
             </Pie>
-            <Tooltip contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }} />
+            <Tooltip contentStyle={{ backgroundColor: "#0d1120", border: "1px solid #1e2240", borderRadius: 12 }} />
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex justify-center gap-4 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+      <div className="flex justify-center gap-4 mt-2 text-[10px] font-bold text-[#aab3cf] uppercase tracking-widest">
         <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#2eb88a]" />Pos {positivo}%</div>
         <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#df3a3a]" />Neg {negativo}%</div>
-        <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#64748b]" />Neu {neutral}%</div>
+        <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#aab3cf]" />Neu {neutral}%</div>
       </div>
     </Card>
   );
@@ -133,16 +133,16 @@ function CoverageBars({ tv, digital, radio, impresos }: { tv: number; digital: n
   ];
   const max = Math.max(1, ...items.map((i) => i.value));
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
-      <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Cobertura por Medio</h3>
+    <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+      <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Cobertura por Medio</h3>
       <div className="space-y-3">
         {items.map((it) => (
           <div key={it.label}>
-            <div className="flex justify-between text-[10px] font-bold text-slate-400 mb-1">
+            <div className="flex justify-between text-[10px] font-bold text-[#aab3cf] mb-1">
               <span>{it.label}</span>
               <span>{fmtNum(it.value)}</span>
             </div>
-            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-2 w-full bg-[#131a30] rounded-full overflow-hidden">
               <div className="h-full rounded-full" style={{ width: `${(it.value / max) * 100}%`, background: it.color }} />
             </div>
           </div>
@@ -160,16 +160,16 @@ function TierBars({ tier1, tier2, tier3 }: { tier1: number; tier2: number; tier3
   ];
   const max = Math.max(1, ...items.map((i) => i.value));
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl">
-      <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Medios por Tier</h3>
+    <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+      <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Medios por Tier</h3>
       <div className="space-y-3">
         {items.map((it) => (
           <div key={it.label}>
-            <div className="flex justify-between text-[10px] font-bold text-slate-400 mb-1">
+            <div className="flex justify-between text-[10px] font-bold text-[#aab3cf] mb-1">
               <span>{it.label}</span>
               <span>{fmtNum(it.value)}</span>
             </div>
-            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-2 w-full bg-[#131a30] rounded-full overflow-hidden">
               <div className="h-full rounded-full" style={{ width: `${(it.value / max) * 100}%`, background: it.color }} />
             </div>
           </div>
@@ -192,11 +192,11 @@ function UbicacionesPanel({
   const max = Math.max(1, ...sorted.map((u) => u.weight || 0));
 
   return (
-    <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl h-full">
+    <Card className="panel border border-[#1e2240] p-6 rounded-2xl h-full">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-widest">Menciones por Ciudad</h3>
+        <h3 className="text-sm font-semibold text-[#e4e9f5] uppercase tracking-widest">Menciones por Ciudad</h3>
         {editing && onChange && (
-          <Button size="sm" variant="ghost" className="text-[10px] font-black uppercase text-blue-400" onClick={() => onChange([{ city: "", lat: 0, lng: 0, weight: 0 }, ...ubicaciones])}>
+          <Button size="sm" variant="ghost" className="text-[10px] font-black uppercase text-[#75ddff]" onClick={() => onChange([{ city: "", lat: 0, lng: 0, weight: 0 }, ...ubicaciones])}>
             <FontAwesomeIcon icon={faPlus} className="mr-1" /> Agregar
           </Button>
         )}
@@ -204,37 +204,37 @@ function UbicacionesPanel({
       {editing && onChange ? (
         <div className="space-y-2 max-h-[420px] overflow-y-auto">
           {ubicaciones.map((u, idx) => (
-            <div key={idx} className="flex gap-2 items-center bg-white/5 p-2 rounded-lg border border-white/5">
+            <div key={idx} className="flex gap-2 items-center bg-white/5 p-2 rounded-lg border border-[#1e2240]">
               <Input value={u.city} placeholder="Ciudad" onChange={(e) => {
                 const up = [...ubicaciones];
                 up[idx] = { ...up[idx], city: e.target.value };
                 onChange(up);
-              }} className="h-7 text-xs bg-[#05080f] border-white/5 flex-1" />
+              }} className="h-7 text-xs well border-[#1e2240] flex-1" />
               <Input type="number" value={u.weight} placeholder="Peso" onChange={(e) => {
                 const up = [...ubicaciones];
                 up[idx] = { ...up[idx], weight: parseInt(e.target.value) || 0 };
                 onChange(up);
-              }} className="h-7 text-xs bg-[#05080f] border-white/5 w-20" />
+              }} className="h-7 text-xs well border-[#1e2240] w-20" />
               <Button variant="ghost" size="sm" onClick={() => onChange(ubicaciones.filter((_, i) => i !== idx))} className="h-6 w-6 p-0 text-red-500 shrink-0">
                 <FontAwesomeIcon icon={faTrash} className="w-2.5 h-2.5" />
               </Button>
             </div>
           ))}
-          {ubicaciones.length === 0 && <p className="text-xs text-slate-500 text-center py-6">Sin ubicaciones registradas.</p>}
+          {ubicaciones.length === 0 && <p className="text-xs text-[#8892b0] text-center py-6">Sin ubicaciones registradas.</p>}
         </div>
       ) : (
         <div className="space-y-3 max-h-[420px] overflow-y-auto">
           {sorted.map((u, i) => (
             <div key={`${u.city}-${i}`} className="flex items-center gap-3">
-              <span className="text-[10px] font-black text-slate-500 w-4 shrink-0">{i + 1}</span>
-              <span className="text-xs font-bold text-slate-200 w-28 truncate shrink-0">{u.city || "—"}</span>
-              <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-500 rounded-full" style={{ width: `${((u.weight || 0) / max) * 100}%` }} />
+              <span className="text-[10px] font-black text-[#8892b0] w-4 shrink-0">{i + 1}</span>
+              <span className="text-xs font-bold text-[#e4e9f5] w-28 truncate shrink-0">{u.city || "—"}</span>
+              <div className="flex-1 h-1.5 bg-[#131a30] rounded-full overflow-hidden">
+                <div className="h-full bg-[#0094ff] rounded-full" style={{ width: `${((u.weight || 0) / max) * 100}%` }} />
               </div>
-              <span className="text-[10px] font-mono text-slate-500 w-10 text-right shrink-0">{fmtNum(u.weight)}</span>
+              <span className="text-[10px] font-mono text-[#8892b0] w-10 text-right shrink-0">{fmtNum(u.weight)}</span>
             </div>
           ))}
-          {sorted.length === 0 && <p className="text-xs text-slate-500 text-center py-6">Sin ubicaciones registradas.</p>}
+          {sorted.length === 0 && <p className="text-xs text-[#8892b0] text-center py-6">Sin ubicaciones registradas.</p>}
         </div>
       )}
     </Card>
@@ -360,12 +360,12 @@ export function PrensaSection() {
 
   const numField = (key: keyof MonitoreoRow, label: string) => (
     <div className="space-y-1">
-      <label className="text-[9px] text-slate-500 uppercase font-black">{label}</label>
+      <label className="text-[9px] text-[#8892b0] uppercase font-black">{label}</label>
       <Input
         type="number"
         value={(draft[key] as number) ?? 0}
         onChange={(e) => setDraft({ ...draft, [key]: key === "share_of_voice" || key === "sentimiento_positivo" || key === "sentimiento_negativo" ? parseFloat(e.target.value) || 0 : parseInt(e.target.value) || 0 })}
-        className="bg-[#05080f] border-white/5 h-8 text-xs"
+        className="well border-[#1e2240] h-8 text-xs"
       />
     </div>
   );
@@ -380,10 +380,10 @@ export function PrensaSection() {
       <div className="mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
           <div className="flex gap-2 mb-2">
-            <span className="bg-[#1e293b] text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 uppercase font-black">MONITOREO DE PRENSA</span>
+            <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">MONITOREO DE PRENSA</span>
           </div>
           <h2 className="text-2xl font-bold mb-1 gradient-text text-glow-blue">Análisis de Prensa</h2>
-          <p className="text-slate-400 text-sm">Impacto, cobertura y sentimiento en medios de comunicación.</p>
+          <p className="text-[#aab3cf] text-sm">Impacto, cobertura y sentimiento en medios de comunicación.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "diario" | "mensual")}>
@@ -393,19 +393,19 @@ export function PrensaSection() {
             </TabsList>
           </Tabs>
           {activeTab === "diario" ? (
-            <Input type="date" value={selectedDate} max={todayISO()} onChange={(e) => setSelectedDate(e.target.value)} className="h-8 w-40 bg-[#0b101d] border-white/10 text-xs [color-scheme:dark]" />
+            <Input type="date" value={selectedDate} max={todayISO()} onChange={(e) => setSelectedDate(e.target.value)} className="h-8 w-40 panel border-[#2a2a4a] text-xs [color-scheme:dark]" />
           ) : (
-            <Input type="month" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="h-8 w-36 bg-[#0b101d] border-white/10 text-xs [color-scheme:dark]" />
+            <Input type="month" value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} className="h-8 w-36 panel border-[#2a2a4a] text-xs [color-scheme:dark]" />
           )}
           {editable && activeTab === "diario" && (
             <>
               {!isEditing ? (
-                <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="bg-blue-600/10 text-blue-400 border-blue-500/20 hover:bg-blue-600 hover:text-white transition-all">
+                <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="bg-[#0094ff]/10 text-[#75ddff] border-[#0094ff]/20 hover:bg-[#0094ff] hover:text-white transition-all">
                   <FontAwesomeIcon icon={faPen} className="mr-2" /> {currentData ? "Editar Datos" : "Ingresar Datos"}
                 </Button>
               ) : (
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => { setIsEditing(false); setDraft(currentData ?? emptyRow(selectedDate)); }} className="text-slate-400 hover:text-white">
+                  <Button variant="outline" size="sm" onClick={() => { setIsEditing(false); setDraft(currentData ?? emptyRow(selectedDate)); }} className="text-[#aab3cf] hover:text-white">
                     Cancelar
                   </Button>
                   <Button variant="default" size="sm" onClick={saveDraft} className="bg-green-600 hover:bg-green-700 text-white font-bold px-4">
@@ -413,21 +413,21 @@ export function PrensaSection() {
                   </Button>
                 </div>
               )}
-              <Button variant="outline" size="sm" onClick={openHistory} className="bg-[#0b101d] border-white/10 text-white">
+              <Button variant="outline" size="sm" onClick={openHistory} className="panel border-[#2a2a4a] text-white">
                 <FontAwesomeIcon icon={faClock} className="mr-2" /> Historial
               </Button>
             </>
           )}
-          <Button variant="outline" size="sm" onClick={() => (activeTab === "diario" ? loadDaily(selectedDate) : loadMonthly(selectedMonth))} className="bg-[#0b101d] border-white/10 text-white">
+          <Button variant="outline" size="sm" onClick={() => (activeTab === "diario" ? loadDaily(selectedDate) : loadMonthly(selectedMonth))} className="panel border-[#2a2a4a] text-white">
             <FontAwesomeIcon icon={faRotate} className={loading ? "animate-spin" : ""} />
           </Button>
         </div>
       </div>
 
       {activeTab === "mensual" && !monthly ? (
-        <Card className="bg-[#0b101d] border border-white/5 p-12 rounded-2xl text-center">
-          <p className="text-slate-300 font-bold mb-1">No hay datos para este mes</p>
-          <p className="text-slate-500 text-sm">Selecciona otro periodo o ingresa datos diarios en la vista Diaria.</p>
+        <Card className="panel border border-[#1e2240] p-12 rounded-2xl text-center">
+          <p className="text-[#c0c8de] font-bold mb-1">No hay datos para este mes</p>
+          <p className="text-[#8892b0] text-sm">Selecciona otro periodo o ingresa datos diarios en la vista Diaria.</p>
         </Card>
       ) : (
         <>
@@ -440,18 +440,18 @@ export function PrensaSection() {
           </div>
 
           {/* Historical chart */}
-          <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl neon-frame mb-6">
-            <h3 className="font-bold text-lg text-slate-200 mb-1">{activeTab === "diario" ? "Últimos 30 registros" : "Tendencia del mes"}</h3>
-            <p className="text-xs text-slate-500 mb-6">Menciones y audiencia estimada</p>
+          <Card className="panel border border-[#1e2240] p-6 rounded-2xl neon-frame mb-6">
+            <h3 className="font-bold text-lg text-[#e4e9f5] mb-1">{activeTab === "diario" ? "Últimos 30 registros" : "Tendencia del mes"}</h3>
+            <p className="text-xs text-[#8892b0] mb-6">Menciones y audiencia estimada</p>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
-                  <XAxis dataKey="fecha" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 11 }} />
-                  <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 11 }} />
-                  <Tooltip contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
+                  <XAxis dataKey="fecha" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 11 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 11 }} />
+                  <Tooltip contentStyle={{ backgroundColor: "#0d1120", border: "1px solid #1e2240", borderRadius: 12 }} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
-                  <Line type="monotone" dataKey="menciones" name="Menciones" stroke="#3b82f6" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="menciones" name="Menciones" stroke="#0094ff" strokeWidth={2} dot={false} />
                   <Line type="monotone" dataKey="audiencia" name="Audiencia" stroke="#2eb88a" strokeWidth={2} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
@@ -480,9 +480,9 @@ export function PrensaSection() {
 
           {/* Inline edit form */}
           {activeTab === "diario" && isEditing && (
-            <Card className="bg-[#0b101d] border border-white/5 p-6 rounded-2xl mb-20 animate-in fade-in slide-in-from-top-4 duration-300">
-              <h3 className="text-blue-400 font-black mb-4 uppercase text-xs tracking-widest flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-500" /> Editar métricas — {selectedDate}
+            <Card className="panel border border-[#1e2240] p-6 rounded-2xl mb-20 animate-in fade-in slide-in-from-top-4 duration-300">
+              <h3 className="text-[#75ddff] font-black mb-4 uppercase text-xs tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#0094ff]" /> Editar métricas — {selectedDate}
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {numField("menciones_totales", "Menciones Totales")}
@@ -506,9 +506,9 @@ export function PrensaSection() {
 
       {/* Historial modal */}
       <Sheet open={showHistory} onOpenChange={setShowHistory}>
-        <SheetContent side="right" className="bg-[#0b101d] text-white border-l border-white/10 w-full sm:max-w-md overflow-y-auto">
+        <SheetContent side="right" className="panel text-white border-l border-[#2a2a4a] w-full sm:max-w-md overflow-y-auto">
           <SheetHeader>
-            <SheetTitle className="text-white text-xl font-bold border-b border-white/10 pb-4">Historial de Registros</SheetTitle>
+            <SheetTitle className="text-white text-xl font-bold border-b border-[#2a2a4a] pb-4">Historial de Registros</SheetTitle>
           </SheetHeader>
           <div className="mt-6 space-y-2">
             {allRecords.map((r) => (
@@ -523,10 +523,10 @@ export function PrensaSection() {
                 className="w-full flex items-center justify-between bg-white/5 hover:bg-white/10 transition-colors p-3 rounded-xl text-left"
               >
                 <span className="text-sm font-bold">{r.fecha}</span>
-                <span className="text-xs text-slate-400">{fmtNum(r.menciones_totales)} menciones</span>
+                <span className="text-xs text-[#aab3cf]">{fmtNum(r.menciones_totales)} menciones</span>
               </button>
             ))}
-            {allRecords.length === 0 && <p className="text-xs text-slate-500 text-center py-8">Sin registros aún.</p>}
+            {allRecords.length === 0 && <p className="text-xs text-[#8892b0] text-center py-8">Sin registros aún.</p>}
           </div>
         </SheetContent>
       </Sheet>

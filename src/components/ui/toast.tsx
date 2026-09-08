@@ -52,7 +52,7 @@ const ICONS: Record<ToastType, typeof faCircleCheck> = {
 const ACCENT: Record<ToastType, string> = {
   success: "border-emerald-500/30 [&_.toast-icon]:text-emerald-400",
   error: "border-rose-500/30 [&_.toast-icon]:text-rose-400",
-  info: "border-blue-500/30 [&_.toast-icon]:text-blue-400",
+  info: "border-[#0094ff]/30 [&_.toast-icon]:text-[#75ddff]",
 };
 
 /** Móntalo una sola vez en el layout raíz; renderiza la pila de notificaciones. */
@@ -77,10 +77,10 @@ export function Toaster() {
           <div className="min-w-0 flex-1">
             <p className="text-sm font-bold leading-snug text-white">{item.title}</p>
             {item.description && (
-              <p className="mt-0.5 text-xs leading-snug text-slate-400">{item.description}</p>
+              <p className="mt-0.5 text-xs leading-snug text-[#aab3cf]">{item.description}</p>
             )}
           </div>
-          <button onClick={() => dismiss(item.id)} className="shrink-0 text-slate-500 hover:text-white">
+          <button onClick={() => dismiss(item.id)} className="shrink-0 text-[#8892b0] hover:text-white">
             <FontAwesomeIcon icon={faXmark} className="h-3.5 w-3.5" />
           </button>
         </div>

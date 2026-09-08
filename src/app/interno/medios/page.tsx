@@ -16,15 +16,15 @@ export default function MediosPage() {
 
   return (
     <div className="page-bg text-white p-6">
-      <nav className="flex gap-1 mb-6 border-b border-white/5 pb-1 w-fit">
+      <nav className="flex gap-1 mb-6 border-b border-[#1e2240] pb-1 w-fit">
         {TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-t-lg transition-colors ${
               tab === t.key
-                ? "text-blue-400 border-b-2 border-blue-500 bg-white/5"
-                : "text-slate-500 hover:text-slate-300 hover:bg-white/5"
+                ? "text-[#75ddff] border-b-2 border-[#0094ff] bg-white/5"
+                : "text-[#8892b0] hover:text-[#c0c8de] hover:bg-white/5"
             }`}
           >
             {t.label}

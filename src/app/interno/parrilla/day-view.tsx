@@ -24,7 +24,7 @@ export function DayView({
   const isToday = now ? isSameDay(now, date) : false;
 
   return (
-    <div className="bg-[#0b101d] border border-white/5 rounded-2xl neon-frame overflow-auto" style={{ maxHeight: "calc(100vh - 300px)" }}>
+    <div className="panel border border-[#1e2240] rounded-2xl neon-frame overflow-auto" style={{ maxHeight: "calc(100vh - 300px)" }}>
       <div className="grid" style={{ gridTemplateColumns: "80px 1fr" }}>
         {HOURS.map((hour) => {
           const rowH = parseInt(hour.split(":")[0], 10);
@@ -37,14 +37,14 @@ export function DayView({
           return (
             <div key={hour} className="contents">
               <div
-                className={`sticky left-0 z-10 min-h-[90px] border-b border-r border-white/5 flex items-start justify-center pt-2 text-sm font-mono font-bold ${
-                  isActiveHour ? "bg-amber-500/10 text-amber-300" : "bg-[#0b101d] text-slate-400"
+                className={`sticky left-0 z-10 min-h-[90px] border-b border-r border-[#1e2240] flex items-start justify-center pt-2 text-sm font-mono font-bold ${
+                  isActiveHour ? "bg-amber-500/10 text-amber-300" : "panel text-[#aab3cf]"
                 }`}
               >
                 {hour}
               </div>
               <div
-                className="group relative min-h-[90px] border-b border-white/5 hover:bg-white/5 transition-colors"
+                className="group relative min-h-[90px] border-b border-[#1e2240] hover:bg-white/5 transition-colors"
                 onClick={() => editing && onAddSlot(hour)}
               >
                 {isActiveHour && (
@@ -52,7 +52,7 @@ export function DayView({
                 )}
                 {editing && (
                   <button
-                    className="absolute right-1.5 top-1.5 z-20 flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute right-1.5 top-1.5 z-20 flex h-5 w-5 items-center justify-center rounded-full bg-[#0094ff] text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                     onClick={(e) => {
                       e.stopPropagation();
                       onAddSlot(hour);
@@ -79,17 +79,17 @@ export function DayView({
                           <span className="flex items-center gap-1 text-[10px] font-bold" style={{ color: plat.color }}>
                             <FontAwesomeIcon icon={plat.icon} className="h-3 w-3" /> {plat.name}
                           </span>
-                          <span className="text-[10px] font-mono text-slate-500">{item.time}</span>
+                          <span className="text-[10px] font-mono text-[#8892b0]">{item.time}</span>
                         </div>
                         <div className="mb-1 flex flex-wrap gap-1">
-                          <span className={`inline-block rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${TYPE_CHIP[item.type] || "bg-white/10 text-slate-400"}`}>
+                          <span className={`inline-block rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${TYPE_CHIP[item.type] || "bg-white/10 text-[#aab3cf]"}`}>
                             {item.type}
                           </span>
-                          <span className={`inline-block rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${STATUS_CHIP[item.status] || "bg-white/10 text-slate-400"}`}>
+                          <span className={`inline-block rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${STATUS_CHIP[item.status] || "bg-white/10 text-[#aab3cf]"}`}>
                             {item.status}
                           </span>
                         </div>
-                        <p className="text-[11px] text-slate-200 leading-tight line-clamp-3">{item.description}</p>
+                        <p className="text-[11px] text-[#e4e9f5] leading-tight line-clamp-3">{item.description}</p>
                       </div>
                     );
                   })}

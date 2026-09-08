@@ -16,14 +16,14 @@ export function AdminPopup({ children, title = "Panel de Administración", hideT
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       {!hideTrigger && (
-        <SheetTrigger className="fixed bottom-6 right-6 z-50 bg-[#c77dff] hover:bg-[#b05eed] text-white border-0 shadow-lg shadow-purple-500/20 rounded-full w-12 h-12 p-0 flex items-center justify-center">
+        <SheetTrigger className="fixed bottom-6 right-6 z-50 bg-[#0094ff] hover:bg-[#00e1ff] text-white border-0 shadow-lg shadow-purple-500/20 rounded-full w-12 h-12 p-0 flex items-center justify-center">
           <FontAwesomeIcon icon={faGear} className="w-5 h-5" />
         </SheetTrigger>
       )}
       
-      <SheetContent side="right" className="bg-[#0b101d] text-white border-l border-white/10 w-full sm:max-w-xl md:max-w-2xl overflow-y-auto">
+      <SheetContent side="right" className="panel text-white border-l border-[#2a2a4a] w-full sm:max-w-xl md:max-w-2xl overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="text-white text-xl font-bold border-b border-white/10 pb-4">{title}</SheetTitle>
+          <SheetTitle className="text-white text-xl font-bold border-b border-[#2a2a4a] pb-4">{title}</SheetTitle>
         </SheetHeader>
         
         <div className="mt-6 flex-1 h-full overflow-y-auto w-full pb-10">

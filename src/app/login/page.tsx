@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { LinkyIcon } from "@/components/linky-icon";
 import { ScrambleText } from "@/components/scramble-text";
+import { BackdropOrbs } from "@/components/backdrop-orbs";
 
 const initialState: AuthState = {
   error: null,
@@ -60,10 +61,11 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="h-screen w-full page-bg flex items-center justify-center font-sans antialiased relative overflow-hidden px-4">
+    <div className="h-screen w-full bg-background page-bg flex items-center justify-center font-sans antialiased relative overflow-hidden px-4">
+      <BackdropOrbs grid />
       {introPhase !== "hidden" && (
         <div
-          className={`fixed inset-0 z-[60] flex items-center justify-center overflow-hidden bg-[#03060d] transition-opacity duration-700 ease-in ${
+          className={`fixed inset-0 z-[60] flex items-center justify-center overflow-hidden well transition-opacity duration-700 ease-in ${
             introPhase === "exiting" ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         >
@@ -79,7 +81,7 @@ export default function LoginPage() {
                 text={word}
                 startDelay={WORD_START_MS + i * WORD_STAGGER_MS}
                 duration={WORD_DECODE_MS}
-                className="whitespace-nowrap text-lg font-semibold text-slate-400 sm:text-2xl"
+                className="whitespace-nowrap text-lg font-semibold text-[#aab3cf] sm:text-2xl"
               />
             ))}
           </div>
@@ -96,7 +98,7 @@ export default function LoginPage() {
                 text={word}
                 startDelay={WORD_START_MS + i * WORD_STAGGER_MS}
                 duration={WORD_DECODE_MS}
-                className="whitespace-nowrap text-lg font-semibold text-slate-400 sm:text-2xl"
+                className="whitespace-nowrap text-lg font-semibold text-[#aab3cf] sm:text-2xl"
               />
             ))}
           </div>
@@ -108,12 +110,12 @@ export default function LoginPage() {
                 : "opacity-100 scale-100 translate-x-0 translate-y-0"
             }`}
           >
-            <LinkyIcon className="intro-bird-enter h-24 w-auto drop-shadow-[0_0_40px_rgba(59,130,246,0.6)]" />
+            <LinkyIcon className="intro-bird-enter h-24 w-auto drop-shadow-[0_0_40px_rgba(0,148,255,0.6)]" />
             <div className="flex flex-col items-center gap-1">
-              <span className="intro-fade text-[11px] uppercase tracking-[0.35em] text-slate-400 font-bold">
+              <span className="intro-fade text-[11px] uppercase tracking-[0.35em] text-[#aab3cf] font-bold">
                 Centro de Mando Digital
               </span>
-              <h2 className="flex text-4xl font-black gradient-text text-glow-blue">
+              <h2 className="font-heading flex text-4xl font-semibold gradient-text text-glow-blue">
                 {"LinkTIC".split("").map((ch, i) => (
                   <span
                     key={i}
@@ -130,11 +132,11 @@ export default function LoginPage() {
       )}
 
       {isPending && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-[#03060d]/90 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 well">
           <div className="loading-ring w-40 h-40 flex items-center justify-center">
-            <LinkyIcon className="h-20 w-auto drop-shadow-[0_0_30px_rgba(59,130,246,0.5)]" />
+            <LinkyIcon className="h-20 w-auto drop-shadow-[0_0_30px_rgba(0,148,255,0.5)]" />
           </div>
-          <p className="text-slate-400 text-[10px] uppercase tracking-[0.2em] font-bold animate-pulse">
+          <p className="text-[#aab3cf] text-[10px] uppercase tracking-[0.2em] font-bold animate-pulse">
             Validando acceso...
           </p>
         </div>
@@ -144,48 +146,45 @@ export default function LoginPage() {
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
         <LinkyIcon
           fly
-          className="absolute left-[-1.5rem] bottom-[-1rem] w-[65vw] h-auto opacity-25 drop-shadow-[0_0_60px_rgba(59,130,246,0.4)] sm:left-[-4rem] sm:bottom-[-3rem] sm:h-[85vh] sm:w-auto"
+          className="absolute left-[-1.5rem] bottom-[-1rem] w-[65vw] h-auto opacity-25 drop-shadow-[0_0_60px_rgba(0,148,255,0.4)] sm:left-[-4rem] sm:bottom-[-3rem] sm:h-[85vh] sm:w-auto"
         />
       </div>
 
-      <div
-        className="neon-frame glass border rounded-3xl p-10 w-full max-w-md flex flex-col items-center z-10"
-        style={{ background: "linear-gradient(180deg, hsl(222 40% 11% / 0.5), hsl(222 44% 7% / 0.5))" }}
-      >
-        <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mb-6 ring-4 ring-blue-500/20">
-          <span className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] text-white">LT</span>
+      <div className="neon-frame glass-strong rounded-3xl p-10 w-full max-w-md flex flex-col items-center z-10">
+        <div className="w-20 h-20 rounded-full bg-[linear-gradient(90deg,#0094ff,#2709cd)] flex items-center justify-center mb-6 shadow-[0_0_28px_rgba(0,148,255,0.45)]">
+          <span className="text-3xl font-bold drop-shadow-[0_0_10px_rgba(0,148,255,0.8)] text-white">LT</span>
         </div>
 
-        <h1 className="text-2xl font-black mb-1 tracking-tight gradient-text text-glow-blue">Centro de Mando Digital LinkTIC</h1>
-        <p className="text-slate-400 mb-8 text-center text-sm">Ingresa tus credenciales para acceder al Centro de Mando Digital LinkTIC</p>
+        <h1 className="font-heading text-2xl font-semibold mb-1 tracking-tight gradient-text text-glow-blue">Centro de Mando Digital LinkTIC</h1>
+        <p className="text-[#aab3cf] mb-8 text-center text-sm">Ingresa tus credenciales para acceder al Centro de Mando Digital LinkTIC</p>
         
         <form action={formAction} className="w-full space-y-4">
           <div className="space-y-2">
-            <label className="text-[10px] text-slate-400 uppercase tracking-widest font-bold px-1">Usuario</label>
+            <label className="text-[10px] text-[#aab3cf] uppercase tracking-widest font-bold px-1">Usuario</label>
             <div className="relative">
-              <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
-              <Input 
+              <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8892b0] w-4 h-4" />
+              <Input
                 name="email"
-                type="text" 
+                type="text"
                 placeholder="Ej: admin_linktic"
                 required
                 autoComplete="username"
-                className="pl-10 h-12 bg-[#161d2b] border-white/10 text-white rounded-xl focus:border-blue-500 focus:ring-blue-500 transition-all"
+                className="input-glass pl-10 h-12 text-white"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] text-slate-400 uppercase tracking-widest font-bold px-1">Contraseña</label>
+            <label className="text-[10px] text-[#aab3cf] uppercase tracking-widest font-bold px-1">Contraseña</label>
             <div className="relative">
-              <FontAwesomeIcon icon={faLock} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
-              <Input 
+              <FontAwesomeIcon icon={faLock} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8892b0] w-4 h-4" />
+              <Input
                 name="password"
-                type="password" 
+                type="password"
                 placeholder="••••••••"
                 required
                 autoComplete="current-password"
-                className="pl-10 h-12 bg-[#161d2b] border-white/10 text-white rounded-xl focus:border-blue-500 focus:ring-blue-500 transition-all font-mono"
+                className="input-glass pl-10 h-12 text-white font-mono"
               />
             </div>
           </div>
@@ -196,16 +195,17 @@ export default function LoginPage() {
             </div>
           )}
           
-          <Button 
-              type="submit" 
+          <Button
+              type="submit"
+              variant="neon"
               disabled={isPending}
-              className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20 transition-all mt-4"
+              className="w-full h-12 mt-4"
           >
             {isPending ? "Validando..." : "Ingresar al Tablero"}
           </Button>
         </form>
         
-        <div className="mt-8 text-[10px] text-slate-500 uppercase tracking-[0.2em] font-medium opacity-50">
+        <div className="mt-8 text-[10px] text-[#8892b0] uppercase tracking-[0.2em] font-medium opacity-50">
           SISTEMA DE SEGURIDAD LINKTIC
         </div>
       </div>
