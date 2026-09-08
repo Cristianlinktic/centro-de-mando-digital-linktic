@@ -89,7 +89,7 @@ export default function ImportarPage() {
             onDrop={onDrop}
             onClick={() => inputRef.current?.click()}
             className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-14 text-center transition-all ${
-              dragging ? "border-[#0094ff] bg-[#0094ff]/10" : "border-white/15 bg-white/3 hover:border-[#0094ff]/50 hover:bg-[#0094ff]/5"
+              dragging ? "border-[#0094ff] bg-[#0094ff]/10" : "border-[#2a2a4a] bg-white/3 hover:border-[#0094ff]/50 hover:bg-[#0094ff]/5"
             }`}
           >
             <input ref={inputRef} type="file" accept=".xlsx" className="hidden" onChange={onPick} />
@@ -131,7 +131,7 @@ export default function ImportarPage() {
                 <Item label="Canales" value={String(summary.channels)} />
                 <Item label="Días cargados" value={String(summary.days)} />
               </dl>
-              <a href="/estrategia-digital" className="neon-btn mt-4 inline-block rounded-xl px-4 py-2 text-sm font-bold">
+              <a href="/interno/estrategia-digital" className="mt-4 inline-block rounded-xl bg-[#0094ff] hover:bg-[#0080e6] px-4 py-2 text-sm font-bold text-white transition-colors">
                 Ver dashboard
               </a>
             </div>

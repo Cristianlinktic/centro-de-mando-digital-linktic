@@ -8,6 +8,7 @@ import { canEdit } from "@/lib/auth/rbac";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faSave, faLock } from "@fortawesome/free-solid-svg-icons";
 
@@ -57,7 +58,7 @@ export default function AdminPage() {
         await supabase.from('content_manager_elecciones_kpis').insert(kpi);
       }
     }
-    alert("Datos guardados correctamente!");
+    toast.success("Datos guardados correctamente");
     fetchKpis();
     setSaving(false);
   };

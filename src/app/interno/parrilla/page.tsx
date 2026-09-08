@@ -7,6 +7,7 @@ import { canEdit } from "@/lib/auth/rbac";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -16,103 +17,41 @@ import {
   faRotate,
   faXmark,
   faLayerGroup,
+  faChevronLeft,
+  faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { faFacebook, faInstagram, faTiktok, faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import * as XLSX from "xlsx";
+import {
+  type ContentItem,
+  type ContentStatus,
+  type ContentType,
+  type CustomTab,
+  type PlatformId,
+  HOURS,
+  PLATFORMS,
+  TYPE_OPTIONS,
+  STATUS_OPTIONS,
+  inputCls,
+  platformById,
+} from "./types";
+import {
+  todayISO,
+  parseISO,
+  addDays,
+  addMonths,
+  formatMonthLabel,
+  formatWeekRangeLabel,
+  formatDayLabel,
+} from "./date-utils";
+import { MonthView } from "./month-view";
+import { WeekView } from "./week-view";
+import { DayView } from "./day-view";
 
-interface ViewerComment {
-  id: string;
-  name: string;
-  comment: string;
-  timestamp: string;
-}
-
-type PlatformId = "facebook" | "instagram" | "tiktok" | "x";
-
-type ContentType =
-  | "post"
-  | "reel"
-  | "Story"
-  | "Trino"
-  | "Trino + imagen"
-  | "entrecomillados"
-  | "Espacio reservado";
-
-type ContentStatus =
-  | "Publicado"
-  | "No Publicado"
-  | "Programado"
-  | "Rechazado"
-  | "Por crear contenido"
-  | "Publicado - Eliminado";
-
-interface ContentItem {
-  id: string;
-  time: string; // "HH:MM", 06:00–22:59
-  platform: PlatformId;
-  type: ContentType;
-  description: string;
-  status: ContentStatus;
-  duration: number;
-  url: string | null;
-  comments: string | null;
-  kpi: string | null;
-  viewer_comments: ViewerComment[];
-}
-
-interface CustomTab {
-  id: string;
-  key: string;
-  label: string;
-  table_name: string;
-  created_at: string;
-}
-
-const HOURS = [
-  "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00",
-  "13:00", "14:00", "15:00", "16:00", "17:00", "18:00",
-  "19:00", "20:00", "21:00", "22:00",
-];
-
-const PLATFORMS: { id: PlatformId; name: string; icon: typeof faFacebook; color: string }[] = [
-  { id: "facebook", name: "Facebook", icon: faFacebook, color: "#0094ff" },
-  { id: "instagram", name: "Instagram", icon: faInstagram, color: "#e1306c" },
-  { id: "tiktok", name: "TikTok", icon: faTiktok, color: "#00e1ff" },
-  { id: "x", name: "X (Twitter)", icon: faXTwitter, color: "#a78bfa" },
-];
-
-const TYPE_OPTIONS: ContentType[] = [
-  "post", "reel", "Story", "Trino", "Trino + imagen", "entrecomillados", "Espacio reservado",
-];
-
-const STATUS_OPTIONS: ContentStatus[] = [
-  "Publicado", "No Publicado", "Programado", "Rechazado", "Por crear contenido", "Publicado - Eliminado",
-];
-
-const TYPE_CHIP: Record<string, string> = {
-  post: "bg-[#00e1ff]/15 text-[#00e1ff]",
-  reel: "bg-fuchsia-500/15 text-fuchsia-300",
-  Story: "bg-violet-500/15 text-violet-300",
-  Trino: "bg-[#00e1ff]/15 text-[#00e1ff]",
-  "Trino + imagen": "bg-teal-500/15 text-teal-300",
-  entrecomillados: "bg-amber-500/15 text-amber-300",
-  "Espacio reservado": "bg-white/5 text-[#aab3cf] border border-dashed border-[#2b62ff]/40",
-};
-
-const STATUS_CHIP: Record<string, string> = {
-  Publicado: "bg-emerald-500/15 text-emerald-300",
-  "No Publicado": "bg-white/10 text-[#aab3cf]",
-  Programado: "bg-[#00e1ff]/15 text-[#00e1ff]",
-  Rechazado: "bg-rose-500/15 text-rose-300",
-  "Por crear contenido": "bg-amber-500/15 text-amber-300",
-  "Publicado - Eliminado": "bg-rose-500/10 text-rose-400",
-};
-
-const inputCls =
-  "w-full rounded-lg well border border-[#2a2a4a] px-3 py-2 text-sm text-white placeholder:text-[#8892b0] focus:outline-none focus:border-[#0094ff]/50";
+type ViewMode = "day" | "week" | "month";
 
 const emptyForm = {
   id: "",
+  date: todayISO(),
   hour: "07",
   minute: "00",
   duration: 60,
@@ -141,6 +80,9 @@ export default function ParrillaPage() {
   const [items, setItems] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [now, setNow] = useState<Date | null>(null);
+
+  const [viewMode, setViewMode] = useState<ViewMode>("month");
+  const [cursorDate, setCursorDate] = useState<Date>(() => new Date());
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
@@ -179,10 +121,10 @@ export default function ParrillaPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const openAddModal = (hour: string, platform: PlatformId) => {
+  const openAddModal = (date: Date, hour: string) => {
     if (!editing) return;
     const [h] = hour.split(":");
-    setForm({ ...emptyForm, hour: h, platform });
+    setForm({ ...emptyForm, date: toISOSafe(date), hour: h });
     setIsModalOpen(true);
   };
 
@@ -191,6 +133,7 @@ export default function ParrillaPage() {
     const [h, m] = (item.time || "07:00").split(":");
     setForm({
       id: item.id,
+      date: item.date || todayISO(),
       hour: h || "07",
       minute: m || "00",
       duration: item.duration || 60,
@@ -208,13 +151,14 @@ export default function ParrillaPage() {
   const saveItem = async (e: React.FormEvent, forceNew = false) => {
     e.preventDefault();
     if (!form.description.trim()) {
-      alert("Escribe el texto o descripción del contenido.");
+      toast.error("Falta la descripción", "Escribe el texto o descripción del contenido.");
       return;
     }
     const id = forceNew ? Date.now().toString() : form.id || Date.now().toString();
     const existing = items.find((i) => i.id === id);
     const item: ContentItem = {
       id,
+      date: form.date || todayISO(),
       time: `${form.hour}:${form.minute}`,
       platform: form.platform,
       type: form.type,
@@ -231,7 +175,7 @@ export default function ParrillaPage() {
     const { error } = await supabase.from("dashboard_content").upsert({ id: item.id, content: item });
     setSaving(false);
     if (error) {
-      alert("Error al guardar: " + error.message);
+      toast.error("Error al guardar", error.message);
       return;
     }
     setItems((prev) => {
@@ -243,6 +187,7 @@ export default function ParrillaPage() {
       }
       return [...prev, item];
     });
+    toast.success("Publicación guardada", `${item.date} · ${item.time} en ${platformById[item.platform]?.name || item.platform}.`);
     setIsModalOpen(false);
   };
 
@@ -252,25 +197,26 @@ export default function ParrillaPage() {
     const { error } = await supabase.from("dashboard_content").delete().eq("id", itemToDelete);
     setSaving(false);
     if (error) {
-      alert("Error al eliminar: " + error.message);
+      toast.error("Error al eliminar", error.message);
       return;
     }
     setItems((prev) => prev.filter((i) => i.id !== itemToDelete));
     setItemToDelete(null);
     setIsModalOpen(false);
+    toast.success("Publicación eliminada");
   };
 
   const addViewerComment = async () => {
     if (!viewItem || !viewerName.trim() || !viewerComment.trim()) {
-      alert("Ingresa tu nombre y un comentario.");
+      toast.error("Faltan datos", "Ingresa tu nombre y un comentario.");
       return;
     }
     const timestamp = new Date().toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit", hour12: false });
-    const newComment: ViewerComment = { id: Date.now().toString(), name: viewerName, comment: viewerComment, timestamp };
+    const newComment = { id: Date.now().toString(), name: viewerName, comment: viewerComment, timestamp };
     const updated: ContentItem = { ...viewItem, viewer_comments: [...(viewItem.viewer_comments || []), newComment] };
     const { error } = await supabase.from("dashboard_content").upsert({ id: updated.id, content: updated });
     if (error) {
-      alert("Error al comentar: " + error.message);
+      toast.error("Error al comentar", error.message);
       return;
     }
     setViewItem(updated);
@@ -291,29 +237,43 @@ export default function ParrillaPage() {
         const rows = XLSX.utils.sheet_to_json(ws) as any[];
         if (!rows.length) return;
 
-        const parsed: ContentItem[] = rows.map((row) => ({
-          id: (row["ID"] || row["id"] || Date.now() + Math.random()).toString(),
-          time: (row["Hora"] || row["time"] || "07:00").toString(),
-          platform: (row["Plataforma"] || row["platform"] || "facebook").toString().toLowerCase() as PlatformId,
-          type: (row["Tipo"] || row["type"] || "post") as ContentType,
-          status: (row["Estado"] || row["status"] || "Programado") as ContentStatus,
-          description: (row["Descripcion"] || row["Descripción"] || row["description"] || "").toString(),
-          duration: parseInt(row["Duracion"] || row["duration"]) || 60,
-          url: row["URL"] || row["url"] || null,
-          comments: row["Comentarios"] || row["comments"] || null,
-          kpi: row["KPI"] || row["kpi"] || null,
-          viewer_comments: [],
-        }));
+        const parsed: ContentItem[] = rows.map((row) => {
+          let fecha = row["Fecha"] || row["fecha"] || row["date"];
+          if (typeof fecha === "number") {
+            // Excel guarda fechas como número de días desde 1899-12-30
+            fecha = toISOSafe(new Date((fecha - 25569) * 86400 * 1000));
+          } else if (fecha) {
+            const d = new Date(fecha);
+            fecha = isNaN(d.getTime()) ? todayISO() : toISOSafe(d);
+          } else {
+            fecha = todayISO();
+          }
+
+          return {
+            id: (row["ID"] || row["id"] || Date.now() + Math.random()).toString(),
+            date: fecha,
+            time: (row["Hora"] || row["time"] || "07:00").toString(),
+            platform: (row["Plataforma"] || row["platform"] || "facebook").toString().toLowerCase() as PlatformId,
+            type: (row["Tipo"] || row["type"] || "post") as ContentType,
+            status: (row["Estado"] || row["status"] || "Programado") as ContentStatus,
+            description: (row["Descripcion"] || row["Descripción"] || row["description"] || "").toString(),
+            duration: parseInt(row["Duracion"] || row["duration"]) || 60,
+            url: row["URL"] || row["url"] || null,
+            comments: row["Comentarios"] || row["comments"] || null,
+            kpi: row["KPI"] || row["kpi"] || null,
+            viewer_comments: [],
+          };
+        });
 
         const { error } = await supabase
           .from("dashboard_content")
           .upsert(parsed.map((item) => ({ id: item.id, content: item })));
         if (error) throw error;
         await fetchContent();
-        alert(`Importación finalizada: ${parsed.length} publicaciones.`);
+        toast.success("Importación finalizada", `${parsed.length} publicaciones procesadas.`);
       } catch (err: any) {
         console.error(err);
-        alert("Error procesando Excel: " + (err.message || ""));
+        toast.error("Error al procesar el Excel", err.message || "Revisa el formato del archivo.");
       }
     };
     reader.readAsBinaryString(file);
@@ -329,12 +289,13 @@ export default function ParrillaPage() {
       table_name: tableName,
     });
     if (error) {
-      alert("Error al registrar la pestaña: " + error.message);
+      toast.error("Error al registrar la pestaña", error.message);
       return;
     }
     setGeneratedSql(
 `CREATE TABLE IF NOT EXISTS centro_mando.${tableName} (
     id TEXT PRIMARY KEY,
+    date TEXT,
     time TEXT,
     platform TEXT,
     type TEXT,
@@ -357,7 +318,24 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
     fetchCustomTabs();
   };
 
-  const platformById = useMemo(() => Object.fromEntries(PLATFORMS.map((p) => [p.id, p])), []);
+  // Navegación del calendario
+  const goToday = () => setCursorDate(new Date());
+  const goPrev = () => {
+    if (viewMode === "month") setCursorDate((d) => addMonths(d, -1));
+    else if (viewMode === "week") setCursorDate((d) => addDays(d, -7));
+    else setCursorDate((d) => addDays(d, -1));
+  };
+  const goNext = () => {
+    if (viewMode === "month") setCursorDate((d) => addMonths(d, 1));
+    else if (viewMode === "week") setCursorDate((d) => addDays(d, 7));
+    else setCursorDate((d) => addDays(d, 1));
+  };
+
+  const rangeLabel = useMemo(() => {
+    if (viewMode === "month") return formatMonthLabel(cursorDate);
+    if (viewMode === "week") return formatWeekRangeLabel(cursorDate);
+    return formatDayLabel(cursorDate);
+  }, [viewMode, cursorDate]);
 
   if (loading) {
     return (
@@ -382,7 +360,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
           </div>
           <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Parrilla de Contenidos</h1>
           <p className="text-[#aab3cf] text-sm">
-            Planificación horaria de publicaciones en redes — Centro de Mando Digital LinkTIC.
+            Calendario de publicaciones en redes — Centro de Mando Digital LinkTIC.
           </p>
         </div>
         <div className="flex gap-2">
@@ -418,7 +396,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               onChange={(e) => setNewTabLabel(e.target.value)}
               className="well border-[#2a2a4a] h-9 text-sm flex-1"
             />
-            <Button size="sm" variant="neon" onClick={createCustomTab}>
+            <Button size="sm" onClick={createCustomTab} className="bg-[#0094ff] hover:bg-[#0080e6]">
               <FontAwesomeIcon icon={faPlus} className="mr-2" /> Registrar
             </Button>
           </div>
@@ -444,94 +422,81 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
         </Card>
       )}
 
-      {/* Grid */}
-      <div className="panel border border-[#1e2240] rounded-2xl neon-frame overflow-auto" style={{ maxHeight: "calc(100vh - 260px)" }}>
-        <div className="grid min-w-[1100px]" style={{ gridTemplateColumns: "80px repeat(4, minmax(240px, 1fr))" }}>
-          <div className="sticky top-0 left-0 z-30 flex items-center justify-center border-b border-r border-[#2a2a4a] panel p-4 text-xs font-bold uppercase tracking-wide text-[#aab3cf]">
-            Hora
-          </div>
-          {PLATFORMS.map((plat) => (
-            <div
-              key={plat.id}
-              className="sticky top-0 z-20 flex items-center gap-2 border-b border-[#2a2a4a] panel p-4 text-sm font-bold"
-              style={{ color: plat.color, boxShadow: `inset 0 -2px 0 0 ${plat.color}` }}
+      {/* Barra de navegación del calendario */}
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={goToday} className="panel border-[#2a2a4a] text-white">
+            Hoy
+          </Button>
+          <Button variant="outline" size="sm" onClick={goPrev} className="panel border-[#2a2a4a] text-white h-8 w-8 p-0">
+            <FontAwesomeIcon icon={faChevronLeft} className="h-3 w-3" />
+          </Button>
+          <Button variant="outline" size="sm" onClick={goNext} className="panel border-[#2a2a4a] text-white h-8 w-8 p-0">
+            <FontAwesomeIcon icon={faChevronRight} className="h-3 w-3" />
+          </Button>
+          <h2 className="text-lg font-bold text-[#ffffff] ml-2 capitalize">{rangeLabel}</h2>
+        </div>
+        <div className="flex gap-1 rounded-lg bg-white/5 p-1">
+          {(["day", "week", "month"] as ViewMode[]).map((v) => (
+            <button
+              key={v}
+              onClick={() => setViewMode(v)}
+              className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wide transition-colors ${
+                viewMode === v ? "bg-[#0094ff] text-white" : "text-[#aab3cf] hover:text-white"
+              }`}
             >
-              <FontAwesomeIcon icon={plat.icon} className="w-4 h-4" />
-              {plat.name}
-            </div>
+              {v === "day" ? "Día" : v === "week" ? "Semana" : "Mes"}
+            </button>
           ))}
-
-          {HOURS.map((hour) => {
-            const rowH = parseInt(hour.split(":")[0], 10);
-            const isActive = now ? now.getHours() === rowH : false;
-            const progressPct = now ? (now.getMinutes() / 60) * 100 : 0;
-
-            return (
-              <div key={hour} className="contents">
-                <div
-                  className={`sticky left-0 z-10 h-[140px] border-b border-r border-[#1e2240] flex items-center justify-center text-sm font-mono font-bold ${
-                    isActive ? "bg-amber-500/10 text-amber-300" : "panel text-[#aab3cf]"
-                  }`}
-                >
-                  {hour}
-                </div>
-                {PLATFORMS.map((plat) => {
-                  const cellItems = items.filter((i) => i.time?.startsWith(hour.split(":")[0]) && i.platform === plat.id);
-                  return (
-                    <div
-                      key={`${hour}-${plat.id}`}
-                      className="group relative h-[140px] border-b border-r border-[#1e2240] hover:bg-white/5 transition-colors"
-                      onClick={() => openAddModal(hour, plat.id)}
-                    >
-                      {isActive && (
-                        <div className="pointer-events-none absolute left-0 right-0 h-0.5 bg-rose-400 z-10" style={{ top: `${progressPct}%` }} />
-                      )}
-                      {editing && (
-                        <button
-                          className="absolute right-1.5 top-1.5 z-20 flex h-5 w-5 items-center justify-center rounded-full bg-[#0094ff] text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openAddModal(hour, plat.id);
-                          }}
-                          title="Añadir contenido"
-                        >
-                          +
-                        </button>
-                      )}
-                      <div className="p-1.5 space-y-1.5 overflow-y-auto h-full">
-                        {cellItems.map((item) => (
-                          <div
-                            key={item.id}
-                            className="rounded-lg p-2 cursor-pointer hover:brightness-110 transition-all"
-                            style={{
-                              backgroundColor: "rgba(255,255,255,0.04)",
-                              borderLeft: `3px solid ${plat.color}`,
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              editing ? openEditModal(item) : setViewItem(item);
-                            }}
-                          >
-                            <div className="flex items-center justify-between gap-1 mb-1">
-                              <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${TYPE_CHIP[item.type] || "bg-white/10 text-[#aab3cf]"}`}>
-                                {item.type}
-                              </span>
-                              <span className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${STATUS_CHIP[item.status] || "bg-white/10 text-[#aab3cf]"}`}>
-                                {item.time}
-                              </span>
-                            </div>
-                            <p className="text-[11px] text-[#e4e9f5] leading-tight line-clamp-3">{item.description}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
         </div>
       </div>
+
+      {/* Leyenda de plataformas */}
+      <div className="mb-4 flex flex-wrap gap-3">
+        {PLATFORMS.map((p) => (
+          <div key={p.id} className="flex items-center gap-1.5 text-[11px] font-bold text-[#aab3cf]">
+            <FontAwesomeIcon icon={p.icon} className="h-3 w-3" style={{ color: p.color }} />
+            {p.name}
+          </div>
+        ))}
+      </div>
+
+      {/* Vista de calendario */}
+      {viewMode === "month" && (
+        <MonthView
+          cursorDate={cursorDate}
+          items={items}
+          onSelectDay={(d) => {
+            setCursorDate(d);
+            setViewMode("day");
+          }}
+          onItemClick={(item) => (editing ? openEditModal(item) : setViewItem(item))}
+        />
+      )}
+      {viewMode === "week" && (
+        <WeekView
+          cursorDate={cursorDate}
+          items={items}
+          editing={editing}
+          now={now}
+          onSelectDay={(d) => {
+            setCursorDate(d);
+            setViewMode("day");
+          }}
+          onAddSlot={(d, hour) => openAddModal(d, hour)}
+          onItemClick={(item) => (editing ? openEditModal(item) : setViewItem(item))}
+        />
+      )}
+      {viewMode === "day" && (
+        <DayView
+          date={cursorDate}
+          items={items}
+          editing={editing}
+          now={now}
+          onAddSlot={(hour) => openAddModal(cursorDate, hour)}
+          onItemClick={(item) => (editing ? openEditModal(item) : setViewItem(item))}
+        />
+      )}
 
       {/* Add/Edit Modal */}
       {isModalOpen && (
@@ -545,6 +510,10 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
             </div>
             <form onSubmit={saveItem} className="p-5 space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div>
+                  <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Fecha</label>
+                  <Input type="date" className={`${inputCls} [color-scheme:dark]`} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+                </div>
                 <div>
                   <label className="text-[10px] font-bold uppercase text-[#8892b0] mb-1 block">Hora</label>
                   <select className={inputCls} value={form.hour} onChange={(e) => setForm({ ...form, hour: e.target.value })}>
@@ -620,7 +589,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                     Guardar como nuevo
                   </Button>
                 )}
-                <Button type="submit" variant="neon" disabled={saving}>
+                <Button type="submit" disabled={saving} className="bg-[#0094ff] hover:bg-[#0080e6]">
                   <FontAwesomeIcon icon={faSave} className="mr-2" /> {form.id ? "Guardar Cambios" : "Guardar"}
                 </Button>
                 {form.id && (
@@ -645,10 +614,14 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               </button>
             </div>
             <div className="p-5 space-y-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
                   <span className="text-[10px] font-bold uppercase text-[#8892b0] block">Plataforma</span>
                   <span className="text-sm capitalize">{platformById[viewItem.platform]?.name}</span>
+                </div>
+                <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
+                  <span className="text-[10px] font-bold uppercase text-[#8892b0] block">Fecha</span>
+                  <span className="text-sm">{viewItem.date || "—"}</span>
                 </div>
                 <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
                   <span className="text-[10px] font-bold uppercase text-[#8892b0] block">Hora</span>
@@ -685,7 +658,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                 <div className="flex gap-2">
                   <Input placeholder="Tu nombre" value={viewerName} onChange={(e) => setViewerName(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs w-32" />
                   <Input placeholder="Comentario..." value={viewerComment} onChange={(e) => setViewerComment(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs flex-1" />
-                  <Button size="sm" variant="neon" onClick={addViewerComment} className="h-8">
+                  <Button size="sm" onClick={addViewerComment} className="bg-[#0094ff] hover:bg-[#0080e6] h-8">
                     Enviar
                   </Button>
                 </div>
@@ -718,4 +691,11 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       )}
     </div>
   );
+}
+
+function toISOSafe(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }

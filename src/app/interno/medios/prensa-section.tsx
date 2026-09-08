@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { toast } from "@/components/ui/toast";
 import {
   faRotate,
   faSave,
@@ -18,7 +19,6 @@ import {
   faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
 import {
   LineChart,
   Line,
@@ -111,7 +111,7 @@ function SentimentDonut({ positivo, negativo }: { positivo: number; negativo: nu
                 <Cell key={d.name} fill={d.color} stroke="none" />
               ))}
             </Pie>
-            <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
+            <Tooltip contentStyle={{ backgroundColor: "#0d1120", border: "1px solid #1e2240", borderRadius: 12 }} />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -241,7 +241,7 @@ function UbicacionesPanel({
   );
 }
 
-export default function PrensaPage() {
+export function PrensaSection() {
   const { role } = useAuth();
   const editable = canEdit(role);
 
@@ -351,10 +351,10 @@ export default function PrensaPage() {
       if (error) throw error;
       setIsEditing(false);
       await loadDaily(selectedDate);
-      alert("¡Datos guardados con éxito!");
+      toast.success("Datos guardados", "El monitoreo de prensa del día quedó guardado.");
     } catch (err) {
       console.error(err);
-      alert("Error al guardar datos");
+      toast.error("Error al guardar", "No se pudieron guardar los datos. Intenta de nuevo.");
     }
   };
 
@@ -371,18 +371,18 @@ export default function PrensaPage() {
   );
 
   if (loading && !displayData) {
-    return <div className="h-screen page-bg text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Análisis de Prensa...</div>;
+    return <div className="h-64 text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Análisis de Prensa...</div>;
   }
 
   return (
-    <div className="page-bg text-white p-6">
+    <>
       {/* Header */}
       <div className="mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
           <div className="flex gap-2 mb-2">
             <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">MONITOREO DE PRENSA</span>
           </div>
-          <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Análisis de Prensa</h1>
+          <h2 className="text-2xl font-bold mb-1 gradient-text text-glow-blue">Análisis de Prensa</h2>
           <p className="text-[#aab3cf] text-sm">Impacto, cobertura y sentimiento en medios de comunicación.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -449,7 +449,7 @@ export default function PrensaPage() {
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
                   <XAxis dataKey="fecha" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 11 }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 11 }} />
-                  <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
+                  <Tooltip contentStyle={{ backgroundColor: "#0d1120", border: "1px solid #1e2240", borderRadius: 12 }} />
                   <Legend wrapperStyle={{ fontSize: 11 }} />
                   <Line type="monotone" dataKey="menciones" name="Menciones" stroke="#0094ff" strokeWidth={2} dot={false} />
                   <Line type="monotone" dataKey="audiencia" name="Audiencia" stroke="#2eb88a" strokeWidth={2} dot={false} />
@@ -530,6 +530,6 @@ export default function PrensaPage() {
           </div>
         </SheetContent>
       </Sheet>
-    </div>
+    </>
   );
 }

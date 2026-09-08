@@ -9,23 +9,16 @@ import { Badge } from "@/components/ui/badge";
 import { signOut } from "@/app/actions/auth";
 import { LinkyIcon } from "@/components/linky-icon";
 
-const pageMeta: Record<string, { title: string }> = {
-  "/testigos": { title: "Centro de Mando Digital LinkTIC" },
-  "/medios": { title: "Centro de Mando Digital LinkTIC" },
-  "/social": { title: "Centro de Mando Digital LinkTIC" },
-  "/mapa": { title: "Centro de Mando Digital LinkTIC" },
-  "/nacional": { title: "Centro de Mando Digital LinkTIC" },
-  "/mapa-colombia": { title: "Centro de Mando Digital LinkTIC" },
-  "/instagram": { title: "Centro de Mando Digital LinkTIC" },
-  "/redes-sociales": { title: "Centro de Mando Digital LinkTIC" },
-  "/prensa": { title: "Centro de Mando Digital LinkTIC" },
-  "/parrilla": { title: "Centro de Mando Digital LinkTIC" },
-  "/estrategia-digital": { title: "Centro de Mando Digital LinkTIC" },
-};
+/** El título del header sigue siempre a la pestaña de alto nivel activa
+ *  (Interno/Externo), no a la pantalla puntual dentro de ella. */
+function titleForPath(pathname: string): string {
+  if (pathname.startsWith("/externo")) return "Centro de Mando Digital Externo";
+  return "Centro de Mando Digital Interno";
+}
 
 export function AppHeader() {
   const pathname = usePathname();
-  const meta = pageMeta[pathname] || pageMeta["/mapa"];
+  const meta = { title: titleForPath(pathname) };
   const { state, isMobile } = useSidebar();
   const { role } = useAuth();
   const [time, setTime] = useState("");

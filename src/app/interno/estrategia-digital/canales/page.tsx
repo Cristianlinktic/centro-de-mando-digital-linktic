@@ -11,6 +11,7 @@ import { computeChannels, computeTotals } from "@/lib/campana/calc";
 import { CHANNELS } from "@/lib/campana/constants";
 import { formatCOP, formatDecimal, formatNumber, formatPercent } from "@/lib/campana/format";
 import type { CampaignChannel, CampaignData } from "@/lib/campana/types";
+import { toast } from "@/components/ui/toast";
 import {
   ResponsiveContainer,
   BarChart,
@@ -173,8 +174,9 @@ function ChannelCard({
       });
       setEditing(false);
       onSaved();
+      toast.success("Canal guardado");
     } catch (e) {
-      alert("No se pudo guardar el canal.");
+      toast.error("Error al guardar", "No se pudo guardar el canal.");
       console.error(e);
     } finally {
       setSaving(false);

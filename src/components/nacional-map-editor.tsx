@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DecimalInput } from "@/components/decimal-input";
 import { supabase } from "@/lib/supabase";
+import { toast } from "@/components/ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave, faChevronDown, faFileArrowDown, faFileArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { faTiktok, faXTwitter, faInstagram, faFacebook } from "@fortawesome/free-brands-svg-icons";
@@ -261,11 +262,11 @@ export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
           .upsert(payload, { onConflict: "id" });
         if (error) throw error;
       }
-      alert("Datos de conversación nacional por departamento guardados correctamente.");
+      toast.success("Datos guardados", "Conversación nacional por departamento actualizada.");
       onSaved();
     } catch (err: any) {
       console.error(err);
-      alert("Error al guardar: " + (err?.message || "revisa la consola. ¿Tienes rol admin y RLS configurado?"));
+      toast.error("Error al guardar", err?.message || "Revisa la consola. ¿Tienes rol admin y RLS configurado?");
     } finally {
       setSaving(false);
     }

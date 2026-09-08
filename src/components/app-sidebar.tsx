@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  ShieldCheck,
   Newspaper,
   Share2,
   Globe2,
@@ -11,10 +10,9 @@ import {
   Crosshair,
   Users,
   MapPinned,
-  Rss,
-  FileSearch,
   CalendarDays,
   Target,
+  Building2,
 } from "lucide-react";
 import {
   Sidebar,
@@ -30,37 +28,32 @@ import { useAuth } from "@/components/auth-provider";
 import { screenKeyForPath } from "@/lib/auth/rbac";
 
 const icons: Record<string, React.ComponentType<{ className?: string }>> = {
-  ShieldCheck,
   Newspaper,
   Share2,
   Globe2,
   MapPinned,
   Users,
-  Rss,
-  FileSearch,
   CalendarDays,
   Target,
 };
 
-// Navegación unificada — Centro de Mando Digital LinkTIC
+// Navegación de la pestaña "Interno" — Centro de Mando Digital LinkTIC
 const navItems = [
-  { path: "/mapa", label: "Mapa Global", icon: "Globe2", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
-  { path: "/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
-  { path: "/testigos", label: "Testigos Electorales", icon: "ShieldCheck" },
-  { path: "/medios", label: "Conversación en Medios", icon: "Newspaper" },
-  { path: "/social", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
-  { path: "/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#E1306C" },
-  { path: "/instagram", label: "Instagram", icon: "Instagram" },
-  { path: "/redes-sociales", label: "Redes Sociales", icon: "Rss" },
-  { path: "/prensa", label: "Análisis de Prensa", icon: "FileSearch" },
-  { path: "/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays" },
-  { path: "/estrategia-digital", label: "Estrategia Digital", icon: "Target" },
+  { path: "/interno/mapa", label: "Mapa Global", icon: "Globe2", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
+  { path: "/interno/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
+  { path: "/interno/medios", label: "Conversación en Medios", icon: "Newspaper" },
+  { path: "/interno/mapa-colombia", label: "Mapa de Colombia", icon: "MapPinned", badge: "IG", badgeBg: "#2a1020", badgeText: "#e1306c" },
+  { path: "/interno/instagram", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
+  { path: "/interno/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays" },
+  { path: "/interno/estrategia-digital", label: "Estrategia Publicitaria", icon: "Target" },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
   const { role, screens } = useAuth();
+
+  const activeGroup: "interno" | "externo" = pathname.startsWith("/externo") ? "externo" : "interno";
 
   // El superadmin ve todo; el resto solo las pantallas que tiene asignadas.
   const canSee = (path: string) => {
@@ -72,15 +65,15 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="glass border-r border-[#1e2240] [&>[data-slot=sidebar-inner]]:bg-transparent">
-      <SidebarHeader className="border-b border-border/40 px-4 py-4">
+      <SidebarHeader className="border-b border-[#1e2240] px-4 py-4">
         <div className="flex items-center gap-2">
           {/* Cabecera estática: Centro de Mando Digital LinkTIC */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[linear-gradient(90deg,#0094ff,#2709cd)] shrink-0 shadow-[0_0_12px_rgba(0,148,255,0.45)]">
-              <Crosshair className="h-3 w-3 text-white" />
+            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linktic-blue shrink-0">
+              <Crosshair className="h-3 w-3 text-linktic-gold" />
             </div>
             <div className="flex flex-col items-start flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-              <span className="text-sm font-bold text-foreground truncate max-w-full">Centro de Mando</span>
+              <span className="text-sm font-semibold text-foreground truncate max-w-full">Centro de Mando</span>
               <span className="text-[10px] text-muted-foreground truncate max-w-full">Digital LinkTIC</span>
             </div>
           </div>
@@ -92,54 +85,85 @@ export function AppSidebar() {
             <ChevronLeft className="h-4 w-4" />
           </button>
         </div>
+
+        {/* Pestañas de alto nivel: Interno / Externo */}
+        <div className="mt-3 grid grid-cols-2 gap-1 rounded-lg bg-black/20 p-1 group-data-[collapsible=icon]:hidden">
+          <Link
+            href="/interno/nacional"
+            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-bold transition-colors ${
+              activeGroup === "interno"
+                ? "bg-linktic-blue text-white shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Building2 className="h-3 w-3" /> Interno
+          </Link>
+          <Link
+            href="/externo"
+            className={`flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-bold transition-colors ${
+              activeGroup === "externo"
+                ? "bg-linktic-blue text-white shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Globe2 className="h-3 w-3" /> Externo
+          </Link>
+        </div>
       </SidebarHeader>
 
       <SidebarContent className="px-2 py-3">
         <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground mb-2 px-2 group-data-[collapsible=icon]:hidden">
-          Centro de Mando Digital LinkTIC
+          {activeGroup === "interno" ? "Centro de Mando Digital Interno" : "Centro de Mando Digital Externo"}
         </p>
-        <nav className="space-y-1">
-          {visibleItems.map((item) => {
-            const Icon = icons[item.icon];
-            const isActive =
-              pathname === item.path || pathname.startsWith(item.path + "/");
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${isActive && item.icon === "Instagram"
-                    ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)] shadow-[0_0_16px_rgba(225,48,108,0.18)]"
-                    : isActive
-                      ? "active bg-[#0094ff26] text-[#0094ff] border-l-2 border-[#0094ff] pl-[calc(0.75rem-2px)] shadow-[0_0_16px_#0094ff2e]"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                  }`}
-              >
-                {item.icon === "Instagram" ? (
-                  <FontAwesomeIcon
-                    icon={faInstagram}
-                    className={`h-4 w-4 shrink-0 ${isActive ? "text-[#E1306C]" : ""}`}
-                  />
-                ) : Icon ? (
-                  <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#0094ff]" : ""}`} />
-                ) : null}
-                <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">
-                  {item.label}
-                </span>
-                {item.badge && (
-                  <span
-                    className="text-[9px] font-bold px-2 py-0.5 rounded-full group-data-[collapsible=icon]:hidden"
-                    style={{
-                      backgroundColor: item.badgeBg,
-                      color: item.badgeText,
-                    }}
-                  >
-                    {item.badge}
+
+        {activeGroup === "interno" ? (
+          <nav className="space-y-1">
+            {visibleItems.map((item) => {
+              const Icon = icons[item.icon];
+              const isActive =
+                pathname === item.path || pathname.startsWith(item.path + "/");
+              return (
+                <Link
+                  key={item.path}
+                  href={item.path}
+                  className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${isActive && item.icon === "Instagram"
+                      ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)]"
+                      : isActive
+                        ? "active bg-[#0094ff26] text-[#0094ff] border-l-2 border-[#0094ff] pl-[calc(0.75rem-2px)]"
+                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
+                >
+                  {item.icon === "Instagram" ? (
+                    <FontAwesomeIcon
+                      icon={faInstagram}
+                      className={`h-4 w-4 shrink-0 ${isActive ? "text-[#E1306C]" : ""}`}
+                    />
+                  ) : Icon ? (
+                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#0094ff]" : ""}`} />
+                  ) : null}
+                  <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">
+                    {item.label}
                   </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+                  {item.badge && (
+                    <span
+                      className="text-[9px] font-bold px-2 py-0.5 rounded-full group-data-[collapsible=icon]:hidden"
+                      style={{
+                        backgroundColor: item.badgeBg,
+                        color: item.badgeText,
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+        ) : (
+          <p className="px-3 py-2 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+            Todavía no hay módulos en Externo.
+          </p>
+        )}
 
         {role === "superadmin" && (
           <>
@@ -163,7 +187,7 @@ export function AppSidebar() {
         )}
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border/40 px-4 py-3 group-data-[collapsible=icon]:hidden">
+      <SidebarFooter className="border-t border-[#1e2240] px-4 py-3 group-data-[collapsible=icon]:hidden">
         <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
           <Copyright className="h-3 w-3" />
           <span>By LinkTIC © 2026</span>

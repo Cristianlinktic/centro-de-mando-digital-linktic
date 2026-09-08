@@ -25,7 +25,7 @@ export default function PerfilesActoresPage() {
       <div className="page-bg min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="h-8 w-8 rounded-full border-2 border-[#2a2a4a] border-t-pink-500 animate-spin" />
-          <p className="text-[#aab3cf] text-sm">Cargando datos de Instagram…</p>
+          <p className="text-[#aab3cf] text-sm">Cargando conversación en redes…</p>
         </div>
       </div>
     );
