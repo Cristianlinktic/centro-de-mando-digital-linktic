@@ -2,6 +2,9 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Markdown } from "./Markdown";
+import { useAuth } from "@/components/auth-provider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 interface Msg {
   role: "user" | "assistant";
@@ -15,14 +18,34 @@ const SUGGESTIONS = [
   "Dame 3 recomendaciones para crecer el alcance",
 ];
 
-const WomanIcon = ({ size }: { size: number }) => (
+/** Cabeza de robot con degradado y ojos que parpadean — la identidad visual de Martha. */
+const RobotIcon = ({ size }: { size: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-    <circle cx="12" cy="8" r="4" fill="white" />
-    <path d="M4 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="white" strokeWidth="2" strokeLinecap="round" />
+    <defs>
+      <linearGradient id="martha-head" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#ffffff" />
+        <stop offset="100%" stopColor="#ffd6ec" />
+      </linearGradient>
+    </defs>
+    {/* Antena */}
+    <circle cx="12" cy="2.3" r="1.1" fill="url(#martha-head)" />
+    <line x1="12" y1="3.3" x2="12" y2="5.2" stroke="url(#martha-head)" strokeWidth="1.3" strokeLinecap="round" />
+    {/* Orejas */}
+    <rect x="2.6" y="10" width="2.4" height="4.4" rx="1.2" fill="url(#martha-head)" />
+    <rect x="19" y="10" width="2.4" height="4.4" rx="1.2" fill="url(#martha-head)" />
+    {/* Cabeza */}
+    <rect x="5" y="5.2" width="14" height="13" rx="5" fill="url(#martha-head)" />
+    {/* Ojos (parpadean vía .martha-eye) */}
+    <rect className="martha-eye" x="8" y="10.6" width="2.6" height="3.6" rx="1.3" fill="#833ab4" />
+    <rect className="martha-eye martha-eye-r" x="13.4" y="10.6" width="2.6" height="3.6" rx="1.3" fill="#833ab4" />
+    {/* Rejilla/boca */}
+    <rect x="9.3" y="15.6" width="5.4" height="1.2" rx="0.6" fill="#833ab4" opacity="0.55" />
   </svg>
 );
 
+
 export function Analyst() {
+  const { firstName } = useAuth();
   const [open, setOpen] = useState(false);
   const [tooltip, setTooltip] = useState(true);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -111,7 +134,7 @@ export function Analyst() {
               boxShadow: "0 8px 28px rgba(168,85,247,0.45)",
             }}
           >
-            <p>¿En qué puedo ayudarte hoy?</p>
+            <p>{firstName ? `Hola, ${firstName}` : "Hola"} 👋 ¿en qué te ayudo hoy?</p>
             {/* flecha apuntando hacia abajo */}
             <span
               className="absolute -bottom-2 right-8 w-4 h-4 rotate-45"
@@ -119,7 +142,7 @@ export function Analyst() {
             />
             <button
               onClick={() => setTooltip(false)}
-              className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-purple-600 text-white hover:bg-purple-700 transition text-[10px] font-bold shadow"
+              className="absolute -top-1.5 -right-1.5 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-purple-600 text-white hover:bg-purple-700 transition text-[10px] font-bold shadow"
             >
               ✕
             </button>
@@ -127,32 +150,38 @@ export function Analyst() {
         </div>
       )}
 
+      {/* Fondo difuminado detrás del chat */}
+      {open && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Botón principal */}
       <div className="fixed bottom-5 right-5 z-40">
-        {!open && (
-          <>
-            <span
-              className="martha-ring-1 absolute inset-0 rounded-full"
-              style={{ background: "linear-gradient(135deg, #E1306C, #833ab4)" }}
-            />
-            <span
-              className="martha-ring-2 absolute inset-0 rounded-full"
-              style={{ background: "linear-gradient(135deg, #E1306C, #833ab4)" }}
-            />
-          </>
-        )}
+        {!open && <span className="martha-glow" />}
         <button
         onClick={handleOpen}
-        className="relative flex items-center gap-2.5 rounded-full px-5 py-3 font-semibold text-white shadow-lg transition hover:opacity-90"
+        className="relative flex cursor-pointer items-center gap-2.5 rounded-full py-3 pl-3 pr-5 font-semibold text-white shadow-lg transition hover:opacity-90"
         style={{ background: "linear-gradient(135deg, #E1306C 0%, #833ab4 100%)", boxShadow: "0 8px 32px rgba(131,58,180,0.45)" }}
       >
-        <WomanIcon size={18} />
-        {open ? "Cerrar" : "Martha"}
+        {open ? (
+          "Cerrar"
+        ) : (
+          <>
+            <span className="martha-orbit relative flex h-6 w-6 items-center justify-center rounded-full bg-white/15">
+              <RobotIcon size={16} />
+            </span>
+            Martha
+          </>
+        )}
         </button>
       </div>
 
       {open && (
-        <div className="fixed bottom-20 right-5 z-40 flex h-[70vh] max-h-[640px] w-[min(440px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-[#2a2a4a] panel shadow-2xl">
+        <div className="fixed bottom-20 right-5 z-40 flex h-[70vh] max-h-[640px] w-[min(440px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-[#2a2a4a] panel shadow-2xl animate-in fade-in slide-in-from-bottom-4 zoom-in-95 duration-300">
           {/* Header */}
           <div
             className="border-b border-[#2a2a4a] px-4 py-3"
@@ -160,10 +189,10 @@ export function Analyst() {
           >
             <div className="flex items-center gap-2.5">
               <div
-                className="flex h-9 w-9 items-center justify-center rounded-full shrink-0 border-2 border-[#2b62ff]/40"
+                className="martha-orbit relative flex h-10 w-10 items-center justify-center rounded-full shrink-0 border-2 border-[#2b62ff]/40"
                 style={{ background: "linear-gradient(135deg, #E1306C 0%, #833ab4 100%)" }}
               >
-                <WomanIcon size={20} />
+                <RobotIcon size={22} />
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -173,7 +202,7 @@ export function Analyst() {
                     activa
                   </span>
                 </div>
-                <p className="text-[10px] text-[#8892b0]">Analista de Instagram</p>
+                <p className="text-[10px] font-semibold text-[#f0abfc]">Analista de Instagram · IA</p>
               </div>
               <span className="ml-auto text-[10px] text-[#8892b0] font-mono">Claude Opus 4.8</span>
             </div>
@@ -182,17 +211,28 @@ export function Analyst() {
           {/* Messages */}
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
             {messages.length === 0 && (
-              <div className="space-y-2">
-                <p className="text-xs text-[#8892b0] uppercase tracking-widest font-bold mb-3">Sugerencias</p>
-                {SUGGESTIONS.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => send(s)}
-                    className="block w-full rounded-xl border border-[#1e2240] bg-white/5 px-3 py-2.5 text-left text-sm text-[#e4e9f5] transition hover:bg-white/10 hover:border-[#2a2a4a]"
-                  >
-                    {s}
-                  </button>
-                ))}
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm font-bold text-white">
+                    {firstName ? `Hola, ${firstName} 👋` : "Hola 👋"}
+                  </p>
+                  <p className="mt-0.5 text-xs text-[#aab3cf]">
+                    Soy Martha, tu analista de Instagram con IA. Pregúntame lo que quieras sobre tus publicaciones.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-xs text-[#8892b0] uppercase tracking-widest font-bold">Sugerencias</p>
+                  {SUGGESTIONS.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => send(s)}
+                      className="flex w-full cursor-pointer items-start gap-2 rounded-xl border border-[#1e2240] bg-white/5 px-3 py-2.5 text-left text-sm text-[#e4e9f5] transition hover:bg-white/10 hover:border-[#2a2a4a]"
+                    >
+                      <FontAwesomeIcon icon={faLightbulb} className="mt-0.5 shrink-0 text-[#f0abfc]" />
+                      {s}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
             {messages.map((m, i) => (
@@ -243,7 +283,7 @@ export function Analyst() {
               <button
                 type="submit"
                 disabled={busy || !input.trim()}
-                className="rounded-xl px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-40"
+                className="cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
                 style={{ background: "linear-gradient(135deg, #E1306C 0%, #833ab4 100%)" }}
               >
                 {busy ? "…" : "Enviar"}

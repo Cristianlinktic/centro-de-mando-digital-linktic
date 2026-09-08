@@ -872,25 +872,94 @@
   animation: intro-letter-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Martha chatbot — ring ping */
-@keyframes martha-ring {
-  0% {
+/* Martha chatbot — halo que "respira" detrás del botón, más orgánico que un
+   ping mecánico de notificación. */
+@keyframes martha-breathe {
+  0%, 100% {
     transform: scale(1);
-    opacity: 0.55;
+    opacity: 0.5;
   }
 
-  100% {
-    transform: scale(2.2);
-    opacity: 0;
+  50% {
+    transform: scale(1.16);
+    opacity: 0.85;
   }
 }
 
-.martha-ring-1 {
-  animation: martha-ring 2s ease-out infinite;
+.martha-glow {
+  position: absolute;
+  inset: -10px;
+  z-index: -1;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #E1306C, #833ab4);
+  filter: blur(16px);
+  animation: martha-breathe 3s ease-in-out infinite;
+  pointer-events: none;
 }
 
-.martha-ring-2 {
-  animation: martha-ring 2s ease-out 0.8s infinite;
+/* Anillo orbital de Martha — misma técnica del chase-light de .neon-frame
+   (gira el degradado, no el elemento), en la paleta de Martha en vez de la
+   azul del resto del tablero. */
+@property --martha-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes martha-spin {
+  to {
+    --martha-angle: 360deg;
+  }
+}
+
+.martha-orbit {
+  position: relative;
+  isolation: isolate;
+}
+
+.martha-orbit::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  padding: 1.6px;
+  background: conic-gradient(from var(--martha-angle),
+      transparent 0%,
+      #f0abfc 16%,
+      #833ab4 34%,
+      transparent 48%,
+      transparent 62%,
+      #E1306C 82%,
+      transparent 96%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: martha-spin 3.5s linear infinite;
+  pointer-events: none;
+}
+
+/* Parpadeo de los ojos del robot — el detalle "con vida". */
+@keyframes martha-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.15); }
+}
+
+.martha-eye {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: martha-blink 4.5s ease-in-out infinite;
+}
+
+.martha-eye-r {
+  animation-delay: 60ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .martha-orbit::before,
+  .martha-eye {
+    animation: none !important;
+  }
 }
 
 /* Tendencias: semántica de dato, fuera de la paleta del KV a propósito. */
@@ -914,8 +983,7 @@
   .intro-fade,
   .intro-letter,
   .accent-bar-anim,
-  .martha-ring-1,
-  .martha-ring-2 {
+  .martha-glow {
     animation: none !important;
     opacity: 1 !important;
   }
