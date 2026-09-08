@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/app-header";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AuthProvider } from "@/components/auth-provider";
 import { AccessSync } from "@/components/auth/AccessSync";
+import { BackdropOrbs } from "@/components/backdrop-orbs";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -19,10 +20,10 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
       <AccessSync />
-      <div className="app-aurora" aria-hidden="true" />
+      <BackdropOrbs fixed grid />
       <SidebarProvider className="h-screen overflow-hidden">
         <AppSidebar />
-        <SidebarInset className="flex flex-col h-screen overflow-hidden">
+        <SidebarInset className="flex flex-col h-screen overflow-hidden bg-transparent">
           <AppHeader />
           <main className="flex-1 overflow-y-auto">
             {children}

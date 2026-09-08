@@ -1,9 +1,10 @@
 import { signOut } from "@/app/actions/auth";
+import { BackdropOrbs } from "@/components/backdrop-orbs";
 
 export default function SinAccesoPage() {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-6 bg-[#070b14] text-white px-6 text-center">
-      <div className="app-aurora" aria-hidden="true" />
+    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-6 bg-background text-white px-6 text-center relative overflow-hidden">
+      <BackdropOrbs grid />
       <div className="relative z-10 flex flex-col items-center gap-5 max-w-md">
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-rose-500/10 border border-rose-500/20">
           <svg
@@ -23,14 +24,14 @@ export default function SinAccesoPage() {
           </svg>
         </div>
         <h1 className="text-2xl font-black">Sin acceso a este tablero</h1>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-[#aab3cf]">
           Tu cuenta está activa pero todavía no tiene pantallas asignadas en este
           panel. Solicita acceso al administrador para poder ingresar.
         </p>
         <form action={signOut}>
           <button
             type="submit"
-            className="mt-2 inline-flex items-center gap-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 px-5 py-2.5 text-sm font-bold transition-colors"
+            className="mt-2 inline-flex items-center gap-2 rounded-xl bg-white/5 hover:bg-white/10 border border-[#2a2a4a] px-5 py-2.5 text-sm font-bold transition-colors"
           >
             Cerrar sesión
           </button>

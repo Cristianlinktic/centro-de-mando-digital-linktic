@@ -15,7 +15,7 @@ export function PageHeader({ badges, title, description }: PageHeaderProps) {
           <Badge
             key={b.text}
             style={{ backgroundColor: b.color, color: "#fff", "--badge-neon-color": `${b.color}99` } as CSSProperties}
-            className={`text-[10px] uppercase tracking-wider shrink-0 ${b.live ? "badge-neon" : ""}`}
+            className={`rounded-[4px] text-[10px] uppercase tracking-wider shrink-0 ${b.live ? "badge-neon" : ""}`}
           >
             {b.live && (
               <span

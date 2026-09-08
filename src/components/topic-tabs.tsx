@@ -137,7 +137,7 @@ export function TopicTabs({
             <textarea 
                 value={strategy.narrativa.gancho} 
                 onChange={e => setStrategy({...strategy, narrativa: {...strategy.narrativa, gancho: e.target.value}})}
-                className="w-full bg-black/40 border border-blue-500/30 rounded-lg p-3 text-sm text-white min-h-[80px] outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-black/40 border border-[#0094ff]/30 rounded-lg p-3 text-sm text-white min-h-[80px] outline-none focus:border-[#0094ff] transition-colors"
                 placeholder="Escribe el gancho narrativo..."
             />
           ) : (
@@ -153,7 +153,7 @@ export function TopicTabs({
                 <Input 
                     value={strategy.narrativa.tipoConversacion} 
                     onChange={e => setStrategy({...strategy, narrativa: {...strategy.narrativa, tipoConversacion: e.target.value}})}
-                    className="bg-white/5 border-white/10 text-blue-400 font-medium"
+                    className="bg-white/5 border-[#2a2a4a] text-[#75ddff] font-medium"
                 />
             ) : (
                 <div className="flex flex-wrap gap-2 mt-2">
@@ -171,7 +171,7 @@ export function TopicTabs({
                 <textarea 
                     value={strategy.narrativa.mensajeClave} 
                     onChange={e => setStrategy({...strategy, narrativa: {...strategy.narrativa, mensajeClave: e.target.value}})}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-sm text-yellow-500 min-h-[60px] outline-none"
+                    className="w-full bg-white/5 border border-[#2a2a4a] rounded-lg p-2 text-sm text-yellow-500 min-h-[60px] outline-none"
                 />
             ) : (
                 <p className="text-sm leading-relaxed" style={{ color: "rgb(243, 177, 22)" }}>
@@ -236,7 +236,7 @@ export function TopicTabs({
                 Pilares estratégicos que deben guiar toda la producción de contenido para este tema.
             </div>
             {isEditing && setStrategy && strategy && (
-                <Button size="sm" variant="outline" onClick={() => setStrategy({...strategy, pilares: [...strategy.pilares, { pilar: 'Nuevo Pilar', descripcion: 'Descripción del pilar estratégico.', icono: '📌', color: 'hsl(213,85%,55%)' }]})} className="h-7 text-[10px] font-black uppercase text-blue-400 border-blue-500/20">
+                <Button size="sm" variant="outline" onClick={() => setStrategy({...strategy, pilares: [...strategy.pilares, { pilar: 'Nuevo Pilar', descripcion: 'Descripción del pilar estratégico.', icono: '📌', color: 'hsl(213,85%,55%)' }]})} className="h-7 text-[10px] font-black uppercase text-[#75ddff] border-[#0094ff]/20">
                     <FontAwesomeIcon icon={faPlus} className="mr-1" /> Añadir Pilar
                 </Button>
             )}
@@ -257,7 +257,7 @@ export function TopicTabs({
                         const newP = [...strategy.pilares];
                         newP[i].icono = e.target.value;
                         setStrategy({...strategy, pilares: newP});
-                    }} className="h-8 w-16 text-3xl bg-transparent border-white/10 p-0 text-center" />
+                    }} className="h-8 w-16 text-3xl bg-transparent border-[#2a2a4a] p-0 text-center" />
                 ) : (
                     <div className="text-3xl">{p.icono}</div>
                 )}
@@ -268,7 +268,7 @@ export function TopicTabs({
                                 const newP = [...strategy.pilares];
                                 newP[i].pilar = e.target.value;
                                 setStrategy({...strategy, pilares: newP});
-                            }} className="h-7 text-sm font-bold mb-1 bg-white/5 border-white/10" style={{ color: p.color }} />
+                            }} className="h-7 text-sm font-bold mb-1 bg-white/5 border-[#2a2a4a]" style={{ color: p.color }} />
                             <textarea value={p.descripcion} onChange={e => {
                                 const newP = [...strategy.pilares];
                                 newP[i].descripcion = e.target.value;
@@ -286,7 +286,7 @@ export function TopicTabs({
                         </>
                     )}
                 </div>
-                <div className="w-full h-1 mt-auto rounded-full bg-slate-800/50 overflow-hidden">
+                <div className="w-full h-1 mt-auto rounded-full bg-[#131a30]/50 overflow-hidden">
                     <div 
                         className="h-full rounded-full transition-all duration-1000" 
                         style={{ 
@@ -306,7 +306,7 @@ export function TopicTabs({
                 Noticias recientes relevantes para este tema en medios de comunicación colombianos.
             </div>
             {isEditing && setStrategy && strategy && (
-                <Button size="sm" variant="outline" onClick={() => setStrategy({...strategy, noticias: [{ medio: 'Medio', titulo: 'Nueva Noticia', fecha: 'Hoy', categoria: 'Debate', url: '#' }, ...strategy.noticias]})} className="h-7 text-[10px] font-black uppercase text-blue-400 border-blue-500/20">
+                <Button size="sm" variant="outline" onClick={() => setStrategy({...strategy, noticias: [{ medio: 'Medio', titulo: 'Nueva Noticia', fecha: 'Hoy', categoria: 'Debate', url: '#' }, ...strategy.noticias]})} className="h-7 text-[10px] font-black uppercase text-[#75ddff] border-[#0094ff]/20">
                     <FontAwesomeIcon icon={faPlus} className="mr-1" /> Añadir Noticia
                 </Button>
             )}
@@ -334,7 +334,7 @@ export function TopicTabs({
                                     news[i].titulo = e.target.value;
                                     setStrategy({...strategy, noticias: news});
                                 }}
-                                className="h-8 text-sm font-medium bg-white/5 border-white/10"
+                                className="h-8 text-sm font-medium bg-white/5 border-[#2a2a4a]"
                             />
                             <div className="flex gap-2">
                                 <Input 
@@ -344,7 +344,7 @@ export function TopicTabs({
                                         news[i].medio = e.target.value;
                                         setStrategy({...strategy, noticias: news});
                                     }}
-                                    className="h-6 text-[10px] w-1/3 bg-white/5 border-white/10"
+                                    className="h-6 text-[10px] w-1/3 bg-white/5 border-[#2a2a4a]"
                                 />
                                 <Input 
                                     value={n.fecha} 
@@ -353,7 +353,7 @@ export function TopicTabs({
                                         news[i].fecha = e.target.value;
                                         setStrategy({...strategy, noticias: news});
                                     }}
-                                    className="h-6 text-[10px] w-1/3 bg-white/5 border-white/10"
+                                    className="h-6 text-[10px] w-1/3 bg-white/5 border-[#2a2a4a]"
                                 />
                                 <Input 
                                     value={n.categoria} 
@@ -362,7 +362,7 @@ export function TopicTabs({
                                         news[i].categoria = e.target.value;
                                         setStrategy({...strategy, noticias: news});
                                     }}
-                                    className="h-6 text-[10px] w-1/3 bg-white/5 border-white/10"
+                                    className="h-6 text-[10px] w-1/3 bg-white/5 border-[#2a2a4a]"
                                 />
                             </div>
                         </div>
@@ -421,7 +421,7 @@ export function TopicTabs({
 
             return (
                 <div key={plat} className="space-y-4">
-                    <div className="kpi-card p-4 rounded-xl flex items-center justify-between border-white/5">
+                    <div className="kpi-card p-4 rounded-xl flex items-center justify-between border-[#1e2240]">
                         <div className="flex items-center gap-2">
                             <div 
                                 className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/5" 
@@ -430,7 +430,7 @@ export function TopicTabs({
                                 <FontAwesomeIcon icon={info.icon} className="text-base" />
                             </div>
                             <div>
-                                <div className="font-semibold text-sm text-slate-200">{info.label}</div>
+                                <div className="font-semibold text-sm text-[#e4e9f5]">{info.label}</div>
                             </div>
                         </div>
                         {isEditing && setStrategy && strategy && (
@@ -438,7 +438,7 @@ export function TopicTabs({
                                 const newContenido = {...strategy.contenido};
                                 newContenido[plat] = [{ formato: 'NUEVO', idea: 'Escribe tu idea...', tipo: 'Orgánico' }, ...(newContenido[plat] || [])];
                                 setStrategy({...strategy, contenido: newContenido});
-                            }} className="h-7 text-[10px] font-black uppercase text-blue-400">
+                            }} className="h-7 text-[10px] font-black uppercase text-[#75ddff]">
                                 <FontAwesomeIcon icon={faPlus} className="mr-1" /> Añadir Idea
                             </Button>
                         )}
@@ -470,7 +470,7 @@ export function TopicTabs({
                                                     newContenido[plat][i].formato = e.target.value;
                                                     setStrategy({...strategy, contenido: newContenido});
                                                 }}
-                                                className="h-6 text-[10px] font-bold w-20 bg-white/5 border-white/10"
+                                                className="h-6 text-[10px] font-bold w-20 bg-white/5 border-[#2a2a4a]"
                                             />
                                             <Input 
                                                 value={c.tipo} 
@@ -479,13 +479,13 @@ export function TopicTabs({
                                                     newContenido[plat][i].tipo = e.target.value;
                                                     setStrategy({...strategy, contenido: newContenido});
                                                 }}
-                                                className="h-6 text-[10px] font-bold w-20 bg-white/5 border-white/10"
+                                                className="h-6 text-[10px] font-bold w-20 bg-white/5 border-[#2a2a4a]"
                                             />
                                         </>
                                     ) : (
                                         <>
                                             <span className="px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: info.color.replace("rgb", "rgba").replace(")", ", 0.125)"), color: info.color }}>{c.formato}</span>
-                                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-slate-500">{c.tipo}</span>
+                                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-white/5 text-[#8892b0]">{c.tipo}</span>
                                         </>
                                     )}
                                 </div>
@@ -497,10 +497,10 @@ export function TopicTabs({
                                             newContenido[plat][i].idea = e.target.value;
                                             setStrategy({...strategy, contenido: newContenido});
                                         }}
-                                        className="w-full bg-transparent border-none p-0 text-xs text-slate-300 font-medium outline-none resize-none min-h-[40px]"
+                                        className="w-full bg-transparent border-none p-0 text-xs text-[#c0c8de] font-medium outline-none resize-none min-h-[40px]"
                                     />
                                 ) : (
-                                    <p className="text-xs leading-relaxed text-slate-300 font-medium">{c.idea}</p>
+                                    <p className="text-xs leading-relaxed text-[#c0c8de] font-medium">{c.idea}</p>
                                 )}
                             </div>
                         ))}
@@ -521,11 +521,11 @@ export function TopicTabs({
             const url = (socialUrls as any)[plat];
             
             return (
-              <div key={plat} className="kpi-card p-4 space-y-3 rounded-xl border-white/5">
+              <div key={plat} className="kpi-card p-4 space-y-3 rounded-xl border-[#1e2240]">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <FontAwesomeIcon icon={info.icon} style={{ color: info.color }} className="text-lg" />
-                    <span className="font-semibold text-sm text-slate-200">{info.label}</span>
+                    <span className="font-semibold text-sm text-[#e4e9f5]">{info.label}</span>
                   </div>
                   {!isEditing && (
                       <a href={url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
@@ -591,7 +591,7 @@ export function TopicTabs({
                               setStrategy({...strategy, conversacion: newConv});
                           }}
                           placeholder="Ej: #Hashtag1, #Hashtag2"
-                          className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-[10px] text-slate-300 outline-none resize-none min-h-[50px]"
+                          className="w-full bg-white/5 border border-[#2a2a4a] rounded-lg p-2 text-[10px] text-[#c0c8de] outline-none resize-none min-h-[50px]"
                       />
                   ) : (
                       <div className="flex flex-wrap gap-1">
@@ -612,7 +612,7 @@ export function TopicTabs({
                   )}
                 </div>
 
-                <div className="flex items-center gap-1.5 text-xs pt-1 border-t border-white/5">
+                <div className="flex items-center gap-1.5 text-xs pt-1 border-t border-[#1e2240]">
                   <FontAwesomeIcon icon={faZap} className="text-[#f3b116] w-2.5 h-2.5" />
                   <span className="text-[10px] text-muted-foreground">Pico de volumen:</span>
                   {isEditing && setStrategy && strategy ? (
@@ -647,7 +647,7 @@ export function TopicTabs({
             )}
         </div>
         {(isEditing && strategy ? strategy.pauta : pauta).map((p: any, i: number) => (
-          <div key={i} className="kpi-card p-5 rounded-2xl border-white/5 shadow-none relative group">
+          <div key={i} className="kpi-card p-5 rounded-2xl border-[#1e2240] shadow-none relative group">
             {isEditing && setStrategy && strategy && (
                 <Button variant="ghost" size="sm" onClick={() => setStrategy({...strategy, pauta: strategy.pauta.filter((_:any, idx:number) => idx !== i)})} className="absolute top-2 right-2 h-8 w-8 p-0 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
                     <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />
@@ -668,12 +668,12 @@ export function TopicTabs({
                                 const newP = [...strategy.pauta];
                                 newP[i].formato = e.target.value;
                                 setStrategy({...strategy, pauta: newP});
-                            }} className="h-7 text-xs font-bold text-orange-400 bg-white/5 border-white/10 w-1/3" />
+                            }} className="h-7 text-xs font-bold text-orange-400 bg-white/5 border-[#2a2a4a] w-1/3" />
                             <Input value={p.presupuesto} onChange={e => {
                                 const newP = [...strategy.pauta];
                                 newP[i].presupuesto = e.target.value;
                                 setStrategy({...strategy, pauta: newP});
-                            }} className="h-7 text-xs font-bold text-blue-400 bg-white/5 border-white/10 w-1/3" />
+                            }} className="h-7 text-xs font-bold text-[#75ddff] bg-white/5 border-[#2a2a4a] w-1/3" />
                         </div>
                     ) : (
                         <>
@@ -693,9 +693,9 @@ export function TopicTabs({
                             const newP = [...strategy.pauta];
                             newP[i].objetivo = e.target.value;
                             setStrategy({...strategy, pauta: newP});
-                        }} className="w-full bg-white/5 border border-white/10 rounded p-1 text-[11px] text-slate-200 outline-none min-h-[40px]" />
+                        }} className="w-full bg-white/5 border border-[#2a2a4a] rounded p-1 text-[11px] text-[#e4e9f5] outline-none min-h-[40px]" />
                     ) : (
-                        <div className="font-medium text-slate-200">{p.objetivo}</div>
+                        <div className="font-medium text-[#e4e9f5]">{p.objetivo}</div>
                     )}
                   </div>
                   <div>
@@ -705,7 +705,7 @@ export function TopicTabs({
                             const newP = [...strategy.pauta];
                             newP[i].cta = e.target.value;
                             setStrategy({...strategy, pauta: newP});
-                        }} className="h-7 text-[11px] text-green-400 bg-white/5 border-white/10" />
+                        }} className="h-7 text-[11px] text-green-400 bg-white/5 border-[#2a2a4a]" />
                     ) : (
                         <div className="font-medium" style={{ color: "rgb(46, 184, 138)" }}>&ldquo;{p.cta}&rdquo;</div>
                     )}

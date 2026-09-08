@@ -23,7 +23,7 @@ export function LiveTicker({
   const doubled = [...items, ...items];
 
   return (
-    <div className="relative flex items-center rounded-full border border-white/10 bg-[#0b101d]/80 overflow-hidden backdrop-blur-sm">
+    <div className="relative flex items-center rounded-full border border-[#2a2a4a] panel overflow-hidden backdrop-blur-sm">
       <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-600/25 to-transparent shrink-0 z-10">
         <span className="live-dot" />
         <span className="text-[11px] font-bold uppercase tracking-wider text-red-300">{liveLabel}</span>
@@ -31,9 +31,9 @@ export function LiveTicker({
       <div className="marquee flex-1 py-2">
         <div className="marquee-track">
           {doubled.map((it, i) => (
-            <span key={i} className="inline-flex items-center gap-2 px-5 text-sm border-r border-white/5">
-              {it.code && <span className="font-mono text-[11px] text-slate-500">{it.code}</span>}
-              <span className="text-slate-200">{it.label}</span>
+            <span key={i} className="inline-flex items-center gap-2 px-5 text-sm border-r border-[#1e2240]">
+              {it.code && <span className="font-mono text-[11px] text-[#8892b0]">{it.code}</span>}
+              <span className="text-[#e4e9f5]">{it.label}</span>
               {it.value !== undefined && it.value !== "" && (
                 <span className="font-semibold tabular-nums" style={{ color: it.color || "#f3b116" }}>
                   {typeof it.value === "number" ? it.value.toLocaleString() : it.value}

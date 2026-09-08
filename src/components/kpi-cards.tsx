@@ -3,11 +3,13 @@
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { CountUp, Sparkline } from "@/components/count-up";
 
+// Rampa del KV del Future Forum: azul -> cian -> cielo, más un violeta
+// para que la cuarta serie siga siendo distinguible de las otras tres.
 const kpiColors = [
-  "hsl(213 85% 55%)",  // blue
-  "hsl(42 90% 52%)",   // gold
-  "hsl(160 60% 45%)",  // green
-  "hsl(280 65% 60%)",  // purple
+  "#0094ff", // azul LinkTIC
+  "#00e1ff", // cian (hover del KV)
+  "#75ddff", // cielo (sheen del título)
+  "#6d5cf5", // violeta puente hacia el índigo #2709cd
 ];
 
 interface KpiItem {
@@ -62,7 +64,7 @@ export function KpiCards({ items }: { items: KpiItem[] }) {
             )}
             <div
               className="h-1 w-full opacity-90 transition-opacity duration-300 group-hover:opacity-100"
-              style={{ background: `linear-gradient(90deg, ${barColor}, transparent 140%)`, boxShadow: `0 0 10px ${barColor}` }}
+              style={{ background: `linear-gradient(90deg, ${barColor}, #2709cd 140%)`, boxShadow: `0 0 10px ${barColor}` }}
             />
           </div>
         );

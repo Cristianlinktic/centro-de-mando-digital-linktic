@@ -5,7 +5,7 @@ import { faFileExcel, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export function LoadingCampaign() {
   return (
-    <div className="h-64 flex items-center justify-center text-slate-500 font-mono tracking-widest uppercase text-sm">
+    <div className="h-64 flex items-center justify-center text-[#8892b0] font-mono tracking-widest uppercase text-sm">
       <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-3" /> Cargando estrategia digital…
     </div>
   );
@@ -13,10 +13,10 @@ export function LoadingCampaign() {
 
 export function EmptyCampaign() {
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-10 rounded-2xl text-center">
-      <FontAwesomeIcon icon={faFileExcel} className="text-4xl text-slate-600 mb-4" />
-      <h3 className="text-lg font-bold text-slate-200 mb-2">Aún no hay una campaña cargada</h3>
-      <p className="text-sm text-slate-500 mb-6">
+    <Card className="panel border border-[#1e2240] p-10 rounded-2xl text-center">
+      <FontAwesomeIcon icon={faFileExcel} className="text-4xl text-[#8892b0] mb-4" />
+      <h3 className="text-lg font-bold text-[#e4e9f5] mb-2">Aún no hay una campaña cargada</h3>
+      <p className="text-sm text-[#8892b0] mb-6">
         Importa un plan de pauta en Excel para empezar a ver el dashboard de estrategia digital.
       </p>
       <Link

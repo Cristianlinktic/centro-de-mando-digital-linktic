@@ -104,7 +104,7 @@ export function Analyst() {
           style={{ animationDelay: "800ms", animationFillMode: "both" }}
         >
           <div
-            className="relative rounded-2xl px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-xl whitespace-nowrap"
+            className="relative rounded-2xl px-4 py-2.5 text-sm font-semibold text-[#131a30] shadow-xl whitespace-nowrap"
             style={{
               background: "#ffffff",
               border: "1px solid rgba(255,255,255,0.4)",
@@ -152,15 +152,15 @@ export function Analyst() {
       </div>
 
       {open && (
-        <div className="fixed bottom-20 right-5 z-40 flex h-[70vh] max-h-[640px] w-[min(440px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0b101d]/70 backdrop-blur-md shadow-2xl">
+        <div className="fixed bottom-20 right-5 z-40 flex h-[70vh] max-h-[640px] w-[min(440px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-[#2a2a4a] panel shadow-2xl">
           {/* Header */}
           <div
-            className="border-b border-white/10 px-4 py-3"
+            className="border-b border-[#2a2a4a] px-4 py-3"
             style={{ background: "linear-gradient(135deg, rgba(225,48,108,0.08) 0%, rgba(131,58,180,0.08) 100%)" }}
           >
             <div className="flex items-center gap-2.5">
               <div
-                className="flex h-9 w-9 items-center justify-center rounded-full shrink-0 border-2 border-white/20"
+                className="flex h-9 w-9 items-center justify-center rounded-full shrink-0 border-2 border-[#2b62ff]/40"
                 style={{ background: "linear-gradient(135deg, #E1306C 0%, #833ab4 100%)" }}
               >
                 <WomanIcon size={20} />
@@ -173,9 +173,9 @@ export function Analyst() {
                     activa
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-500">Analista de Instagram</p>
+                <p className="text-[10px] text-[#8892b0]">Analista de Instagram</p>
               </div>
-              <span className="ml-auto text-[10px] text-slate-600 font-mono">Claude Opus 4.8</span>
+              <span className="ml-auto text-[10px] text-[#8892b0] font-mono">Claude Opus 4.8</span>
             </div>
           </div>
 
@@ -183,12 +183,12 @@ export function Analyst() {
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
             {messages.length === 0 && (
               <div className="space-y-2">
-                <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-3">Sugerencias</p>
+                <p className="text-xs text-[#8892b0] uppercase tracking-widest font-bold mb-3">Sugerencias</p>
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => send(s)}
-                    className="block w-full rounded-xl border border-white/5 bg-white/5 px-3 py-2.5 text-left text-sm text-slate-200 transition hover:bg-white/10 hover:border-white/10"
+                    className="block w-full rounded-xl border border-[#1e2240] bg-white/5 px-3 py-2.5 text-left text-sm text-[#e4e9f5] transition hover:bg-white/10 hover:border-[#2a2a4a]"
                   >
                     {s}
                   </button>
@@ -199,7 +199,7 @@ export function Analyst() {
               <div key={i} className={m.role === "user" ? "flex justify-end" : "flex justify-start"}>
                 <div
                   className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
-                    m.role === "user" ? "whitespace-pre-wrap text-white" : "bg-white/5 text-slate-100"
+                    m.role === "user" ? "whitespace-pre-wrap text-white" : "bg-white/5 text-[#ffffff]"
                   }`}
                   style={m.role === "user" ? { background: "#E1306C" } : undefined}
                 >
@@ -208,11 +208,11 @@ export function Analyst() {
                   ) : m.content ? (
                     <Markdown>{m.content}</Markdown>
                   ) : busy && i === messages.length - 1 ? (
-                    <span className="flex items-center gap-1.5 text-slate-400">
+                    <span className="flex items-center gap-1.5 text-[#aab3cf]">
                       <span className="flex gap-0.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: "0ms" }} />
-                        <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: "150ms" }} />
-                        <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: "300ms" }} />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#8892b0] animate-bounce" style={{ animationDelay: "0ms" }} />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#8892b0] animate-bounce" style={{ animationDelay: "150ms" }} />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#8892b0] animate-bounce" style={{ animationDelay: "300ms" }} />
                       </span>
                       Analizando
                     </span>
@@ -227,7 +227,7 @@ export function Analyst() {
           {/* Input */}
           <form
             onSubmit={(e) => { e.preventDefault(); send(input); }}
-            className="border-t border-white/10 p-3"
+            className="border-t border-[#2a2a4a] p-3"
           >
             <div className="flex items-end gap-2">
               <textarea
@@ -238,7 +238,7 @@ export function Analyst() {
                 }}
                 rows={1}
                 placeholder="Escribe tu pregunta…"
-                className="max-h-32 flex-1 resize-none rounded-xl border border-white/10 bg-[#05080f] px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500 focus:border-pink-500"
+                className="max-h-32 flex-1 resize-none rounded-xl border border-[#2a2a4a] well px-3 py-2 text-sm text-white outline-none placeholder:text-[#8892b0] focus:border-pink-500"
               />
               <button
                 type="submit"

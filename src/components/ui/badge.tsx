@@ -19,7 +19,8 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
-        neon: "badge-neon border-white/10 bg-gradient-to-r from-[#0094ff] to-[#2709cd] text-white",
+        neon: "badge-neon border-transparent text-white",
+        pill: "pill-neon border-transparent text-white font-bold",
       },
     },
     defaultVariants: {

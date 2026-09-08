@@ -27,12 +27,14 @@ const platformIcons: Record<string, string> = {
     facebook: faToSvg(faFacebook, "#1877f2")
 };
 
+// Rampa secuencial con la escala azul oficial de LinkTIC: a más volumen,
+// más claro y más cian. Un solo tono — el volumen es magnitud, no categoría.
 const intensityColors = {
-    muyAlta: "rgba(13, 110, 68, 0.75)",
-    alta: "rgba(102, 214, 150, 0.5)",
-    media: "rgba(255, 152, 0, 0.5)",
-    baja: "rgba(239, 154, 154, 0.5)",
-    sinDatos: "rgba(200, 200, 200, 0.1)"
+    muyAlta: "rgba(1, 217, 255, 0.72)",   // blue-linktic-50
+    alta:    "rgba(0, 148, 255, 0.62)",   // blue-linktic-100
+    media:   "rgba(39, 79, 245, 0.52)",   // blue-linktic-60
+    baja:    "rgba(16, 36, 134, 0.48)",   // blue-linktic-300
+    sinDatos: "rgba(30, 34, 64, 0.28)"    // línea del KV, casi plano
 };
 
 const getVolumeColor = (volumen: number) => {
@@ -137,7 +139,7 @@ const nameMapping: Record<string, string> = {
 // Accesores constantes del globo: definidos a nivel de módulo para que su
 // identidad nunca cambie y react-globe.gl no reprocese polígonos sin necesidad.
 const polygonSideColorConst = () => "rgba(0, 0, 0, 0)";
-const polygonStrokeColorConst = () => "#444444";
+const polygonStrokeColorConst = () => "#1e2240";  // línea del KV
 
 const normalizeName = (name: string) => {
   return name.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -556,7 +558,7 @@ export function GlobeComponent({
     const n = pool.length;
     const anims = ['a', 'b', 'c'];
     const artHtml = pool.map((a, i) => {
-      const tColor = toneColorMap[a.tone] || '#64748b';
+      const tColor = toneColorMap[a.tone] || '#aab3cf';
       const animAttr = n > 1 ? ` style="animation:tt-show-${n}-${anims[i]} ${n * 5}s infinite;"` : '';
       return `<div class="tt-art"${animAttr}>
           <div class="tt-meta">
@@ -593,12 +595,12 @@ export function GlobeComponent({
                 <div class="theme" style="border-color: #f3b116; color: #f3b116;">${mission.tipo}</div>
                 <div class="stats" style="margin-top: 5px; padding-top: 5px;">
                     <span class="volume" style="color: #ffffff; font-size: 13px;">${mission.ciudad}</span>
-                    <span class="sentiment" style="color: #3b82f6;">${mission.count} obs.</span>
+                    <span class="sentiment" style="color: #0094ff;">${mission.count} obs.</span>
                 </div>
-                <div style="font-size: 10px; color: #64748b; margin-top: 8px;">${mission.narrativa || ''}</div>
+                <div style="font-size: 10px; color: #aab3cf; margin-top: 8px;">${mission.narrativa || ''}</div>
             `;
         } else {
-            contentHtml = `<div class="theme" style="color: #64748b;">Sin misión registrada</div>`;
+            contentHtml = `<div class="theme" style="color: #aab3cf;">Sin misión registrada</div>`;
         }
     } else {
         if (countryData) {
@@ -608,8 +610,8 @@ export function GlobeComponent({
                 ? ((countryData.tonos || countryData.plataformas || {})[selectedPlatform] || 0)
                 : (countryData.totalDept ?? countryData.volumen);
             const sentColor = selectedPlatform
-                ? (toneColorMap[selectedPlatform] || "#64748b")
-                : (sentMap[countryData.sentimiento] || "#64748b");
+                ? (toneColorMap[selectedPlatform] || "#aab3cf")
+                : (sentMap[countryData.sentimiento] || "#aab3cf");
             const sentLabel = selectedPlatform || (countryData.sentimiento
                 ? countryData.sentimiento.charAt(0).toUpperCase() + countryData.sentimiento.slice(1)
                 : "Sin datos");
@@ -633,7 +635,7 @@ export function GlobeComponent({
                 contentHtml = `
                     <div class="platform">
                         ${iconSvg ? `<span style="display:inline-flex;align-items:center;width:14px;height:14px;">${iconSvg}</span>` : ''}
-                        <span style="font-size:11px;color:#94a3b8;">${dominantPlat}</span>
+                        <span style="font-size:11px;color:#c0c8de;">${dominantPlat}</span>
                         <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#f3b116;background:rgba(243,177,22,0.12);border:1px solid rgba(243,177,22,0.3);padding:1px 6px;border-radius:4px;">Dominante</span>
                     </div>
                     ${countryData.tema ? `<div class="theme">${countryData.tema}</div>` : ''}
@@ -688,7 +690,7 @@ export function GlobeComponent({
     return active.map((c) => {
       const vol = volumeOf(c);
       const ratio = vol / maxVol;
-      const color = sentimentColors[c.sentimiento] || sentimentColors.neutral || "#3b82f6";
+      const color = sentimentColors[c.sentimiento] || sentimentColors.neutral || "#0094ff";
       // Nota: NO se resalta por país seleccionado/tour. Si se hiciera, arcsData se
       // recalcularía en cada paso del tour y react-globe.gl redibujaría toda la capa
       // (desvanecido por arcsTransitionDuration) -> las líneas hacia Colombia
@@ -723,7 +725,7 @@ export function GlobeComponent({
         return {
           lat: c.lat,
           lng: c.lng,
-          color: sentimentColors[c.sentimiento] || sentimentColors.neutral || "rgb(59,130,246)",
+          color: sentimentColors[c.sentimiento] || sentimentColors.neutral || "rgb(0,148,255)",
           maxR: 3 + ratio * 5,
           speed: 1.5 + ratio * 2,
           period: 1400 - ratio * 600,
@@ -750,7 +752,7 @@ export function GlobeComponent({
   // El halo del planeta tiñe a verde (conversación positiva), rojo (negativa)
   // o azul (equilibrada/neutra), ponderado por volumen de menciones.
   const atmosphereColorDynamic = useMemo(() => {
-    if (mode === "witnesses" || plainGlobe) return "#4aa3ff";
+    if (mode === "witnesses" || plainGlobe) return "#0094ff";
     let pos = 0, neg = 0, tot = 0;
     countriesData.forEach((c) => {
       const v = volumeOf(c);
@@ -760,11 +762,11 @@ export function GlobeComponent({
       neg += (sp.negativo || 0) * v;
       tot += v;
     });
-    if (tot === 0) return "#4aa3ff";
+    if (tot === 0) return "#0094ff";
     const p = pos / tot, n = neg / tot;
     if (p - n > 8) return "#3fd6a0";
     if (n - p > 8) return "#ff5a5a";
-    return "#4aa3ff";
+    return "#0094ff";
   }, [countriesData, mode, plainGlobe, volumeOf]);
 
   // Países activos ordenados por volumen (base para columnas, red y revelado).
@@ -914,7 +916,7 @@ export function GlobeComponent({
     const mission = getMissionData(regionName, globeMarkers);
 
     if (!countryData && !mission) {
-        return `<div class="bg-[#0b101d]/70 backdrop-blur-md text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${regionName}</div>`;
+        return `<div class="panel text-white p-2 rounded-xl border border-[#2a2a4a] shadow-2xl text-sm">${regionName}</div>`;
     }
 
     const id = countryData?.id || mission?.id?.substring(0, 2).toUpperCase() || "??";
@@ -929,11 +931,11 @@ export function GlobeComponent({
                 <div class="theme" style="border-color: #f3b116; color: #f3b116;">${mission.tipo}</div>
                 <div class="stats" style="margin-top: 5px; padding-top: 5px;">
                     <span class="volume" style="color: #ffffff; font-size: 13px;">${mission.ciudad}</span>
-                    <span class="sentiment" style="color: #3b82f6;">${mission.count} obs.</span>
+                    <span class="sentiment" style="color: #0094ff;">${mission.count} obs.</span>
                 </div>
             `;
         } else {
-            return `<div class="bg-[#0b101d]/70 backdrop-blur-md text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${name}</div>`;
+            return `<div class="panel text-white p-2 rounded-xl border border-[#2a2a4a] shadow-2xl text-sm">${name}</div>`;
         }
     } else {
         if (countryData) {
@@ -943,8 +945,8 @@ export function GlobeComponent({
                 ? ((countryData.tonos || countryData.plataformas || {})[selectedPlatform] || 0)
                 : (countryData.totalDept ?? countryData.volumen);
             const sentColor = selectedPlatform
-                ? (toneColorMap[selectedPlatform] || "#64748b")
-                : (sentMap[countryData.sentimiento] || "#64748b");
+                ? (toneColorMap[selectedPlatform] || "#aab3cf")
+                : (sentMap[countryData.sentimiento] || "#aab3cf");
             const sentLabel = selectedPlatform || (countryData.sentimiento
                 ? countryData.sentimiento.charAt(0).toUpperCase() + countryData.sentimiento.slice(1)
                 : "Sin datos");
@@ -968,7 +970,7 @@ export function GlobeComponent({
                 content = `
                     <div class="platform">
                         ${iconSvg ? `<span style="display:inline-flex;align-items:center;width:14px;height:14px;">${iconSvg}</span>` : ''}
-                        <span style="font-size:11px;color:#94a3b8;">${dominantPlat}</span>
+                        <span style="font-size:11px;color:#c0c8de;">${dominantPlat}</span>
                         <span style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#f3b116;background:rgba(243,177,22,0.12);border:1px solid rgba(243,177,22,0.3);padding:1px 6px;border-radius:4px;">Dominante</span>
                     </div>
                     ${countryData.tema ? `<div class="theme">${countryData.tema}</div>` : ''}
@@ -979,7 +981,7 @@ export function GlobeComponent({
                 `;
             }
         } else {
-            return `<div class="bg-[#0b101d]/70 backdrop-blur-md text-white p-2 rounded-xl border border-white/10 shadow-2xl text-sm">${name}</div>`;
+            return `<div class="panel text-white p-2 rounded-xl border border-[#2a2a4a] shadow-2xl text-sm">${name}</div>`;
         }
     }
 
@@ -1005,8 +1007,8 @@ export function GlobeComponent({
 
   const polygonCapColor = useCallback((d: any) => {
     const countryData = getCountryData(getRegionName(d.properties), countriesData);
-    if (countryData?.id === selectedCountryId) return "#c77dff";
-    if (hideIntensity) return "rgba(18, 112, 226, 0.15)";
+    if (countryData?.id === selectedCountryId) return "rgba(117, 221, 255, 0.92)";  // #75DDFF del KV
+    if (hideIntensity) return "rgba(0, 148, 255, 0.12)";
     if (countryData) {
         const volume = selectedPlatform ? (countryData.plataformas as any)[selectedPlatform] || 0 : countryData.volumen;
         return getVolumeColor(volume);
@@ -1149,7 +1151,7 @@ export function GlobeComponent({
           new THREE.TextureLoader().load("/earth_specular.jpg", (tex) => {
             if (cancelled) return;
             mat.specularMap = tex;
-            if ("specular" in mat) mat.specular = new THREE.Color("#3a6ea5");
+            if ("specular" in mat) mat.specular = new THREE.Color("#274ff5");
             if ("shininess" in mat) mat.shininess = 14;
             mat.needsUpdate = true;
           });
@@ -1381,27 +1383,32 @@ export function GlobeComponent({
             if (interactionTimeoutRef.current) clearTimeout(interactionTimeoutRef.current);
             interactionTimeoutRef.current = setTimeout(() => { userInteracting.current = false; }, 2000);
         }}
-        className={`${className} ${isFullscreen ? 'fixed inset-0 z-[9999] bg-[#03060d]' : ''}`} 
+        className={`${className} ${isFullscreen ? 'fixed inset-0 z-[9999] well' : ''}`} 
         style={{ position: isFullscreen ? 'fixed' : 'relative', width: "100%", height: "100%", display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <style>{`
         .pulse-container { position: relative; width: 24px; height: 24px; }
         .dot { position: absolute; top: 8px; left: 8px; width: 8px; height: 8px; background-color: #f3b116; border-radius: 50%; box-shadow: 0 0 5px #f3b116; }
-        .ring { position: absolute; top: 0px; left: 0px; width: 24px; height: 24px; border: 2px solid #f3b116; border-radius: 50%; animation: pulse 2s infinite; }
+        .ring { position: absolute; top: 0px; left: 0px; width: 24px; height: 24px; border: 2px solid #0094ff; border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
         
         .globe-tooltip {
-            background: rgba(11, 16, 29, 0.95);
+            background:
+                linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 40%, rgba(255,255,255,0.01) 100%),
+                linear-gradient(180deg, rgba(13,17,32,0.94), rgba(10,10,28,0.92));
             color: white;
             padding: 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(18, 112, 226, 0.4);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            border-radius: 16px;
+            border: 1px solid #2a2a4a;
+            box-shadow:
+                inset 0 18px 33.77px 10.1px rgba(20,117,212,0.10),
+                inset 0 1px 1px rgba(255,255,255,0.22),
+                0 10px 40px rgba(0,0,0,0.6);
             min-width: 300px;
             max-width: 340px;
-            font-family: 'Satoshi', sans-serif;
+            font-family: var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
             pointer-events: none;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px) saturate(160%);
             z-index: 1000;
         }
         .globe-tooltip .tt-single { margin: 8px 0; }
@@ -1410,9 +1417,9 @@ export function GlobeComponent({
         .globe-tooltip .tt-art { padding-bottom: 2px; }
         .globe-tooltip .tt-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; flex-wrap: wrap; }
         .globe-tooltip .tt-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 7px; border-radius: 5px; border: 1px solid; display: inline-block; }
-        .globe-tooltip .tt-media { font-size: 10px; font-weight: 600; color: #7dd3fc; background: rgba(125,211,252,0.1); border: 1px solid rgba(125,211,252,0.2); padding: 2px 8px; border-radius: 5px; display: inline-block; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .globe-tooltip .tt-title { font-size: 12px; font-weight: 600; color: #e2e8f0; margin: 0 0 3px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .globe-tooltip .tt-summary { font-size: 10px; color: #94a3b8; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .globe-tooltip .tt-media { font-size: 10px; font-weight: 600; color: #75ddff; background: rgba(125,211,252,0.1); border: 1px solid rgba(125,211,252,0.2); padding: 2px 8px; border-radius: 5px; display: inline-block; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .globe-tooltip .tt-title { font-size: 12px; font-weight: 600; color: #c0c8de; margin: 0 0 3px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .globe-tooltip .tt-summary { font-size: 10px; color: #c0c8de; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         /* 2-article carousel: 10 s cycle */
         @keyframes tt-show-2-a { 0%,43% { opacity:1 } 48%,97% { opacity:0 } 100% { opacity:1 } }
         @keyframes tt-show-2-b { 0%,47% { opacity:0 } 52%,97% { opacity:1 } 100% { opacity:0 } }
@@ -1430,20 +1437,20 @@ export function GlobeComponent({
         
         .globe-tooltip .header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
         .globe-tooltip .flag-box { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .globe-tooltip .iso-code { font-family: monospace; font-size: 14px; font-weight: 700; color: #94a3b8; }
+        .globe-tooltip .iso-code { font-family: var(--font-nexa), ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 700; color: #c0c8de; }
         .globe-tooltip .flag-img { width: 32px; height: 22px; object-fit: cover; border-radius: 3px; border: 1px solid rgba(255,255,255,0.15); }
         .globe-tooltip .country-name { font-size: 18px; font-weight: 700; margin: 0; line-height: 1.2; }
-        .globe-tooltip .platform { font-size: 12px; color: #94a3b8; margin-top: 2px; display: flex; align-items: center; gap: 6px; }
-        .globe-tooltip .theme { font-size: 13px; color: #3b82f6; margin: 12px 0; font-weight: 600; line-height: 1.4; border-left: 2px solid #3b82f6; padding-left: 10px; }
+        .globe-tooltip .platform { font-size: 12px; color: #c0c8de; margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+        .globe-tooltip .theme { font-size: 13px; color: #0094ff; margin: 12px 0; font-weight: 600; line-height: 1.4; border-left: 2px solid #0094ff; padding-left: 10px; }
         .globe-tooltip .stats { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
         .globe-tooltip .volume { color: #f3b116; font-weight: 800; font-size: 15px; }
         .globe-tooltip .sentiment { color: #2eb88a; font-weight: 800; font-size: 13px; text-transform: capitalize; }
-        .globe-tooltip .footer { font-size: 11px; color: #64748b; margin-top: 14px; text-align: center; }
+        .globe-tooltip .footer { font-size: 11px; color: #aab3cf; margin-top: 14px; text-align: center; }
 
         .hashtag-bubble {
             transform: translate(-50%, -170%);
             background: rgba(11, 16, 29, 0.9);
-            color: #7dd3fc;
+            color: #75ddff;
             border: 1px solid rgba(125, 211, 252, 0.4);
             padding: 3px 9px;
             border-radius: 999px;
@@ -1453,7 +1460,7 @@ export function GlobeComponent({
             pointer-events: none;
             backdrop-filter: blur(4px);
             box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-            font-family: 'Satoshi', sans-serif;
+            font-family: var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
             animation: fadeIn 0.4s ease-out;
         }
         .live-ping {
@@ -1476,16 +1483,16 @@ export function GlobeComponent({
 
       {isFullscreen && (
           <div className="absolute top-8 left-0 right-0 text-center z-[100] animate-in fade-in slide-in-from-top-4 duration-1000">
-              <h1 className="text-3xl font-black tracking-[0.2em] text-white uppercase opacity-90 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+              <h1 className="text-3xl font-black tracking-[0.2em] text-white uppercase opacity-90 drop-shadow-[0_0_15px_rgba(0,148,255,0.5)]">
                   {title}
               </h1>
-              <div className="w-24 h-0.5 bg-blue-500 mx-auto mt-2 opacity-50"></div>
+              <div className="w-24 h-0.5 bg-[#0094ff] mx-auto mt-2 opacity-50"></div>
           </div>
       )}
 
       {!hideIntensity && (
-        <div className={`absolute bottom-3 sm:bottom-6 ${isFullscreen ? 'right-3 sm:right-6' : 'left-3 sm:left-6'} z-[110] bg-[#0b101d]/90 p-3 sm:p-4 rounded-xl border border-white/10 text-white text-[11px] sm:text-xs w-40 sm:w-48 shadow-2xl`}>
-            <h4 className="font-bold mb-2 text-slate-300 tracking-tight">Intensidad de conversación</h4>
+        <div className={`absolute bottom-3 sm:bottom-6 ${isFullscreen ? 'right-3 sm:right-6' : 'left-3 sm:left-6'} z-[110] panel p-3 sm:p-4 rounded-xl border border-[#2a2a4a] text-white text-[11px] sm:text-xs w-40 sm:w-48 shadow-2xl`}>
+            <h4 className="font-bold mb-2 text-[#c0c8de] tracking-tight">Intensidad de conversación</h4>
             <div className="space-y-1.5">
                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full" style={{background: intensityColors.muyAlta}}></span> Muy alta (&gt;75%)</div>
                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full" style={{background: intensityColors.alta}}></span> Alta (45&mdash;75%)</div>
@@ -1493,7 +1500,7 @@ export function GlobeComponent({
                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full" style={{background: intensityColors.baja}}></span> Baja (&lt;20%)</div>
                 <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full" style={{background: intensityColors.sinDatos}}></span> Sin datos</div>
             </div>
-            <div className="mt-3 pt-2 border-t border-white/10 flex items-center gap-2">
+            <div className="mt-3 pt-2 border-t border-[#2a2a4a] flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-[#f3b116]"></span> Colombia — HQ
             </div>
         </div>
@@ -1505,7 +1512,7 @@ export function GlobeComponent({
           <Button
               variant="outline"
               size="sm"
-              className={`bg-[#0b101d]/70 backdrop-blur-md text-white border-white/20 hover:bg-white/5 ${layersOpen ? 'border-blue-500/50 text-blue-400' : ''}`}
+              className={`panel text-white border-[#2b62ff]/40 hover:bg-white/5 ${layersOpen ? 'border-[#0094ff]/50 text-[#75ddff]' : ''}`}
               onClick={() => setLayersOpen((v) => !v)}
           >
               <FontAwesomeIcon icon={faLayerGroup} className="sm:mr-2" />
@@ -1515,7 +1522,7 @@ export function GlobeComponent({
         <Button
             variant="outline"
             size="sm"
-            className="bg-[#0b101d]/70 backdrop-blur-md text-white border-white/20 hover:bg-white/5"
+            className="panel text-white border-[#2b62ff]/40 hover:bg-white/5"
             onClick={toggleFullscreen}
         >
             <FontAwesomeIcon icon={isFullscreen ? faCompress : faExpand} className="sm:mr-2" />
@@ -1524,7 +1531,7 @@ export function GlobeComponent({
         <Button
             variant="outline"
             size="sm"
-            className={`bg-[#0b101d]/70 backdrop-blur-md text-white border-white/20 hover:bg-white/5 ${isTourActive ? 'border-blue-500/50 text-blue-400' : ''}`}
+            className={`panel text-white border-[#2b62ff]/40 hover:bg-white/5 ${isTourActive ? 'border-[#0094ff]/50 text-[#75ddff]' : ''}`}
             onClick={() => {
                 const next = !isTourActive;
                 if (next) {
@@ -1544,17 +1551,17 @@ export function GlobeComponent({
 
       {/* Panel de Capas */}
       {layersOpen && mode === 'global' && !plainGlobe && (
-        <div className="absolute top-16 right-4 z-[120] w-64 bg-[#0b101d]/95 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="flex items-center justify-between px-1 pb-2 mb-1 border-b border-white/10">
-            <span className="text-xs font-bold uppercase tracking-widest text-slate-300">Capas del globo</span>
-            <button onClick={() => setLayersOpen(false)} className="text-slate-500 hover:text-white">
+        <div className="absolute top-16 right-4 z-[120] w-64 panel border border-[#2a2a4a] rounded-2xl shadow-2xl p-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="flex items-center justify-between px-1 pb-2 mb-1 border-b border-[#2a2a4a]">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#c0c8de]">Capas del globo</span>
+            <button onClick={() => setLayersOpen(false)} className="text-[#8892b0] hover:text-white">
               <FontAwesomeIcon icon={faXmark} className="w-3.5 h-3.5" />
             </button>
           </div>
           {[
             { on: showArcs, set: setShowArcs, icon: faRoute, label: "Líneas a Colombia", desc: "Flujo de conversación al HQ", color: "text-amber-400" },
             { on: showColumns, set: setShowColumns, icon: faChartColumn, label: "Columnas 3D", desc: "Volumen en relieve", color: "text-yellow-400" },
-            { on: showHashtags, set: setShowHashtags, icon: faHashtag, label: "Hashtags", desc: "Burbujas por país", color: "text-sky-400" },
+            { on: showHashtags, set: setShowHashtags, icon: faHashtag, label: "Hashtags", desc: "Burbujas por país", color: "text-[#00e1ff]" },
             { on: showAlerts, set: setShowAlerts, icon: faTriangleExclamation, label: "Alertas", desc: "Sentimiento negativo", color: "text-red-400" },
             { on: showNetwork, set: setShowNetwork, icon: faShareNodes, label: "Red de discurso", desc: "País ↔ país por hashtag", color: "text-violet-400" },
             { on: showLivePings, set: setShowLivePings, icon: faBolt, label: "Pulsos en vivo", desc: "Actividad en tiempo real", color: "text-emerald-400" },
@@ -1564,12 +1571,12 @@ export function GlobeComponent({
               onClick={() => row.set((v: boolean) => !v)}
               className="w-full flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/5 transition-colors text-left"
             >
-              <FontAwesomeIcon icon={row.icon} className={`w-4 h-4 ${row.on ? row.color : 'text-slate-600'}`} />
+              <FontAwesomeIcon icon={row.icon} className={`w-4 h-4 ${row.on ? row.color : 'text-[#8892b0]'}`} />
               <span className="flex-1">
                 <span className="block text-xs font-semibold text-white leading-tight">{row.label}</span>
-                <span className="block text-[10px] text-slate-500 leading-tight">{row.desc}</span>
+                <span className="block text-[10px] text-[#8892b0] leading-tight">{row.desc}</span>
               </span>
-              <span className={`relative w-9 h-5 rounded-full transition-colors ${row.on ? 'bg-blue-500/80' : 'bg-white/10'}`}>
+              <span className={`relative w-9 h-5 rounded-full transition-colors ${row.on ? 'bg-[#0094ff]/80' : 'bg-white/10'}`}>
                 <span className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all ${row.on ? 'left-[18px]' : 'left-0.5'}`} />
               </span>
             </button>
@@ -1577,7 +1584,7 @@ export function GlobeComponent({
           <button
             onClick={startReveal}
             disabled={revealCount !== null}
-            className="w-full mt-2 flex items-center justify-center gap-2 px-2 py-2 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-300 text-xs font-semibold hover:bg-blue-500/25 transition-colors disabled:opacity-50"
+            className="w-full mt-2 flex items-center justify-center gap-2 px-2 py-2 rounded-lg bg-[#0094ff]/15 border border-[#0094ff]/30 text-[#75ddff] text-xs font-semibold hover:bg-[#0094ff]/25 transition-colors disabled:opacity-50"
           >
             <FontAwesomeIcon icon={faPlay} className="w-3 h-3" />
             {revealCount !== null ? `Revelando… (${revealCount})` : "Revelar conversación"}
@@ -1590,7 +1597,7 @@ export function GlobeComponent({
           Ventana normal: centrado abajo (comportamiento normal). */}
       {mode === 'global' && (narratorText || narratorLoading) && (
         <div
-          className={`absolute z-[120] rounded-2xl bg-[#0b101d]/90 backdrop-blur-md border border-fuchsia-500/30 shadow-2xl animate-in fade-in duration-500 ${
+          className={`absolute z-[120] rounded-2xl panel border border-fuchsia-500/30 shadow-2xl animate-in fade-in duration-500 ${
             isFullscreen
               ? 'right-6 top-1/2 -translate-y-1/2 max-w-sm px-6 py-4'
               : 'bottom-8 left-1/2 -translate-x-1/2 max-w-[80%] px-5 py-3'
@@ -1598,8 +1605,8 @@ export function GlobeComponent({
         >
           <div className="flex items-center gap-3">
             <FontAwesomeIcon icon={faWandMagicSparkles} className={`text-fuchsia-400 shrink-0 ${isFullscreen ? 'w-6 h-6' : 'w-4 h-4'}`} />
-            <p className={`text-slate-100 leading-snug ${isFullscreen ? 'text-lg' : 'text-sm'}`}>
-              {narratorLoading && !narratorText ? <span className="text-slate-400 italic">Analizando conversación…</span> : narratorText}
+            <p className={`text-[#ffffff] leading-snug ${isFullscreen ? 'text-lg' : 'text-sm'}`}>
+              {narratorLoading && !narratorText ? <span className="text-[#aab3cf] italic">Analizando conversación…</span> : narratorText}
             </p>
           </div>
         </div>
@@ -1607,7 +1614,7 @@ export function GlobeComponent({
 
       {/* Fullscreen Popup Details */}
       {isFullscreen && showDetails && selectedData && (
-          <div className="absolute left-6 top-24 bottom-6 w-80 bg-[#0b101d]/95 backdrop-blur-xl border border-white/10 rounded-2xl z-[100] shadow-2xl p-6 overflow-y-auto animate-in fade-in slide-in-from-left-6 duration-500">
+          <div className="absolute left-6 top-24 bottom-6 w-80 panel border border-[#2a2a4a] rounded-2xl z-[100] shadow-2xl p-6 overflow-y-auto animate-in fade-in slide-in-from-left-6 duration-500">
               <div className="flex justify-between items-start mb-6">
                   <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -1615,16 +1622,16 @@ export function GlobeComponent({
                               <img
                                   src={`https://flagcdn.com/w80/${selectedData.id.toLowerCase()}.png`}
                                   alt={`Bandera ${selectedData.pais}`}
-                                  className="h-8 w-auto rounded border border-white/10 shadow object-cover"
+                                  className="h-8 w-auto rounded border border-[#2a2a4a] shadow object-cover"
                               />
                           ) : (
-                              <span className="text-2xl font-black text-slate-500/50">{selectedData.id}</span>
+                              <span className="text-2xl font-black text-[#8892b0]/50">{selectedData.id}</span>
                           )}
                       </div>
                       <h2 className="text-2xl font-bold text-white leading-tight">{selectedData.pais}</h2>
-                      <p className="text-xs text-blue-400 mt-1">{selectedData.updateTime}</p>
+                      <p className="text-xs text-[#75ddff] mt-1">{selectedData.updateTime}</p>
                   </div>
-                  <button onClick={() => onSelect('')} className="p-2 rounded-full bg-white/5 text-slate-400 hover:text-white transition-colors">
+                  <button onClick={() => onSelect('')} className="p-2 rounded-full bg-white/5 text-[#aab3cf] hover:text-white transition-colors">
                       <FontAwesomeIcon icon={faXmark} />
                   </button>
               </div>
@@ -1634,46 +1641,46 @@ export function GlobeComponent({
                     /* ── MODO PRENSA ── */
                     <>
                       {/* Tema principal sincronizado con el carrusel */}
-                      <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
-                          <p className="text-xs text-slate-400 mb-1">Tema principal</p>
-                          <p key={carouselIdx + '-title'} className="text-sm font-semibold text-blue-400 leading-snug animate-in fade-in duration-500">
+                      <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
+                          <p className="text-xs text-[#aab3cf] mb-1">Tema principal</p>
+                          <p key={carouselIdx + '-title'} className="text-sm font-semibold text-[#75ddff] leading-snug animate-in fade-in duration-500">
                               {activeArt?.title || '—'}
                           </p>
                           {activeArt?.media && (
-                              <span key={carouselIdx + '-media'} className="mt-2 inline-block text-[10px] font-semibold text-sky-300 bg-sky-500/10 border border-sky-500/20 px-2 py-0.5 rounded-md animate-in fade-in duration-500">
+                              <span key={carouselIdx + '-media'} className="mt-2 inline-block text-[10px] font-semibold text-[#00e1ff] bg-[#00e1ff]/10 border border-[#00e1ff]/20 px-2 py-0.5 rounded-md animate-in fade-in duration-500">
                                   {activeArt.media}
                               </span>
                           )}
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
+                          <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
                               <p className="text-xl font-bold text-yellow-500">
                                   {Number(selectedData.totalDept ?? selectedData.volumen).toLocaleString()}
                               </p>
-                              <p className="text-xs text-slate-400">artículos</p>
+                              <p className="text-xs text-[#aab3cf]">artículos</p>
                           </div>
-                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
+                          <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
                               {(() => {
                                   const cm: Record<string,string> = { Positivo:'#2eb88a', positivo:'#2eb88a', Negativo:'#df3a3a', negativo:'#df3a3a', Neutro:'#f3b116', neutral:'#f3b116' };
                                   const raw = activeArt?.tone || selectedData.sentimiento || 'neutral';
                                   return <>
-                                      <p key={carouselIdx + '-sent'} className="text-md font-bold animate-in fade-in duration-500" style={{ color: cm[raw] || '#94a3b8' }}>
+                                      <p key={carouselIdx + '-sent'} className="text-md font-bold animate-in fade-in duration-500" style={{ color: cm[raw] || '#c0c8de' }}>
                                           {raw.charAt(0).toUpperCase() + raw.slice(1)}
                                       </p>
-                                      <p className="text-xs text-slate-400">Sentimiento</p>
+                                      <p className="text-xs text-[#aab3cf]">Sentimiento</p>
                                   </>;
                               })()}
                           </div>
                       </div>
 
-                      <div className="space-y-2 bg-[#0e1526] p-4 rounded-xl border border-white/5">
-                          <p className="text-xs text-slate-400">Distribución de sentimiento</p>
+                      <div className="space-y-2 bg-[#10142a] p-4 rounded-xl border border-[#1e2240]">
+                          <p className="text-xs text-[#aab3cf]">Distribución de sentimiento</p>
                           <SentimentDonut size={104} positivo={selectedData.sentimientoPct?.positivo || 0} neutral={selectedData.sentimientoPct?.neutral || 0} negativo={selectedData.sentimientoPct?.negativo || 0} colors={{ positivo: sentimentColors.positivo, neutral: sentimentColors.neutral, negativo: sentimentColors.negativo }} />
                       </div>
 
                       <div>
-                          <p className="text-xs text-slate-400 mb-2">Distribución por tono</p>
+                          <p className="text-xs text-[#aab3cf] mb-2">Distribución por tono</p>
                           <div className="space-y-2">
                               {([['Positivo','#2eb88a'],['Negativo','#df3a3a'],['Neutro','#f3b116']] as [string,string][]).map(([tone, col]) => {
                                   const v = (selectedData.tonos || {})[tone] || 0;
@@ -1681,7 +1688,7 @@ export function GlobeComponent({
                                   return (
                                       <div key={tone} className="flex items-center gap-3">
                                           <span className="text-[10px] font-semibold w-16 shrink-0" style={{ color: col }}>{tone}</span>
-                                          <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]/70 backdrop-blur-md">
+                                          <div className="flex-1 h-1.5 rounded-full panel-soft">
                                               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${tot > 0 ? (v / tot) * 100 : 0}%`, background: col }} />
                                           </div>
                                           <span className="text-xs font-mono w-10 text-right text-white">{v.toLocaleString()}</span>
@@ -1692,7 +1699,7 @@ export function GlobeComponent({
                       </div>
 
                       <div className="space-y-2">
-                          <p className="text-xs text-slate-400">Palabras clave</p>
+                          <p className="text-xs text-[#aab3cf]">Palabras clave</p>
                           <div className="flex flex-wrap gap-1">
                               {(() => {
                                   const STOP = new Set(['de','la','el','en','y','a','los','del','se','las','un','por','con','una','su','para','es','al','que','lo','como','más','pero','sus','le','ya','o','este','esta','sí','porque','fue','han','son','ha','no','también','entre','si','donde','quien','cuando','cual','sobre','hasta','muy','sin','ser','hay','nos','ante','tras','durante','siendo','así','todo','cada','otro','otros','otra','otras']);
@@ -1703,15 +1710,15 @@ export function GlobeComponent({
                                       });
                                   });
                                   return Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([w]) => (
-                                      <span key={w} className="px-2 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-[10px] text-blue-300 font-medium">{w}</span>
+                                      <span key={w} className="px-2 py-1 rounded-lg bg-[#0094ff]/10 border border-[#0094ff]/20 text-[10px] text-[#75ddff] font-medium">{w}</span>
                                   ));
                               })()}
                           </div>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-[#161d2b]/70 backdrop-blur-md border border-blue-500/20 text-xs leading-relaxed">
-                          <p className="text-slate-400 mb-1">Resumen</p>
-                          <p key={carouselIdx + '-summary'} className="text-slate-300 animate-in fade-in duration-500">
+                      <div className="p-4 rounded-xl panel-soft border border-[#0094ff]/20 text-xs leading-relaxed">
+                          <p className="text-[#aab3cf] mb-1">Resumen</p>
+                          <p key={carouselIdx + '-summary'} className="text-[#c0c8de] animate-in fade-in duration-500">
                               {activeArt?.summary || '—'}
                           </p>
                       </div>
@@ -1719,39 +1726,39 @@ export function GlobeComponent({
                   ) : (
                     /* ── MODO SOCIAL (globo mundial) — comportamiento original ── */
                     <>
-                      <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
-                          <p className="text-xs text-slate-400 mb-1">Tema principal</p>
-                          <p className="text-sm font-semibold text-blue-400">{selectedData.tema}</p>
+                      <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
+                          <p className="text-xs text-[#aab3cf] mb-1">Tema principal</p>
+                          <p className="text-sm font-semibold text-[#75ddff]">{selectedData.tema}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
+                          <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
                               <p className="text-xl font-bold text-yellow-500">{Number(selectedData.volumen).toLocaleString()}</p>
-                              <p className="text-xs text-slate-400">menciones hoy</p>
+                              <p className="text-xs text-[#aab3cf]">menciones hoy</p>
                               <p className="text-xs text-green-500 flex items-center mt-1"><FontAwesomeIcon icon={faArrowTrendUp} className="w-3 h-3 mr-1"/> {selectedData.pctCambio}%</p>
                           </div>
-                          <div className="bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl">
+                          <div className="panel-soft p-4 rounded-xl border border-[#1e2240]">
                               {(() => {
                                   const plats = selectedData.plataformas || {};
                                   const dominantPlat = selectedPlatform || (Object.entries(plats).sort((a: any, b: any) => b[1] - a[1])[0]?.[0] ?? '');
                                   const platColors: Record<string,string> = { TikTok:'#69C9D0', X:'#ffffff', Instagram:'#E1306C', Facebook:'#1877f2' };
-                                  const col = platColors[dominantPlat] || '#94a3b8';
+                                  const col = platColors[dominantPlat] || '#c0c8de';
                                   return <>
                                       <div className="flex items-center gap-1.5 mb-1" dangerouslySetInnerHTML={{ __html: platformIcons[dominantPlat.toLowerCase()] ? `<span style="display:inline-flex;width:16px;height:16px;">${platformIcons[dominantPlat.toLowerCase()]}</span>` : '' }} />
                                       <p className="text-md font-bold" style={{ color: col }}>{dominantPlat || '—'}</p>
-                                      <p className="text-xs text-slate-400">Red dominante</p>
+                                      <p className="text-xs text-[#aab3cf]">Red dominante</p>
                                   </>;
                               })()}
                           </div>
                       </div>
 
-                      <div className="space-y-2 bg-[#0e1526] p-4 rounded-xl border border-white/5">
-                          <p className="text-xs text-slate-400">Distribución de sentimiento</p>
+                      <div className="space-y-2 bg-[#10142a] p-4 rounded-xl border border-[#1e2240]">
+                          <p className="text-xs text-[#aab3cf]">Distribución de sentimiento</p>
                           <SentimentDonut size={104} positivo={selectedData.sentimientoPct?.positivo || 0} neutral={selectedData.sentimientoPct?.neutral || 0} negativo={selectedData.sentimientoPct?.negativo || 0} colors={{ positivo: sentimentColors.positivo, neutral: sentimentColors.neutral, negativo: sentimentColors.negativo }} />
                       </div>
 
                       <div>
-                          <p className="text-xs text-slate-400 mb-2">Volumen por plataforma</p>
+                          <p className="text-xs text-[#aab3cf] mb-2">Volumen por plataforma</p>
                           <div className="space-y-2">
                               {(() => {
                                   const platformEntries = Object.entries(selectedData.plataformas) as [string, number][];
@@ -1761,7 +1768,7 @@ export function GlobeComponent({
                                           <div style={{ color: platformColors[plat] }}>
                                               <span dangerouslySetInnerHTML={{ __html: platformIcons[plat.toLowerCase()] || "" }} />
                                           </div>
-                                          <div className="flex-1 h-1.5 rounded-full bg-[#161d2b]/70 backdrop-blur-md">
+                                          <div className="flex-1 h-1.5 rounded-full panel-soft">
                                               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${trueTotal > 0 ? ((vol || 0) / trueTotal) * 100 : 0}%`, background: platformColors[plat] }} />
                                           </div>
                                           <span className="text-xs font-mono w-16 text-right text-white">{(vol || 0).toLocaleString()}</span>
@@ -1772,21 +1779,21 @@ export function GlobeComponent({
                       </div>
 
                       <div className="space-y-2">
-                          <p className="text-xs text-slate-400">Palabras clave</p>
+                          <p className="text-xs text-[#aab3cf]">Palabras clave</p>
                           <div className="flex flex-wrap gap-1">
-                              {selectedData.keywords?.map((k: string) => <span key={k} className="px-2 py-1 rounded bg-[#161d2b]/70 backdrop-blur-md text-[10px] text-white">{k}</span>)}
+                              {selectedData.keywords?.map((k: string) => <span key={k} className="px-2 py-1 rounded panel-soft text-[10px] text-white border border-[#1e2240]">{k}</span>)}
                           </div>
                       </div>
 
                       <div className="space-y-2">
-                          <p className="text-xs text-slate-400">Top hashtags</p>
+                          <p className="text-xs text-[#aab3cf]">Top hashtags</p>
                           <div className="flex flex-wrap gap-1">
-                              {selectedData.topHashtags?.map((h: string) => <span key={h} className="px-2 py-1 rounded bg-[#161d2b]/70 backdrop-blur-md text-[10px] text-yellow-500">{h}</span>)}
+                              {selectedData.topHashtags?.map((h: string) => <span key={h} className="px-2 py-1 rounded panel-soft text-[10px] text-yellow-500 border border-[#1e2240]">{h}</span>)}
                           </div>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-[#161d2b]/70 backdrop-blur-md border border-blue-500/20 text-xs text-slate-300 leading-relaxed">
-                          <p className="text-slate-400 mb-1">Resumen</p>
+                      <div className="p-4 rounded-xl panel-soft border border-[#0094ff]/20 text-xs text-[#c0c8de] leading-relaxed">
+                          <p className="text-[#aab3cf] mb-1">Resumen</p>
                           {selectedData.resumen}
                       </div>
                     </>

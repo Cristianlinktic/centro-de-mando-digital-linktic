@@ -29,7 +29,7 @@ export function GaugeRing({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="hsl(222 30% 18%)"
+            stroke="#1e2240"
             strokeWidth={strokeWidth}
           />
           <circle

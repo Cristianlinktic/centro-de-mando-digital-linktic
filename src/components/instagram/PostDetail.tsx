@@ -7,8 +7,8 @@ import { PostImage } from "./PostImage";
 
 function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className="rounded-xl border border-white/5 bg-white/5 px-4 py-3">
-      <div className="text-xs text-neutral-400">{label}</div>
+    <div className="rounded-xl border border-[#1e2240] bg-white/5 px-4 py-3">
+      <div className="text-xs text-[#aab3cf]">{label}</div>
       <div className={`mt-0.5 text-xl font-semibold ${accent ? "text-fuchsia-400" : "text-white"}`}>
         {value}
       </div>
@@ -32,10 +32,10 @@ export function PostDetail({ post, onClose }: { post: Post | null; onClose: () =
       onClick={onClose}
     >
       <div
-        className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-2xl border border-white/10 bg-neutral-900 sm:rounded-2xl"
+        className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-2xl border border-[#2a2a4a] bg-[#0a0a1c] sm:rounded-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-4 border-b border-white/10 p-5">
+        <div className="flex items-start justify-between gap-4 border-b border-[#2a2a4a] p-5">
           <div>
             <span className="inline-block rounded-full bg-fuchsia-500/15 px-2.5 py-0.5 text-xs font-medium text-fuchsia-300">
               {typeLabel(post.type)}
@@ -46,7 +46,7 @@ export function PostDetail({ post, onClose }: { post: Post | null; onClose: () =
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg px-2 py-1 text-neutral-400 hover:bg-white/10 hover:text-white"
+            className="rounded-lg px-2 py-1 text-[#aab3cf] hover:bg-white/10 hover:text-white"
             aria-label="Cerrar"
           >
             ✕
@@ -69,17 +69,17 @@ export function PostDetail({ post, onClose }: { post: Post | null; onClose: () =
         </div>
 
         <div className="px-5 pb-5">
-          <div className="mb-2 text-xs font-medium uppercase tracking-wide text-neutral-500">
+          <div className="mb-2 text-xs font-medium uppercase tracking-wide text-[#8892b0]">
             Texto de la publicación
           </div>
-          <p className="whitespace-pre-wrap rounded-xl border border-white/5 bg-white/5 p-4 text-sm leading-relaxed text-neutral-200">
+          <p className="whitespace-pre-wrap rounded-xl border border-[#1e2240] bg-white/5 p-4 text-sm leading-relaxed text-[#e4e9f5]">
             {post.caption || "(sin texto)"}
           </p>
 
           {tags.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-1.5">
               {tags.map((t) => (
-                <span key={t} className="rounded-full bg-sky-500/10 px-2.5 py-1 text-xs text-sky-300">
+                <span key={t} className="rounded-full bg-[#00e1ff]/10 px-2.5 py-1 text-xs text-[#00e1ff]">
                   {t}
                 </span>
               ))}

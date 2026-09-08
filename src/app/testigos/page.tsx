@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 const Globe = dynamic(() => import("@/components/globe").then((m) => m.GlobeComponent), {
   ssr: false,
   loading: () => (
-    <div className="h-[420px] rounded-lg flex items-center justify-center bg-[#05080f]">
+    <div className="h-[420px] rounded-lg flex items-center justify-center well border border-[#1e2240]">
       <p className="text-muted-foreground text-sm">Cargando globo...</p>
     </div>
   ),
@@ -75,14 +75,14 @@ function TestigosOverview({
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {kpis.map((kpi, i) => (
-          <div key={kpi.id} className="kpi-card p-4 flex flex-col gap-2 rounded-xl border-white/5 shadow-none">
+          <div key={kpi.id} className="kpi-card p-4 flex flex-col gap-2 rounded-xl border-[#1e2240] shadow-none">
             <div className="flex items-center justify-between">
               {isEditing ? (
                   <Input value={kpi.label} onChange={e => {
                       const newK = [...kpis];
                       newK[i].label = e.target.value;
                       setKpis(newK);
-                  }} className="h-4 bg-transparent border-none p-0 text-[10px] font-bold uppercase tracking-widest text-slate-500" />
+                  }} className="h-4 bg-transparent border-none p-0 text-[10px] font-bold uppercase tracking-widest text-[#8892b0]" />
               ) : (
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest truncate min-w-0">{kpi.label}</span>
               )}
@@ -106,22 +106,22 @@ function TestigosOverview({
                     const newK = [...kpis];
                     newK[i].value = e.target.value;
                     setKpis(newK);
-                }} className="h-8 text-2xl font-bold text-[#1270e2] bg-white/5 border-white/10" />
+                }} className="h-8 text-2xl font-bold text-[#0094ff] bg-white/5 border-[#2a2a4a]" />
             ) : (
-                <div className="font-bold text-xl sm:text-2xl text-[#1270e2] truncate">{kpi.value}</div>
+                <div className="font-bold text-xl sm:text-2xl text-[#0094ff] truncate">{kpi.value}</div>
             )}
-            <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden mt-1">
-              <div className="h-full bg-[#1270e2] rounded-full" style={{ width: `${kpi.progress}%` }}></div>
+            <div className="h-1 w-full bg-[#131a30] rounded-full overflow-hidden mt-1">
+              <div className="h-full bg-[#0094ff] rounded-full" style={{ width: `${kpi.progress}%` }}></div>
             </div>
           </div>
         ))}
       </div>
 
       {/* Globe Card */}
-      <div className="kpi-card p-4 rounded-xl relative border-white/5 shadow-none">
+      <div className="kpi-card p-4 rounded-xl relative border-[#1e2240] shadow-none">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-sm font-semibold text-slate-100 flex items-center gap-2">
-            <FontAwesomeIcon icon={faGlobe} className="text-blue-500" />
+          <span className="text-sm font-semibold text-[#ffffff] flex items-center gap-2">
+            <FontAwesomeIcon icon={faGlobe} className="text-[#0094ff]" />
             Globo Terráqueo — Narrativa por País
           </span>
         </div>
@@ -129,7 +129,7 @@ function TestigosOverview({
           Misiones internacionales de observación acreditadas ante el Centro de Mando Digital LinkTIC. Arrastra para rotar, haz click para ver el detalle.
         </p>
         
-        <div className="relative w-full h-[420px] bg-[#05080f] rounded-xl overflow-hidden border border-white/5">
+        <div className="relative w-full h-[420px] well rounded-xl overflow-hidden border border-[#1e2240]">
           <Suspense fallback={<div className="h-full flex items-center justify-center">Cargando...</div>}>
             <Globe 
                 className="h-full" 
@@ -148,24 +148,24 @@ function TestigosOverview({
             />
           </Suspense>
           
-          <div className="absolute bottom-3 left-3 flex items-center gap-4 text-[10px] pointer-events-none bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/5">
+          <div className="absolute bottom-3 left-3 flex items-center gap-4 text-[10px] pointer-events-none bg-black/40 px-3 py-1.5 rounded-full backdrop-blur-sm border border-[#1e2240]">
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#d4af37]"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-[#f3b116]"></div>
               <span className="text-muted-foreground font-medium">Colombia</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#1d6fe8]"></div>
+              <div className="w-2.5 h-2.5 rounded-full bg-[#0094ff]"></div>
               <span className="text-muted-foreground font-medium">Misión internacional</span>
             </div>
           </div>
           
-          <div className="absolute top-3 right-3 text-[10px] text-muted-foreground pointer-events-none bg-[#0e1320]/90 px-3 py-1.5 rounded-lg border border-white/5 font-medium">
+          <div className="absolute top-3 right-3 text-[10px] text-muted-foreground pointer-events-none bg-[#10142a]/90 px-3 py-1.5 rounded-lg border border-[#1e2240] font-medium">
             Arrastra para rotar · Click en un marcador
           </div>
 
           {/* Overlay Detail Panel */}
           {marker && (
-            <div className="absolute right-3 top-10 rounded-xl p-4 text-sm bg-[#0e1320]/95 border border-[#1270e2]/40 min-w-[200px] max-w-[calc(100%-1.5rem)] z-20 shadow-2xl animate-in fade-in slide-in-from-right-4 duration-300">
+            <div className="absolute right-3 top-10 rounded-xl p-4 text-sm bg-[#10142a]/95 border border-[#0094ff]/40 min-w-[200px] max-w-[calc(100%-1.5rem)] z-20 shadow-2xl animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex items-center justify-between mb-2">
                     <span className="font-bold text-yellow-500">{marker.pais}</span>
                     <button onClick={() => setSelected(null)} className="text-muted-foreground hover:text-white transition-colors">
@@ -173,15 +173,15 @@ function TestigosOverview({
                     </button>
                 </div>
                 <div className="text-[10px] text-muted-foreground mb-1">{marker.ciudad}</div>
-                <div className="text-[11px] font-bold text-[#1270e2]">{marker.tipo}</div>
+                <div className="text-[11px] font-bold text-[#0094ff]">{marker.tipo}</div>
                 <div className="h-px bg-white/10 my-2"></div>
                 <div className="text-[10px] mb-1">
                     <span className="text-muted-foreground">Observadores: </span>
-                    <span className="font-bold text-slate-200">{marker.count}</span>
+                    <span className="font-bold text-[#e4e9f5]">{marker.count}</span>
                 </div>
                 <div className="text-[10px] mb-1">
                     <span className="text-muted-foreground">Narrativa: </span>
-                    <span className="text-slate-300">{marker.narrativa}</span>
+                    <span className="text-[#c0c8de]">{marker.narrativa}</span>
                 </div>
                 <div className="text-[10px]">
                     <span className="text-muted-foreground">Tendencia: </span>
@@ -194,14 +194,14 @@ function TestigosOverview({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Department Progress */}
-        <div className="kpi-card p-4 rounded-xl border-white/5 shadow-none">
+        <div className="kpi-card p-4 rounded-xl border-[#1e2240] shadow-none">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-                <FontAwesomeIcon icon={faMapPin} className="text-blue-500 w-3.5 h-3.5" />
-                <h3 className="text-sm font-semibold text-slate-100">Testigos por Departamento</h3>
+                <FontAwesomeIcon icon={faMapPin} className="text-[#0094ff] w-3.5 h-3.5" />
+                <h3 className="text-sm font-semibold text-[#ffffff]">Testigos por Departamento</h3>
             </div>
             {isEditing && (
-                <Button size="sm" variant="ghost" onClick={() => setDeptos([...deptos, { depto: 'Nuevo', count: 0 }])} className="h-6 text-[10px] font-bold text-blue-400">
+                <Button size="sm" variant="ghost" onClick={() => setDeptos([...deptos, { depto: 'Nuevo', count: 0 }])} className="h-6 text-[10px] font-bold text-[#75ddff]">
                     <FontAwesomeIcon icon={faPlus} className="mr-1" /> Agregar
                 </Button>
             )}
@@ -216,7 +216,7 @@ function TestigosOverview({
                               const newD = [...deptos];
                               newD[i].depto = e.target.value;
                               setDeptos(newD);
-                          }} className="h-6 text-[10px] bg-white/5 border-white/10 p-1 flex-1" />
+                          }} className="h-6 text-[10px] bg-white/5 border-[#2a2a4a] p-1 flex-1" />
                       ) : (
                           <span className="text-muted-foreground">{d.depto}</span>
                       )}
@@ -227,9 +227,9 @@ function TestigosOverview({
                               const newD = [...deptos];
                               newD[i].count = parseInt(e.target.value);
                               setDeptos(newD);
-                          }} className="h-6 w-16 text-[10px] bg-white/5 border-white/10 p-1 text-right" />
+                          }} className="h-6 w-16 text-[10px] bg-white/5 border-[#2a2a4a] p-1 text-right" />
                       ) : (
-                          <span className="text-slate-200">{d.count.toLocaleString()}</span>
+                          <span className="text-[#e4e9f5]">{d.count.toLocaleString()}</span>
                       )}
                       {isEditing && (
                           <Button variant="ghost" size="sm" onClick={() => setDeptos(deptos.filter((_, idx) => idx !== i))} className="h-6 w-6 p-0 text-red-500 opacity-0 group-hover:opacity-100">
@@ -238,9 +238,9 @@ function TestigosOverview({
                       )}
                   </div>
                 </div>
-                <div className="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-1 w-full bg-[#131a30] rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-[#1270e2] rounded-full" 
+                    className="h-full bg-[#0094ff] rounded-full" 
                     style={{ width: `${(d.count / maxDeptoCount) * 100}%` }}
                   ></div>
                 </div>
@@ -250,14 +250,14 @@ function TestigosOverview({
         </div>
 
         {/* Missions List */}
-        <div className="kpi-card p-4 rounded-xl flex flex-col border-white/5 shadow-none">
+        <div className="kpi-card p-4 rounded-xl flex flex-col border-[#1e2240] shadow-none">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
                 <FontAwesomeIcon icon={faEye} className="text-yellow-500 w-3.5 h-3.5" />
-                <h3 className="text-sm font-semibold text-slate-100">Misiones por País</h3>
+                <h3 className="text-sm font-semibold text-[#ffffff]">Misiones por País</h3>
             </div>
             {isEditing && (
-                <Button size="sm" variant="ghost" onClick={() => setMisiones([...misiones, { pais: 'Nuevo', ciudad: 'Ciudad', tipo: 'Misión', count: 0, narrativa: '', tendencia: 'Estable' }])} className="h-6 text-[10px] font-bold text-blue-400">
+                <Button size="sm" variant="ghost" onClick={() => setMisiones([...misiones, { pais: 'Nuevo', ciudad: 'Ciudad', tipo: 'Misión', count: 0, narrativa: '', tendencia: 'Estable' }])} className="h-6 text-[10px] font-bold text-[#75ddff]">
                     <FontAwesomeIcon icon={faPlus} className="mr-1" /> Agregar
                 </Button>
             )}
@@ -267,7 +267,7 @@ function TestigosOverview({
               <div 
                 key={i} 
                 onClick={() => setSelected(m.pais)}
-                className={`flex items-center justify-between py-1.5 px-2 border-b border-white/5 last:border-0 cursor-pointer transition-colors rounded-lg group ${selected === m.pais ? 'bg-blue-500/10' : 'hover:bg-white/5'}`}
+                className={`flex items-center justify-between py-1.5 px-2 border-b border-[#1e2240] last:border-0 cursor-pointer transition-colors rounded-lg group ${selected === m.pais ? 'bg-[#0094ff]/10' : 'hover:bg-white/5'}`}
               >
                 <div className="flex-1">
                   {isEditing ? (
@@ -275,16 +275,16 @@ function TestigosOverview({
                           const newM = [...misiones];
                           newM[i].pais = e.target.value;
                           setMisiones(newM);
-                      }} className="h-6 text-sm font-bold bg-transparent border-white/10 w-32" />
+                      }} className="h-6 text-sm font-bold bg-transparent border-[#2a2a4a] w-32" />
                   ) : (
-                      <div className="text-sm font-bold text-slate-200">{m.pais}</div>
+                      <div className="text-sm font-bold text-[#e4e9f5]">{m.pais}</div>
                   )}
                   {isEditing ? (
                       <Input value={m.ciudad} onChange={e => {
                           const newM = [...misiones];
                           newM[i].ciudad = e.target.value;
                           setMisiones(newM);
-                      }} className="h-5 text-[10px] bg-transparent border-white/10 w-24 mt-1" />
+                      }} className="h-5 text-[10px] bg-transparent border-[#2a2a4a] w-24 mt-1" />
                   ) : (
                       <div className="text-[10px] text-muted-foreground">{m.ciudad}</div>
                   )}
@@ -296,16 +296,16 @@ function TestigosOverview({
                             const newM = [...misiones];
                             newM[i].tipo = e.target.value;
                             setMisiones(newM);
-                        }} className="h-5 text-[11px] font-bold text-[#1270e2] bg-transparent border-white/10 w-24 text-right" />
+                        }} className="h-5 text-[11px] font-bold text-[#0094ff] bg-transparent border-[#2a2a4a] w-24 text-right" />
                     ) : (
-                        <div className="text-[11px] font-bold text-[#1270e2]">{m.tipo}</div>
+                        <div className="text-[11px] font-bold text-[#0094ff]">{m.tipo}</div>
                     )}
                     {isEditing ? (
                         <Input type="number" value={m.count} onChange={e => {
                             const newM = [...misiones];
                             newM[i].count = parseInt(e.target.value);
                             setMisiones(newM);
-                        }} className="h-5 text-[10px] bg-transparent border-white/10 w-16 text-right mt-1" />
+                        }} className="h-5 text-[10px] bg-transparent border-[#2a2a4a] w-16 text-right mt-1" />
                     ) : (
                         <div className="text-[10px] text-muted-foreground font-bold tracking-tight">{m.count} obs.</div>
                     )}
@@ -395,12 +395,12 @@ export default function TestigosPage() {
         <div className="flex gap-2">
             {canEdit(role) && (
                 !isEditing ? (
-                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="bg-blue-600/10 text-blue-400 border-blue-500/20 hover:bg-blue-600 hover:text-white transition-all">
+                    <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="bg-[#0094ff]/10 text-[#75ddff] border-[#0094ff]/20 hover:bg-[#0094ff] hover:text-white transition-all">
                         <FontAwesomeIcon icon={faRotate} className="mr-2" /> Modo Edición
                     </Button>
                 ) : (
                     <div className="flex gap-2 animate-in fade-in zoom-in duration-300">
-                        <Button variant="outline" size="sm" onClick={() => setIsEditing(false)} className="text-slate-400 hover:text-white">
+                        <Button variant="outline" size="sm" onClick={() => setIsEditing(false)} className="text-[#aab3cf] hover:text-white">
                             Cancelar
                         </Button>
                         <Button variant="default" size="sm" onClick={saveTestigosData} className="bg-green-600 hover:bg-green-700 text-white font-bold px-4">
@@ -409,7 +409,7 @@ export default function TestigosPage() {
                     </div>
                 )
             )}
-            <Button variant="outline" size="sm" onClick={fetchTestigosData} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
+            <Button variant="outline" size="sm" onClick={fetchTestigosData} className="panel border-[#2a2a4a] text-white">
                 <FontAwesomeIcon icon={faRotate} className={`mr-2 ${loading ? 'animate-spin' : ''}`}/>
             </Button>
         </div>
@@ -443,10 +443,10 @@ export default function TestigosPage() {
 
       <AdminPopup title="Estratega: Testigos Electorales" hideTrigger={true}>
           <div className="space-y-6">
-              <div className="flex justify-between items-center bg-[#161d2b]/70 backdrop-blur-md p-4 rounded-xl border border-white/5">
+              <div className="flex justify-between items-center panel-soft p-4 rounded-xl border border-[#1e2240]">
                 <div>
-                    <h3 className="font-bold text-blue-400">Panel Estratégico</h3>
-                    <p className="text-xs text-slate-400">Configura las misiones internacionales y metas regionales.</p>
+                    <h3 className="font-bold text-[#75ddff]">Panel Estratégico</h3>
+                    <p className="text-xs text-[#aab3cf]">Configura las misiones internacionales y metas regionales.</p>
                 </div>
                 <Button variant="neon" className="font-bold" onClick={saveTestigosData}>
                     <FontAwesomeIcon icon={faSave} className="mr-2" /> Guardar Todo
@@ -454,8 +454,8 @@ export default function TestigosPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                      <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Metas por Departamento</h4>
+                  <div className="bg-white/5 p-4 rounded-xl border border-[#1e2240]">
+                      <h4 className="text-xs font-black text-[#8892b0] uppercase tracking-widest mb-4">Metas por Departamento</h4>
                       <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                           {deptos.map((d, i) => (
                               <div key={i} className="flex gap-2 items-center">
@@ -463,19 +463,19 @@ export default function TestigosPage() {
                                       const newD = [...deptos];
                                       newD[i].depto = e.target.value;
                                       setDeptos(newD);
-                                  }} className="h-8 text-xs bg-black/20 border-white/5" />
+                                  }} className="h-8 text-xs bg-black/20 border-[#1e2240]" />
                                   <Input type="number" value={d.count} onChange={e => {
                                       const newD = [...deptos];
                                       newD[i].count = parseInt(e.target.value);
                                       setDeptos(newD);
-                                  }} className="h-8 text-xs bg-black/20 border-white/5 w-24 text-right" />
+                                  }} className="h-8 text-xs bg-black/20 border-[#1e2240] w-24 text-right" />
                               </div>
                           ))}
                       </div>
                   </div>
 
-                  <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                      <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Detalle de Misiones</h4>
+                  <div className="bg-white/5 p-4 rounded-xl border border-[#1e2240]">
+                      <h4 className="text-xs font-black text-[#8892b0] uppercase tracking-widest mb-4">Detalle de Misiones</h4>
                       <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                           {misiones.map((m, i) => (
                               <div key={i} className="p-3 bg-black/20 rounded-lg space-y-2">
@@ -484,12 +484,12 @@ export default function TestigosPage() {
                                           const newM = [...misiones];
                                           newM[i].pais = e.target.value;
                                           setMisiones(newM);
-                                      }} className="h-7 text-[10px] bg-transparent border-white/10" />
+                                      }} className="h-7 text-[10px] bg-transparent border-[#2a2a4a]" />
                                       <Input value={m.tipo} placeholder="Tipo" onChange={e => {
                                           const newM = [...misiones];
                                           newM[i].tipo = e.target.value;
                                           setMisiones(newM);
-                                      }} className="h-7 text-[10px] bg-transparent border-white/10" />
+                                      }} className="h-7 text-[10px] bg-transparent border-[#2a2a4a]" />
                                   </div>
                                   <textarea 
                                     value={m.narrativa} 
@@ -499,7 +499,7 @@ export default function TestigosPage() {
                                         newM[i].narrativa = e.target.value;
                                         setMisiones(newM);
                                     }}
-                                    className="w-full bg-transparent border border-white/10 rounded p-2 text-[10px] text-slate-300 h-16 resize-none"
+                                    className="w-full bg-transparent border border-[#2a2a4a] rounded p-2 text-[10px] text-[#c0c8de] h-16 resize-none"
                                   />
                               </div>
                           ))}
@@ -509,11 +509,11 @@ export default function TestigosPage() {
 
               <div>
                   <div className="flex justify-between items-center mb-4">
-                    <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest">Estado de la Red Global</h4>
-                    <span className="text-[10px] text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded-full"><FontAwesomeIcon icon={faBrain} className="mr-1" /> IA Insights</span>
+                    <h4 className="text-xs font-black text-[#8892b0] uppercase tracking-widest">Estado de la Red Global</h4>
+                    <span className="text-[10px] text-[#75ddff] bg-[#75ddff]/10 px-2 py-0.5 rounded-full"><FontAwesomeIcon icon={faBrain} className="mr-1" /> IA Insights</span>
                   </div>
-                  <div className="bg-blue-600/5 border border-blue-500/20 p-4 rounded-2xl">
-                      <p className="text-xs text-blue-300 leading-relaxed">
+                  <div className="bg-[#0094ff]/5 border border-[#0094ff]/20 p-4 rounded-2xl">
+                      <p className="text-xs text-[#75ddff] leading-relaxed">
                           La red de misiones internacionales está al 92% de su capacidad histórica. Se recomienda reforzar la narrativa de transparencia en los países del bloque UE para consolidar el respaldo técnico antes de la auditoría final.
                       </p>
                   </div>

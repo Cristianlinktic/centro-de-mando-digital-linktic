@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
 import {
   faUsers,
   faUserPlus,
@@ -89,7 +90,7 @@ const EMOCIONES = [
   { key: "Alegria", label: "Alegría", emoji: "😀", color: "#2eb88a" },
   { key: "Amor", label: "Amor", emoji: "😍", color: "#e879f9" },
   { key: "Sorpresa", label: "Sorpresa", emoji: "😮", color: "#f3b116" },
-  { key: "Tristeza", label: "Tristeza", emoji: "😢", color: "#3b82f6" },
+  { key: "Tristeza", label: "Tristeza", emoji: "😢", color: "#0094ff" },
   { key: "Miedo", label: "Miedo", emoji: "😨", color: "#a78bfa" },
   { key: "Ira", label: "Ira", emoji: "😡", color: "#df3a3a" },
 ] as const;
@@ -127,7 +128,7 @@ function KpiCard({
   label,
   value,
   icon,
-  colorClass = "text-blue-500",
+  colorClass = "text-[#0094ff]",
   suffix,
 }: {
   label: string;
@@ -137,16 +138,16 @@ function KpiCard({
   suffix?: string;
 }) {
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-5 rounded-2xl">
+    <Card className="panel border-[#1e2240] p-5 rounded-2xl">
       <div className="flex items-center gap-3 mb-3">
-        <div className={`p-2 rounded-xl bg-white/5 border border-white/10 ${colorClass}`}>
+        <div className={`p-2 rounded-xl bg-white/5 border border-[#2a2a4a] ${colorClass}`}>
           <FontAwesomeIcon icon={icon} className="w-4 h-4" />
         </div>
-        <p className="text-[10px] font-bold text-slate-500 tracking-wider uppercase">{label}</p>
+        <p className="text-[10px] font-bold text-[#8892b0] tracking-wider uppercase">{label}</p>
       </div>
       <p className={`text-2xl font-bold ${colorClass}`}>
         {typeof value === "number" ? value.toLocaleString("es-CO") : value}
-        {suffix && <span className="text-sm text-slate-500 ml-1">{suffix}</span>}
+        {suffix && <span className="text-sm text-[#8892b0] ml-1">{suffix}</span>}
       </p>
     </Card>
   );
@@ -166,15 +167,15 @@ function SentimentDonut({
   const neu = Math.max(0, 100 - pos - neg);
   const segments = [
     { name: "Positivo", value: pos, color: "#2eb88a" },
-    { name: "Neutral", value: neu, color: "#64748b" },
+    { name: "Neutral", value: neu, color: "#aab3cf" },
     { name: "Negativo", value: neg, color: "#df3a3a" },
   ];
   const dominant = segments.reduce((a, b) => (a.value >= b.value ? a : b));
   const emoji = dominant.name === "Positivo" ? "😊" : dominant.name === "Negativo" ? "😟" : "😐";
 
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
-      <h3 className="text-sm font-semibold mb-5 text-slate-200 uppercase tracking-widest">{title}</h3>
+    <Card className="panel border-[#1e2240] p-6 rounded-2xl">
+      <h3 className="text-sm font-semibold mb-5 text-[#e4e9f5] uppercase tracking-widest">{title}</h3>
       <div className="flex items-center gap-6">
         <div className="relative w-36 h-36 shrink-0">
           <ResponsiveContainer width="100%" height="100%">
@@ -195,7 +196,7 @@ function SentimentDonut({
                 ))}
               </Pie>
               <Tooltip
-                contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }}
+                contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -208,7 +209,7 @@ function SentimentDonut({
             <div key={s.name} className="flex items-center justify-between rounded-xl px-3 py-2 bg-white/5">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ background: s.color }} />
-                <span className="text-xs font-bold text-slate-300">{s.name}</span>
+                <span className="text-xs font-bold text-[#c0c8de]">{s.name}</span>
               </div>
               <span className="text-sm font-bold" style={{ color: s.color }}>
                 {s.value.toFixed(1)}%
@@ -224,7 +225,7 @@ function SentimentDonut({
 function ImageBox({ src, alt, emptyText }: { src: string | null | undefined; alt: string; emptyText?: string }) {
   if (!src) {
     return (
-      <div className="flex-1 min-h-[200px] rounded-xl border border-dashed border-white/10 flex items-center justify-center text-xs text-slate-500 text-center px-4">
+      <div className="flex-1 min-h-[200px] rounded-xl border border-dashed border-[#2a2a4a] flex items-center justify-center text-xs text-[#8892b0] text-center px-4">
         {emptyText ?? "Sin imagen para esta fecha"}
       </div>
     );
@@ -244,16 +245,16 @@ function ImagePicker({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-[10px] text-slate-500 uppercase font-black">{label}</label>
-      <div className="relative w-full bg-[#05080f] border border-white/10 rounded-xl px-4 py-3 flex items-center gap-2">
+      <label className="text-[10px] text-[#8892b0] uppercase font-black">{label}</label>
+      <div className="relative w-full well border border-[#2a2a4a] rounded-xl px-4 py-3 flex items-center gap-2">
         <input
           type="file"
           accept="image/*"
           onChange={(e) => onChange(e.target.files?.[0] ?? null)}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
-        <FontAwesomeIcon icon={faUpload} className="w-4 h-4 text-slate-500" />
-        <span className="text-xs text-slate-400 truncate">{file ? file.name : "Seleccionar imagen..."}</span>
+        <FontAwesomeIcon icon={faUpload} className="w-4 h-4 text-[#8892b0]" />
+        <span className="text-xs text-[#aab3cf] truncate">{file ? file.name : "Seleccionar imagen..."}</span>
       </div>
     </div>
   );
@@ -289,7 +290,7 @@ function TagListEditor({
 
   return (
     <div className="space-y-2">
-      <label className="text-[10px] text-slate-500 uppercase font-black">{label}</label>
+      <label className="text-[10px] text-[#8892b0] uppercase font-black">{label}</label>
       <div className="flex gap-2">
         <Input
           value={text}
@@ -301,12 +302,12 @@ function TagListEditor({
             }
           }}
           placeholder="Ej. #campaña"
-          className="bg-[#05080f] border-white/10 h-9 text-xs flex-1"
+          className="well border-[#2a2a4a] h-9 text-xs flex-1"
         />
         <select
           value={importance}
           onChange={(e) => setImportance(e.target.value as Importancia)}
-          className="bg-[#05080f] border border-white/10 rounded-md text-xs px-2"
+          className="well border border-[#2a2a4a] rounded-md text-xs px-2"
         >
           <option value="alta">Alta</option>
           <option value="media">Media</option>
@@ -321,12 +322,12 @@ function TagListEditor({
           {items.map((it, idx) => (
             <span
               key={idx}
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-slate-200"
+              className="inline-flex items-center gap-2 rounded-full border border-[#2a2a4a] bg-white/5 px-3 py-1 text-xs font-semibold text-[#e4e9f5]"
             >
               {it.text}
-              <span className="text-[9px] uppercase font-black text-slate-500">{it.importance}</span>
+              <span className="text-[9px] uppercase font-black text-[#8892b0]">{it.importance}</span>
               <button type="button" onClick={() => onChange(items.filter((_, i) => i !== idx))}>
-                <FontAwesomeIcon icon={faXmark} className="w-3 h-3 text-slate-500 hover:text-red-400" />
+                <FontAwesomeIcon icon={faXmark} className="w-3 h-3 text-[#8892b0] hover:text-red-400" />
               </button>
             </span>
           ))}
@@ -360,19 +361,19 @@ function ImpactListEditor({
 
   return (
     <div className="space-y-2">
-      <label className="text-[10px] text-slate-500 uppercase font-black">{label}</label>
+      <label className="text-[10px] text-[#8892b0] uppercase font-black">{label}</label>
       <div className="flex flex-col sm:flex-row gap-2">
-        <Input value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Nombre" className="bg-[#05080f] border-white/10 h-9 text-xs" />
+        <Input value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Nombre" className="well border-[#2a2a4a] h-9 text-xs" />
         <Input
           value={identificador}
           onChange={(e) => setIdentificador(e.target.value)}
           placeholder={idPlaceholder}
-          className="bg-[#05080f] border-white/10 h-9 text-xs"
+          className="well border-[#2a2a4a] h-9 text-xs"
         />
         <select
           value={impacto}
           onChange={(e) => setImpacto(e.target.value as Impacto)}
-          className="bg-[#05080f] border border-white/10 rounded-md text-xs px-2"
+          className="well border border-[#2a2a4a] rounded-md text-xs px-2"
         >
           <option value="positivo">Positivo 😀</option>
           <option value="neutral">Neutral 😐</option>
@@ -385,15 +386,15 @@ function ImpactListEditor({
       {items.length > 0 && (
         <div className="space-y-1.5 pt-1">
           {items.map((it, idx) => (
-            <div key={idx} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+            <div key={idx} className="flex items-center justify-between bg-white/5 border border-[#2a2a4a] rounded-lg px-3 py-2">
               <div>
-                <p className="text-xs font-bold text-slate-200">{it.nombre}</p>
-                <p className="text-[10px] text-slate-500">{it.identificador}</p>
+                <p className="text-xs font-bold text-[#e4e9f5]">{it.nombre}</p>
+                <p className="text-[10px] text-[#8892b0]">{it.identificador}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-lg">{it.impacto === "positivo" ? "😀" : it.impacto === "negativo" ? "😡" : "😐"}</span>
                 <button type="button" onClick={() => onChange(items.filter((_, i) => i !== idx))}>
-                  <FontAwesomeIcon icon={faXmark} className="w-3 h-3 text-slate-500 hover:text-red-400" />
+                  <FontAwesomeIcon icon={faXmark} className="w-3 h-3 text-[#8892b0] hover:text-red-400" />
                 </button>
               </div>
             </div>
@@ -522,13 +523,13 @@ function EstrategiaFormModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+      <div className="panel border border-[#2a2a4a] rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-[#2a2a4a]">
           <div>
             <h2 className="text-xl font-bold text-white">Actualizar Estrategia — {fecha}</h2>
-            <p className="text-xs text-slate-400">Métricas de redes sociales</p>
+            <p className="text-xs text-[#aab3cf]">Métricas de redes sociales</p>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white">
+          <button onClick={onClose} className="text-[#aab3cf] hover:text-white">
             <FontAwesomeIcon icon={faXmark} className="w-5 h-5" />
           </button>
         </div>
@@ -537,15 +538,15 @@ function EstrategiaFormModal({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {fields.map(([key, label]) => (
               <div key={key} className="space-y-1">
-                <label className="text-[10px] text-slate-500 uppercase font-black">{label}</label>
-                <Input type="number" value={form[key]} onChange={set(key)} className="bg-[#05080f] border-white/10 h-9 text-xs" />
+                <label className="text-[10px] text-[#8892b0] uppercase font-black">{label}</label>
+                <Input type="number" value={form[key]} onChange={set(key)} className="well border-[#2a2a4a] h-9 text-xs" />
               </div>
             ))}
           </div>
           <ImagePicker label="Publicaciones Principales (imagen)" file={image} onChange={setImage} />
         </div>
-        <div className="p-6 border-t border-white/10 flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose} className="text-slate-400">
+        <div className="p-6 border-t border-[#2a2a4a] flex justify-end gap-2">
+          <Button variant="outline" onClick={onClose} className="text-[#aab3cf]">
             Cancelar
           </Button>
           <Button variant="neon" onClick={save} disabled={saving}>
@@ -666,13 +667,13 @@ function ListeningFormModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-      <div className="bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+      <div className="panel border border-[#2a2a4a] rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-[#2a2a4a]">
           <div>
             <h2 className="text-xl font-bold text-white">Actualizar Listening — {fecha}</h2>
-            <p className="text-xs text-slate-400">Escucha social y análisis de conversación</p>
+            <p className="text-xs text-[#aab3cf]">Escucha social y análisis de conversación</p>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white">
+          <button onClick={onClose} className="text-[#aab3cf] hover:text-white">
             <FontAwesomeIcon icon={faXmark} className="w-5 h-5" />
           </button>
         </div>
@@ -681,54 +682,54 @@ function ListeningFormModal({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1">
-              <label className="text-[10px] text-slate-500 uppercase font-black">Resultados</label>
-              <Input value={form.resultados} onChange={(e) => setForm((f) => ({ ...f, resultados: e.target.value }))} className="bg-[#05080f] border-white/10 h-9 text-xs" />
+              <label className="text-[10px] text-[#8892b0] uppercase font-black">Resultados</label>
+              <Input value={form.resultados} onChange={(e) => setForm((f) => ({ ...f, resultados: e.target.value }))} className="well border-[#2a2a4a] h-9 text-xs" />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] text-slate-500 uppercase font-black">Interacciones</label>
-              <Input value={form.interacciones} onChange={(e) => setForm((f) => ({ ...f, interacciones: e.target.value }))} className="bg-[#05080f] border-white/10 h-9 text-xs" />
+              <label className="text-[10px] text-[#8892b0] uppercase font-black">Interacciones</label>
+              <Input value={form.interacciones} onChange={(e) => setForm((f) => ({ ...f, interacciones: e.target.value }))} className="well border-[#2a2a4a] h-9 text-xs" />
             </div>
             <div className="space-y-1 sm:col-span-2">
-              <label className="text-[10px] text-slate-500 uppercase font-black">Alcance Potencial</label>
-              <Input value={form.alcance_potencial} onChange={(e) => setForm((f) => ({ ...f, alcance_potencial: e.target.value }))} className="bg-[#05080f] border-white/10 h-9 text-xs" />
+              <label className="text-[10px] text-[#8892b0] uppercase font-black">Alcance Potencial</label>
+              <Input value={form.alcance_potencial} onChange={(e) => setForm((f) => ({ ...f, alcance_potencial: e.target.value }))} className="well border-[#2a2a4a] h-9 text-xs" />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] text-slate-500 uppercase font-black">Sentimiento Positivo (%)</label>
-              <Input type="number" value={form.sentimiento_positivo} onChange={(e) => setForm((f) => ({ ...f, sentimiento_positivo: e.target.value }))} className="bg-[#05080f] border-white/10 h-9 text-xs" />
+              <label className="text-[10px] text-[#8892b0] uppercase font-black">Sentimiento Positivo (%)</label>
+              <Input type="number" value={form.sentimiento_positivo} onChange={(e) => setForm((f) => ({ ...f, sentimiento_positivo: e.target.value }))} className="well border-[#2a2a4a] h-9 text-xs" />
             </div>
             <div className="space-y-1">
-              <label className="text-[10px] text-slate-500 uppercase font-black">Sentimiento Negativo (%)</label>
-              <Input type="number" value={form.sentimiento_negativo} onChange={(e) => setForm((f) => ({ ...f, sentimiento_negativo: e.target.value }))} className="bg-[#05080f] border-white/10 h-9 text-xs" />
+              <label className="text-[10px] text-[#8892b0] uppercase font-black">Sentimiento Negativo (%)</label>
+              <Input type="number" value={form.sentimiento_negativo} onChange={(e) => setForm((f) => ({ ...f, sentimiento_negativo: e.target.value }))} className="well border-[#2a2a4a] h-9 text-xs" />
             </div>
           </div>
 
-          <div className="border-t border-white/10 pt-4">
-            <h4 className="text-xs font-black text-slate-300 uppercase tracking-widest mb-3">Cuota de Emoción</h4>
+          <div className="border-t border-[#2a2a4a] pt-4">
+            <h4 className="text-xs font-black text-[#c0c8de] uppercase tracking-widest mb-3">Cuota de Emoción</h4>
             <div className="space-y-3 bg-white/5 p-4 rounded-xl">
               {EMOCIONES.map(({ key, label, emoji }) => {
                 const val = cuota[key] ?? { resultados: "", porcentaje: 0, tendencia: "igual" as const };
                 return (
                   <div key={key} className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-center">
-                    <span className="text-xs font-bold text-slate-300">
+                    <span className="text-xs font-bold text-[#c0c8de]">
                       {emoji} {label}
                     </span>
                     <Input
                       placeholder="Resultados"
                       value={val.resultados}
                       onChange={(e) => setCuota((c) => ({ ...c, [key]: { ...val, resultados: e.target.value } }))}
-                      className="bg-[#05080f] border-white/10 h-8 text-xs"
+                      className="well border-[#2a2a4a] h-8 text-xs"
                     />
                     <Input
                       type="number"
                       placeholder="%"
                       value={val.porcentaje}
                       onChange={(e) => setCuota((c) => ({ ...c, [key]: { ...val, porcentaje: num(e.target.value) } }))}
-                      className="bg-[#05080f] border-white/10 h-8 text-xs"
+                      className="well border-[#2a2a4a] h-8 text-xs"
                     />
                     <select
                       value={val.tendencia}
                       onChange={(e) => setCuota((c) => ({ ...c, [key]: { ...val, tendencia: e.target.value as EmocionValor["tendencia"] } }))}
-                      className="bg-[#05080f] border border-white/10 rounded-md text-xs px-2 h-8"
+                      className="well border border-[#2a2a4a] rounded-md text-xs px-2 h-8"
                     >
                       <option value="igual">Sin cambio ▬</option>
                       <option value="subio">Incrementó ▲</option>
@@ -751,8 +752,8 @@ function ListeningFormModal({
           <ImpactListEditor label="Cuentas con mayor impacto" idPlaceholder="Ej. @usuario" items={cuentas} onChange={setCuentas} />
           <ImpactListEditor label="Sitios con mayor impacto" idPlaceholder="Ej. https://ejemplo.com" items={sitios} onChange={setSitios} />
         </div>
-        <div className="p-6 border-t border-white/10 flex justify-end gap-2">
-          <Button variant="outline" onClick={onClose} className="text-slate-400">
+        <div className="p-6 border-t border-[#2a2a4a] flex justify-end gap-2">
+          <Button variant="outline" onClick={onClose} className="text-[#aab3cf]">
             Cancelar
           </Button>
           <Button variant="neon" onClick={save} disabled={saving}>
@@ -832,7 +833,7 @@ export default function RedesSocialesPage() {
     return counts;
   }, [latestLis]);
   const impactPie = (["positivo", "negativo", "neutral"] as const)
-    .map((k) => ({ name: k, value: impactCounts[k], color: k === "positivo" ? "#2eb88a" : k === "negativo" ? "#df3a3a" : "#64748b" }))
+    .map((k) => ({ name: k, value: impactCounts[k], color: k === "positivo" ? "#2eb88a" : k === "negativo" ? "#df3a3a" : "#aab3cf" }))
     .filter((d) => d.value > 0);
   const impactTotal = impactPie.reduce((s, d) => s + d.value, 0);
 
@@ -854,19 +855,19 @@ export default function RedesSocialesPage() {
       <div className="mb-8 flex flex-wrap justify-between items-center gap-4">
         <div>
           <div className="flex gap-2 mb-2">
-            <span className="bg-[#1e293b] text-blue-400 text-[10px] px-2 py-0.5 rounded-full border border-blue-500/20 uppercase font-black">
+            <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">
               REDES SOCIALES
             </span>
           </div>
-          <h1 className="text-3xl font-bold mb-1 gradient-text text-glow-blue">Redes Sociales</h1>
-          <p className="text-slate-400 text-sm">Estrategia digital y escucha social (listening) sobre redes.</p>
+          <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Redes Sociales</h1>
+          <p className="text-[#aab3cf] text-sm">Estrategia digital y escucha social (listening) sobre redes.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2 bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-xl px-3 py-2">
+          <div className="flex items-center gap-2 panel border border-[#2a2a4a] rounded-xl px-3 py-2">
             <FontAwesomeIcon
               icon={faCalendarDays}
-              className="w-4 h-4 text-slate-400 cursor-pointer"
+              className="w-4 h-4 text-[#aab3cf] cursor-pointer"
               onClick={() => dateRef.current?.showPicker?.()}
             />
             <input
@@ -878,7 +879,7 @@ export default function RedesSocialesPage() {
               className="bg-transparent text-sm text-white focus:outline-none w-[130px]"
             />
           </div>
-          <Button variant="outline" size="sm" onClick={fetchData} className="bg-[#0b101d]/70 backdrop-blur-md border-white/10 text-white">
+          <Button variant="outline" size="sm" onClick={fetchData} className="panel border-[#2a2a4a] text-white">
             <FontAwesomeIcon icon={faRotate} />
           </Button>
           {editable && (
@@ -890,13 +891,13 @@ export default function RedesSocialesPage() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-8 border-b border-white/5">
+      <div className="flex gap-2 mb-8 border-b border-[#1e2240]">
         {(["estrategia", "listening"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={`px-4 py-2 text-sm font-bold uppercase tracking-wider transition-colors border-b-2 ${
-              tab === t ? "border-blue-500 text-blue-400" : "border-transparent text-slate-500 hover:text-slate-300"
+              tab === t ? "border-[#0094ff] text-[#75ddff]" : "border-transparent text-[#8892b0] hover:text-[#c0c8de]"
             }`}
           >
             {t === "estrategia" ? "Estrategia" : "Listening"}
@@ -906,10 +907,10 @@ export default function RedesSocialesPage() {
 
       {tab === "estrategia" ? (
         !latestEst ? (
-          <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
-            <FontAwesomeIcon icon={faUsers} className="w-8 h-8 text-slate-600" />
+          <Card className="panel border-[#1e2240] p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
+            <FontAwesomeIcon icon={faUsers} className="w-8 h-8 text-[#8892b0]" />
             <h2 className="text-lg font-bold">Aún no hay datos de estrategia</h2>
-            <p className="text-slate-500 text-sm max-w-sm">
+            <p className="text-[#8892b0] text-sm max-w-sm">
               {editable ? 'Ingresa los primeros datos con el botón "Ingresar Datos".' : "No se han registrado métricas todavía."}
             </p>
           </Card>
@@ -930,35 +931,35 @@ export default function RedesSocialesPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
-                <h3 className="text-sm font-semibold mb-1 text-slate-200 uppercase tracking-widest">Perfil de Engagement</h3>
-                <p className="text-xs text-slate-500 mb-4">% respecto al máximo histórico registrado</p>
+              <Card className="panel border-[#1e2240] p-6 rounded-2xl">
+                <h3 className="text-sm font-semibold mb-1 text-[#e4e9f5] uppercase tracking-widest">Perfil de Engagement</h3>
+                <p className="text-xs text-[#8892b0] mb-4">% respecto al máximo histórico registrado</p>
                 <ResponsiveContainer width="100%" height={240}>
                   <RadarChart data={radarData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
-                    <PolarGrid stroke="#1e293b" />
-                    <PolarAngleAxis dataKey="metric" tick={{ fill: "#64748b", fontSize: 11, fontWeight: 700 }} />
-                    <Radar dataKey="value" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} strokeWidth={2} />
-                    <Tooltip contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }} />
+                    <PolarGrid stroke="#1e2240" />
+                    <PolarAngleAxis dataKey="metric" tick={{ fill: "#aab3cf", fontSize: 11, fontWeight: 700 }} />
+                    <Radar dataKey="value" stroke="#0094ff" fill="#0094ff" fillOpacity={0.2} strokeWidth={2} />
+                    <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
                   </RadarChart>
                 </ResponsiveContainer>
               </Card>
 
               {chartData.length > 1 && (
-                <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
-                  <h3 className="text-sm font-semibold mb-5 text-slate-200 uppercase tracking-widest">Tendencia Histórica</h3>
+                <Card className="panel border-[#1e2240] p-6 rounded-2xl">
+                  <h3 className="text-sm font-semibold mb-5 text-[#e4e9f5] uppercase tracking-widest">Tendencia Histórica</h3>
                   <ResponsiveContainer width="100%" height={220}>
                     <AreaChart data={chartData} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
                       <defs>
                         <linearGradient id="gSeg" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#22d3ee" stopOpacity={0.35} />
-                          <stop offset="95%" stopColor="#22d3ee" stopOpacity={0} />
+                          <stop offset="5%" stopColor="#00e1ff" stopOpacity={0.35} />
+                          <stop offset="95%" stopColor="#00e1ff" stopOpacity={0} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-                      <XAxis dataKey="fecha" stroke="#64748b" tick={{ fontSize: 11 }} />
-                      <YAxis stroke="#64748b" tick={{ fontSize: 11 }} width={40} />
-                      <Tooltip contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }} />
-                      <Area type="monotone" dataKey="Seguidores" stroke="#22d3ee" strokeWidth={2} fill="url(#gSeg)" />
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1e2240" vertical={false} />
+                      <XAxis dataKey="fecha" stroke="#aab3cf" tick={{ fontSize: 11 }} />
+                      <YAxis stroke="#aab3cf" tick={{ fontSize: 11 }} width={40} />
+                      <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
+                      <Area type="monotone" dataKey="Seguidores" stroke="#00e1ff" strokeWidth={2} fill="url(#gSeg)" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </Card>
@@ -967,18 +968,18 @@ export default function RedesSocialesPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <SentimentDonut positivo={latestEst.sentimiento_positivo} negativo={latestEst.sentimiento_negativo} title="Análisis de Sentimiento" />
-              <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 320 }}>
-                <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Publicaciones Principales</h3>
+              <Card className="panel border-[#1e2240] p-6 rounded-2xl flex flex-col" style={{ minHeight: 320 }}>
+                <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Publicaciones Principales</h3>
                 <ImageBox src={latestEst.publicaciones_principales} alt="Publicaciones principales" />
               </Card>
             </div>
           </div>
         )
       ) : !latestLis ? (
-        <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
-          <FontAwesomeIcon icon={faBolt} className="w-8 h-8 text-slate-600" />
+        <Card className="panel border-[#1e2240] p-16 rounded-2xl flex flex-col items-center gap-3 text-center">
+          <FontAwesomeIcon icon={faBolt} className="w-8 h-8 text-[#8892b0]" />
           <h2 className="text-lg font-bold">Aún no hay datos de listening</h2>
-          <p className="text-slate-500 text-sm max-w-sm">
+          <p className="text-[#8892b0] text-sm max-w-sm">
             {editable ? 'Ingresa los primeros datos con el botón "Ingresar Datos".' : "No se han registrado métricas todavía."}
           </p>
         </Card>
@@ -991,22 +992,22 @@ export default function RedesSocialesPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl">
-              <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Radar de Emociones</h3>
+            <Card className="panel border-[#1e2240] p-6 rounded-2xl">
+              <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Radar de Emociones</h3>
               <ResponsiveContainer width="100%" height={220}>
                 <RadarChart data={emotionRadarData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
-                  <PolarGrid stroke="#1e293b" />
-                  <PolarAngleAxis dataKey="emotion" tick={{ fill: "#64748b", fontSize: 11, fontWeight: 700 }} />
+                  <PolarGrid stroke="#1e2240" />
+                  <PolarAngleAxis dataKey="emotion" tick={{ fill: "#aab3cf", fontSize: 11, fontWeight: 700 }} />
                   <Radar dataKey="value" stroke="#e879f9" fill="#e879f9" fillOpacity={0.2} strokeWidth={2} />
-                  <Tooltip contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }} />
+                  <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
                 </RadarChart>
               </ResponsiveContainer>
             </Card>
 
-            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col">
-              <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Distribución de Impacto</h3>
+            <Card className="panel border-[#1e2240] p-6 rounded-2xl flex flex-col">
+              <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Distribución de Impacto</h3>
               {impactTotal === 0 ? (
-                <div className="flex-1 flex items-center justify-center text-xs text-slate-500 italic">Sin datos de impacto</div>
+                <div className="flex-1 flex items-center justify-center text-xs text-[#8892b0] italic">Sin datos de impacto</div>
               ) : (
                 <div className="flex-1 flex flex-col items-center justify-center gap-3">
                   <ResponsiveContainer width={140} height={140}>
@@ -1016,7 +1017,7 @@ export default function RedesSocialesPage() {
                           <Cell key={d.name} fill={d.color} />
                         ))}
                       </Pie>
-                      <Tooltip contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }} />
+                      <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="w-full space-y-1">
@@ -1039,12 +1040,12 @@ export default function RedesSocialesPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
-              <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Activity Peak</h3>
+            <Card className="panel border-[#1e2240] p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
+              <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Activity Peak</h3>
               <ImageBox src={latestLis.activity_peak} alt="Activity peak" />
             </Card>
-            <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
-              <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">Hashtags</h3>
+            <Card className="panel border-[#1e2240] p-6 rounded-2xl flex flex-col" style={{ minHeight: 260 }}>
+              <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">Hashtags</h3>
               <ImageBox src={latestLis.hashtags} alt="Hashtags" />
             </Card>
           </div>
@@ -1077,16 +1078,16 @@ function TagListCard({ title, items }: { title: string; items: TagItem[] }) {
     return (rank[b.importance] ?? 0) - (rank[a.importance] ?? 0);
   });
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl min-h-[220px] flex flex-col">
-      <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">{title}</h3>
+    <Card className="panel border-[#1e2240] p-6 rounded-2xl min-h-[220px] flex flex-col">
+      <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">{title}</h3>
       {sorted.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center text-xs text-slate-500 italic">Sin datos</div>
+        <div className="flex-1 flex items-center justify-center text-xs text-[#8892b0] italic">Sin datos</div>
       ) : (
         <div className="flex flex-wrap gap-2 content-start">
           {sorted.map((it, idx) => (
-            <span key={idx} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-slate-200">
+            <span key={idx} className="inline-flex items-center gap-2 rounded-full border border-[#2a2a4a] bg-white/5 px-3 py-1.5 text-xs font-semibold text-[#e4e9f5]">
               {it.text}
-              <span className="text-[9px] uppercase font-black text-slate-500">{it.importance}</span>
+              <span className="text-[9px] uppercase font-black text-[#8892b0]">{it.importance}</span>
             </span>
           ))}
         </div>
@@ -1097,27 +1098,27 @@ function TagListCard({ title, items }: { title: string; items: TagItem[] }) {
 
 function ImpactListCard({ title, items, isUrl }: { title: string; items: ImpactItem[]; isUrl?: boolean }) {
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border-white/5 p-6 rounded-2xl min-h-[220px] flex flex-col">
-      <h3 className="text-sm font-semibold mb-4 text-slate-200 uppercase tracking-widest">{title}</h3>
+    <Card className="panel border-[#1e2240] p-6 rounded-2xl min-h-[220px] flex flex-col">
+      <h3 className="text-sm font-semibold mb-4 text-[#e4e9f5] uppercase tracking-widest">{title}</h3>
       {!items || items.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center text-xs text-slate-500 italic">Sin datos</div>
+        <div className="flex-1 flex items-center justify-center text-xs text-[#8892b0] italic">Sin datos</div>
       ) : (
         <div className="space-y-2">
           {items.map((it, idx) => (
-            <div key={idx} className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+            <div key={idx} className="flex items-center justify-between bg-white/5 border border-[#2a2a4a] rounded-xl px-4 py-3">
               <div className="min-w-0">
-                <p className="text-sm font-bold text-slate-100 truncate">{it.nombre}</p>
+                <p className="text-sm font-bold text-[#ffffff] truncate">{it.nombre}</p>
                 {isUrl ? (
-                  <a href={it.identificador.startsWith("http") ? it.identificador : `https://${it.identificador}`} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:underline truncate block">
+                  <a href={it.identificador.startsWith("http") ? it.identificador : `https://${it.identificador}`} target="_blank" rel="noreferrer" className="text-xs text-[#75ddff] hover:underline truncate block">
                     {it.identificador}
                   </a>
                 ) : (
-                  <p className="text-xs text-slate-500 truncate">{it.identificador}</p>
+                  <p className="text-xs text-[#8892b0] truncate">{it.identificador}</p>
                 )}
               </div>
               <span
                 className={`shrink-0 text-[10px] font-black uppercase px-2 py-1 rounded-full ${
-                  it.impacto === "positivo" ? "bg-emerald-500/10 text-emerald-400" : it.impacto === "negativo" ? "bg-rose-500/10 text-rose-400" : "bg-white/10 text-slate-400"
+                  it.impacto === "positivo" ? "bg-emerald-500/10 text-emerald-400" : it.impacto === "negativo" ? "bg-rose-500/10 text-rose-400" : "bg-white/10 text-[#aab3cf]"
                 }`}
               >
                 {it.impacto}

@@ -51,7 +51,7 @@ export function SentimentDonut({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="hsl(222 30% 16%)"
+            stroke="#131a30"
             strokeWidth={stroke}
           />
           {segments.map((s) => {
@@ -83,7 +83,7 @@ export function SentimentDonut({
           <span className="text-xl font-bold tabular-nums whitespace-nowrap leading-none" style={{ color: dominant.color }}>
             {((dominant.value / total) * 100).toFixed(1)}%
           </span>
-          <span className="text-[10px] uppercase tracking-wider text-slate-400 mt-0.5">{dominant.key}</span>
+          <span className="text-[10px] uppercase tracking-wider text-[#aab3cf] mt-0.5">{dominant.key}</span>
         </div>
       </div>
 
@@ -91,7 +91,7 @@ export function SentimentDonut({
         {segments.map((s) => (
           <div key={s.key} className="flex items-center gap-2 text-xs">
             <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: s.color, boxShadow: `0 0 6px ${s.color}` }} />
-            <span className="text-slate-300 w-14">{s.key}</span>
+            <span className="text-[#c0c8de] w-14">{s.key}</span>
             <span className="font-mono font-semibold tabular-nums" style={{ color: s.color }}>
               {((s.value / total) * 100).toFixed(1)}%
             </span>

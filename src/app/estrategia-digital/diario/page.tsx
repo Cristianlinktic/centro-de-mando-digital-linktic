@@ -9,6 +9,7 @@ import { formatCOP, formatDate, formatDateShort, formatDecimal, formatNumber } f
 import type { CampaignData } from "@/lib/campana/types";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { EmptyCampaign, LoadingCampaign } from "../_shared";
+import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
 
 const CHANNEL_KEYS = ["meta", "pilas", "youtube", "google_display"] as const;
 
@@ -37,18 +38,18 @@ export default function DiarioPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
-        <h3 className="font-bold text-sm text-slate-200 mb-1 uppercase tracking-widest">Curva de inversión diaria</h3>
-        <p className="text-xs text-slate-500 mb-4">Día pico: {formatDate(peak?.date ?? "")} con {formatCOP(peak?.totalInvestment ?? 0)}</p>
+      <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+        <h3 className="font-bold text-sm text-[#e4e9f5] mb-1 uppercase tracking-widest">Curva de inversión diaria</h3>
+        <p className="text-xs text-[#8892b0] mb-4">Día pico: {formatDate(peak?.date ?? "")} con {formatCOP(peak?.totalInvestment ?? 0)}</p>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={area} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e293b" />
-              <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
+              <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
               <Tooltip
                 formatter={(v) => formatCOP(Number(v))}
-                contentStyle={{ backgroundColor: "#0b101d", border: "1px solid #1e293b", borderRadius: 12 }}
+                contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE}
               />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {CHANNEL_KEYS.map((k) => (
@@ -59,14 +60,14 @@ export default function DiarioPage() {
         </div>
       </Card>
 
-      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
+      <Card className="panel border border-[#1e2240] rounded-2xl overflow-hidden">
         <div className="p-6 pb-3">
-          <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">Detalle por día</h3>
+          <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">Detalle por día</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[920px] text-sm">
             <thead>
-              <tr className="border-b border-white/5 text-left text-[10px] uppercase tracking-wider text-slate-500">
+              <tr className="border-b border-[#1e2240] text-left text-[10px] uppercase tracking-wider text-[#8892b0]">
                 <th className="px-4 py-2 font-bold">Día</th>
                 <th className="px-4 py-2 font-bold">Fecha</th>
                 <th className="px-4 py-2 text-right font-bold">Factor</th>
@@ -79,22 +80,22 @@ export default function DiarioPage() {
             </thead>
             <tbody>
               {daily.map((d) => (
-                <tr key={d.dayNumber} className="border-b border-white/5 hover:bg-white/3">
-                  <td className="px-4 py-2 font-bold text-slate-200">{d.dayNumber}</td>
-                  <td className="px-4 py-2 text-slate-400">{formatDate(d.date)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatDecimal(d.weightFactor)}</td>
-                  <td className="px-4 py-2 text-right tabular-nums font-bold text-slate-200">{formatCOP(d.totalInvestment)}</td>
+                <tr key={d.dayNumber} className="border-b border-[#1e2240] hover:bg-white/3">
+                  <td className="px-4 py-2 font-bold text-[#e4e9f5]">{d.dayNumber}</td>
+                  <td className="px-4 py-2 text-[#aab3cf]">{formatDate(d.date)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatDecimal(d.weightFactor)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums font-bold text-[#e4e9f5]">{formatCOP(d.totalInvestment)}</td>
                   {CHANNEL_KEYS.map((k) => (
-                    <td key={k} className="px-4 py-2 text-right tabular-nums text-slate-400">
+                    <td key={k} className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">
                       {formatCOP(d.byChannel[k]?.investment ?? 0)}
                     </td>
                   ))}
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-400">{formatNumber(d.totalImpressions)}</td>
+                  <td className="px-4 py-2 text-right tabular-nums text-[#aab3cf]">{formatNumber(d.totalImpressions)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t-2 border-white/10 font-bold text-slate-100">
+              <tr className="border-t-2 border-[#2a2a4a] font-bold text-[#ffffff]">
                 <td className="px-4 py-2" colSpan={2}>Total · {daily.length} días</td>
                 <td className="px-4 py-2 text-right tabular-nums">{formatDecimal(totalFactor)}</td>
                 <td className="px-4 py-2 text-right tabular-nums">{formatCOP(totalInvestment)}</td>
@@ -110,7 +111,7 @@ export default function DiarioPage() {
             </tfoot>
           </table>
         </div>
-        <div className="border-t border-white/5 px-6 py-3 text-[11px] text-slate-500">
+        <div className="border-t border-[#1e2240] px-6 py-3 text-[11px] text-[#8892b0]">
           * Inversión diaria = presupuesto total × factor ÷ suma de factores.
         </div>
       </Card>

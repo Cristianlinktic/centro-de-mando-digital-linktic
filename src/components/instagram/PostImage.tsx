@@ -33,14 +33,14 @@ export function PostImage({
 
       {status === "loading" && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white/20 border-t-white/70" />
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#2b62ff]/40 border-t-white/70" />
         </div>
       )}
 
       {status === "error" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 p-2 text-center">
           <span className="text-2xl opacity-60">{post.type === "REELS" ? "🎬" : "🖼️"}</span>
-          <span className="text-[10px] leading-tight text-neutral-400">
+          <span className="text-[10px] leading-tight text-[#aab3cf]">
             {typeLabel(post.type)}
           </span>
           {post.permalink && (

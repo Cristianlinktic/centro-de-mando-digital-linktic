@@ -73,7 +73,7 @@ export function CountUp({
  */
 export function Sparkline({
   data,
-  color = "hsl(213 85% 55%)",
+  color = "#0094ff",
   width = 96,
   height = 28,
   strokeWidth = 1.6,

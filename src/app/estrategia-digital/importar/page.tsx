@@ -77,9 +77,9 @@ export default function ImportarPage() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
       <div className="lg:col-span-2">
-        <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
-          <h3 className="font-bold text-sm text-slate-200 mb-1 uppercase tracking-widest">Subir plan de pauta</h3>
-          <p className="text-xs text-slate-500 mb-5">
+        <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+          <h3 className="font-bold text-sm text-[#e4e9f5] mb-1 uppercase tracking-widest">Subir plan de pauta</h3>
+          <p className="text-xs text-[#8892b0] mb-5">
             El archivo reemplaza los datos de la campaña actual (la inversión real registrada se conserva).
           </p>
 
@@ -89,17 +89,17 @@ export default function ImportarPage() {
             onDrop={onDrop}
             onClick={() => inputRef.current?.click()}
             className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-14 text-center transition-all ${
-              dragging ? "border-blue-500 bg-blue-500/10" : "border-white/15 bg-white/3 hover:border-blue-500/50 hover:bg-blue-500/5"
+              dragging ? "border-[#0094ff] bg-[#0094ff]/10" : "border-white/15 bg-white/3 hover:border-[#0094ff]/50 hover:bg-[#0094ff]/5"
             }`}
           >
             <input ref={inputRef} type="file" accept=".xlsx" className="hidden" onChange={onPick} />
-            <FontAwesomeIcon icon={faFileArrowUp} className="text-3xl text-blue-400 mb-3" />
-            <p className="text-sm font-bold text-slate-200">
+            <FontAwesomeIcon icon={faFileArrowUp} className="text-3xl text-[#75ddff] mb-3" />
+            <p className="text-sm font-bold text-[#e4e9f5]">
               {status === "uploading" ? "Procesando archivo…" : "Arrastra tu archivo .xlsx aquí"}
             </p>
-            <p className="text-xs text-slate-500 mt-1">o haz clic para seleccionarlo · máximo 5 MB</p>
+            <p className="text-xs text-[#8892b0] mt-1">o haz clic para seleccionarlo · máximo 5 MB</p>
             {fileName && status !== "idle" && (
-              <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+              <p className="mt-3 inline-flex items-center gap-1.5 rounded-full border border-[#2a2a4a] bg-white/5 px-3 py-1 text-xs text-[#aab3cf]">
                 📄 {fileName}
               </p>
             )}
@@ -107,7 +107,7 @@ export default function ImportarPage() {
 
           {status === "uploading" && (
             <div className="h-1 w-full overflow-hidden rounded-full bg-white/10 mt-4">
-              <div className="h-full w-1/2 animate-pulse rounded-full bg-blue-500" />
+              <div className="h-full w-1/2 animate-pulse rounded-full bg-[#0094ff]" />
             </div>
           )}
 
@@ -139,15 +139,15 @@ export default function ImportarPage() {
         </Card>
       </div>
 
-      <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
-        <h3 className="font-bold text-sm text-slate-200 mb-4 uppercase tracking-widest">Formato esperado</h3>
-        <div className="space-y-3 text-xs text-slate-400">
+      <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+        <h3 className="font-bold text-sm text-[#e4e9f5] mb-4 uppercase tracking-widest">Formato esperado</h3>
+        <div className="space-y-3 text-xs text-[#aab3cf]">
           <p>El Excel debe contener estas hojas:</p>
           <ul className="space-y-2">
-            <li className="flex gap-2"><Dot /><span><b className="text-slate-200">Resumen Ejecutivo</b> — presupuesto, duración, % / CPM / CTR por canal.</span></li>
-            <li className="flex gap-2"><Dot /><span><b className="text-slate-200">Distribución x Canal</b> — objetivo, público y KPI por canal.</span></li>
-            <li className="flex gap-2"><Dot /><span><b className="text-slate-200">Desglose Diario</b> — fecha de inicio y factor de peso por día.</span></li>
-            <li className="flex gap-2"><Dot /><span><b className="text-slate-200">Proyecciones</b> — frecuencia estimada por canal.</span></li>
+            <li className="flex gap-2"><Dot /><span><b className="text-[#e4e9f5]">Resumen Ejecutivo</b> — presupuesto, duración, % / CPM / CTR por canal.</span></li>
+            <li className="flex gap-2"><Dot /><span><b className="text-[#e4e9f5]">Distribución x Canal</b> — objetivo, público y KPI por canal.</span></li>
+            <li className="flex gap-2"><Dot /><span><b className="text-[#e4e9f5]">Desglose Diario</b> — fecha de inicio y factor de peso por día.</span></li>
+            <li className="flex gap-2"><Dot /><span><b className="text-[#e4e9f5]">Proyecciones</b> — frecuencia estimada por canal.</span></li>
           </ul>
           <div className="rounded-lg bg-amber-500/10 px-3 py-2.5 text-amber-400">
             Las métricas se <b>calculan</b> en el dashboard a partir de estos parámetros.
@@ -159,7 +159,7 @@ export default function ImportarPage() {
 }
 
 function Dot() {
-  return <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />;
+  return <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#0094ff]" />;
 }
 
 function Item({ label, value }: { label: string; value: string }) {

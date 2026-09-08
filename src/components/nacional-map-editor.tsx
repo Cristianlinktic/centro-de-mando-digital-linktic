@@ -68,12 +68,12 @@ const TEMPLATE_COLUMNS = [
 
 const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
   <label className="flex flex-col gap-1">
-    <span className="text-[10px] uppercase tracking-wider text-slate-400">{label}</span>
+    <span className="text-[10px] uppercase tracking-wider text-[#aab3cf]">{label}</span>
     {children}
   </label>
 );
 
-const inputCls = "bg-[#161d2b]/70 backdrop-blur-md border-white/10 text-white h-9 text-sm";
+const inputCls = "panel-soft border-[#2a2a4a] text-white h-9 text-sm";
 
 export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () => void }) {
   const [rows, setRows] = useState<any[]>([]);
@@ -273,9 +273,9 @@ export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
 
   return (
     <div className="space-y-3">
-      <div className="sticky top-0 z-10 bg-[#0b101d]/70 backdrop-blur-md pb-3 space-y-3">
+      <div className="sticky top-0 z-10 panel pb-3 space-y-3">
         <div className="flex items-center justify-between gap-3">
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#aab3cf]">
             Edita las menciones por plataforma (<b>TikTok, X, Instagram, Facebook</b>) de los departamentos.
             Los campos de identidad (código, nombre, coordenadas) son fijos para mantener el calce con el mapa.
           </p>
@@ -286,40 +286,40 @@ export function NacionalMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <Button type="button" variant="outline" size="sm" className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 text-white" onClick={downloadTemplate}>
+          <Button type="button" variant="outline" size="sm" className="panel-soft border-[#2a2a4a] text-white" onClick={downloadTemplate}>
             <FontAwesomeIcon icon={faFileArrowDown} className="w-4 h-4 mr-2" /> Descargar plantilla
           </Button>
-          <Button type="button" variant="outline" size="sm" className="bg-[#161d2b]/70 backdrop-blur-md border-white/10 text-white" onClick={() => fileInputRef.current?.click()}>
+          <Button type="button" variant="outline" size="sm" className="panel-soft border-[#2a2a4a] text-white" onClick={() => fileInputRef.current?.click()}>
             <FontAwesomeIcon icon={faFileArrowUp} className="w-4 h-4 mr-2" /> Importar Excel
           </Button>
           <input ref={fileInputRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} />
         </div>
 
         {importInfo && (
-          <p className="text-[11px] text-blue-300 bg-blue-500/10 border border-blue-500/20 rounded-md px-3 py-2">{importInfo}</p>
+          <p className="text-[11px] text-[#75ddff] bg-[#0094ff]/10 border border-[#0094ff]/20 rounded-md px-3 py-2">{importInfo}</p>
         )}
       </div>
 
       <div className="space-y-2">
         {rows.map((r) => (
-          <details key={r.id} className="group bg-[#0b101d]/70 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden">
+          <details key={r.id} className="group panel border border-[#2a2a4a] rounded-xl overflow-hidden">
             <summary className="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer list-none hover:bg-white/5">
               <span className="flex items-center gap-3">
-                <span className="font-mono text-xs text-slate-500 w-6">{r.id}</span>
+                <span className="font-mono text-xs text-[#8892b0] w-6">{r.id}</span>
                 <span className="text-sm font-semibold text-white">{r.nombre}</span>
               </span>
               <span className="flex items-center gap-3">
-                <span className="text-xs font-mono text-blue-400">{Number(r.volumen || 0).toLocaleString()}</span>
-                <FontAwesomeIcon icon={faChevronDown} className="w-3 h-3 text-slate-500 transition-transform group-open:rotate-180" />
+                <span className="text-xs font-mono text-[#75ddff]">{Number(r.volumen || 0).toLocaleString()}</span>
+                <FontAwesomeIcon icon={faChevronDown} className="w-3 h-3 text-[#8892b0] transition-transform group-open:rotate-180" />
               </span>
             </summary>
 
-            <div className="p-4 pt-2 border-t border-white/5 grid grid-cols-2 gap-3">
+            <div className="p-4 pt-2 border-t border-[#1e2240] grid grid-cols-2 gap-3">
               <div className="col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {PLATFORMS.map((p) => (
                   <Field key={p} label={p}>
                     <div className="flex items-center gap-2">
-                      <FontAwesomeIcon icon={platformIcon[p]} className="w-4 h-4 text-slate-300 shrink-0" />
+                      <FontAwesomeIcon icon={platformIcon[p]} className="w-4 h-4 text-[#c0c8de] shrink-0" />
                       <Input type="number" className={inputCls} value={r.plataformas?.[p] ?? 0} onChange={(e) => updatePlat(r.id, p, e.target.value)} />
                     </div>
                   </Field>

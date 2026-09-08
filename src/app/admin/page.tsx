@@ -79,7 +79,7 @@ export default function AdminPage() {
           <div className="h-screen page-bg text-white flex flex-col justify-center items-center gap-4">
               <FontAwesomeIcon icon={faLock} className="text-6xl text-red-500 mb-2" />
               <h1 className="text-2xl font-bold">Acceso No Autorizado</h1>
-              <p className="text-slate-400">Esta página está reservada para administradores del sistema.</p>
+              <p className="text-[#aab3cf]">Esta página está reservada para administradores del sistema.</p>
               <Button variant="neon" onClick={() => window.location.href = '/elecciones'}>
                   Volver al Tablero
               </Button>
@@ -96,9 +96,9 @@ export default function AdminPage() {
       />
 
       <div className="mt-8 space-y-8 max-w-4xl">
-        <Card className="p-6 bg-[#0a0f1a] border-white/10">
+        <Card className="p-6 panel border-[#2a2a4a]">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400">
+            <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#75ddff] to-emerald-400">
               KPIs de Elecciones
             </h2>
             <Button onClick={saveKpis} disabled={saving} className="bg-emerald-500 hover:bg-emerald-600 text-white">
@@ -108,13 +108,13 @@ export default function AdminPage() {
           </div>
 
           {loading ? (
-            <div className="text-slate-400">Cargando datos...</div>
+            <div className="text-[#aab3cf]">Cargando datos...</div>
           ) : (
             <div className="space-y-4">
               {kpis.map((kpi, i) => (
-                <div key={i} className="grid grid-cols-12 gap-3 items-center bg-[#101726] p-4 rounded-lg border border-white/5">
+                <div key={i} className="grid grid-cols-12 gap-3 items-center bg-[#10142a] p-4 rounded-lg border border-[#1e2240]">
                   <div className="col-span-3">
-                    <label className="text-xs text-slate-400 mb-1 block">Etiqueta</label>
+                    <label className="text-xs text-[#aab3cf] mb-1 block">Etiqueta</label>
                     <Input 
                       value={kpi.label} 
                       onChange={(e) => handleKpiChange(i, 'label', e.target.value)} 
@@ -122,7 +122,7 @@ export default function AdminPage() {
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="text-xs text-slate-400 mb-1 block">Valor</label>
+                    <label className="text-xs text-[#aab3cf] mb-1 block">Valor</label>
                     <Input 
                       value={kpi.value} 
                       onChange={(e) => handleKpiChange(i, 'value', e.target.value)} 
@@ -130,7 +130,7 @@ export default function AdminPage() {
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="text-xs text-slate-400 mb-1 block">Delta</label>
+                    <label className="text-xs text-[#aab3cf] mb-1 block">Delta</label>
                     <Input 
                       value={kpi.delta || ''} 
                       onChange={(e) => handleKpiChange(i, 'delta', e.target.value)} 
@@ -138,19 +138,19 @@ export default function AdminPage() {
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="text-xs text-slate-400 mb-1 block">Tendencia</label>
+                    <label className="text-xs text-[#aab3cf] mb-1 block">Tendencia</label>
                     <select 
                       className="w-full h-8 rounded-lg bg-transparent border border-input px-2.5 py-1 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
                       value={kpi.trend}
                       onChange={(e) => handleKpiChange(i, 'trend', e.target.value as any)}
                     >
-                      <option value="up" className="bg-[#101726]">Up</option>
-                      <option value="neutral" className="bg-[#101726]">Neutral</option>
-                      <option value="down" className="bg-[#101726]">Down</option>
+                      <option value="up" className="bg-[#10142a]">Up</option>
+                      <option value="neutral" className="bg-[#10142a]">Neutral</option>
+                      <option value="down" className="bg-[#10142a]">Down</option>
                     </select>
                   </div>
                   <div className="col-span-2">
-                    <label className="text-xs text-slate-400 mb-1 block">Progreso (%)</label>
+                    <label className="text-xs text-[#aab3cf] mb-1 block">Progreso (%)</label>
                     <Input 
                       type="number"
                       value={kpi.progress} 
@@ -166,7 +166,7 @@ export default function AdminPage() {
                 </div>
               ))}
 
-              <Button variant="outline" className="w-full border-dashed border-slate-600 text-slate-300 hover:text-white" onClick={addKpi}>
+              <Button variant="outline" className="w-full border-dashed border-[#2a2a4a] text-[#c0c8de] hover:text-white" onClick={addKpi}>
                 <FontAwesomeIcon icon={faPlus} className="mr-2" /> Agregar KPI
               </Button>
             </div>

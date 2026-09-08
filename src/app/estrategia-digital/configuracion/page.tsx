@@ -112,19 +112,19 @@ function ParamsForm({ data, editable, onSaved }: { data: CampaignData; editable:
   };
 
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
+    <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Field label="Nombre" className="sm:col-span-2">
-          <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
         <Field label="Presupuesto total (COP)">
-          <Input type="number" value={form.total_budget} onChange={(e) => setForm({ ...form, total_budget: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input type="number" value={form.total_budget} onChange={(e) => setForm({ ...form, total_budget: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
         <Field label="Duración (días)">
-          <Input type="number" value={form.duration_days} onChange={(e) => setForm({ ...form, duration_days: Number(e.target.value) || 1 })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input type="number" value={form.duration_days} onChange={(e) => setForm({ ...form, duration_days: Number(e.target.value) || 1 })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
         <Field label="Fecha de inicio">
-          <Input type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input type="date" value={form.start_date} onChange={(e) => setForm({ ...form, start_date: e.target.value })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
       </div>
       {editable && (
@@ -161,20 +161,20 @@ function MetricsForm({ data, editable, onSaved }: { data: CampaignData; editable
   };
 
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl">
-      <p className="text-xs text-slate-500 mb-4">Estos valores se muestran en las cards del Resumen. Actualízalos periódicamente.</p>
+    <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+      <p className="text-xs text-[#8892b0] mb-4">Estos valores se muestran en las cards del Resumen. Actualízalos periódicamente.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Field label="Inversión acumulada (COP)">
-          <Input type="number" value={form.inversion_acumulada} onChange={(e) => setForm({ ...form, inversion_acumulada: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input type="number" value={form.inversion_acumulada} onChange={(e) => setForm({ ...form, inversion_acumulada: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
         <Field label="Impresión acumulada">
-          <Input type="number" value={form.impresion_acumulada} onChange={(e) => setForm({ ...form, impresion_acumulada: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input type="number" value={form.impresion_acumulada} onChange={(e) => setForm({ ...form, impresion_acumulada: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
         <Field label="Alcance acumulado">
-          <Input type="number" value={form.alcance_acumulado} onChange={(e) => setForm({ ...form, alcance_acumulado: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input type="number" value={form.alcance_acumulado} onChange={(e) => setForm({ ...form, alcance_acumulado: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
         <Field label="Pacing presupuestal (%)">
-          <Input type="number" value={form.pacing_presupuestal} onChange={(e) => setForm({ ...form, pacing_presupuestal: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-white/10" />
+          <Input type="number" value={form.pacing_presupuestal} onChange={(e) => setForm({ ...form, pacing_presupuestal: Number(e.target.value) || 0 })} disabled={!editable} className="bg-white/5 border-[#2a2a4a]" />
         </Field>
       </div>
       {editable && (
@@ -241,15 +241,15 @@ function DailyForm({
   };
 
   return (
-    <Card className="bg-[#0b101d]/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden">
+    <Card className="panel border border-[#1e2240] rounded-2xl overflow-hidden">
       <div className="p-6 pb-3">
-        <h3 className="font-bold text-sm text-slate-200 uppercase tracking-widest">{title}</h3>
-        <p className="text-xs text-slate-500 mt-1">{subtitle}</p>
+        <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">{title}</h3>
+        <p className="text-xs text-[#8892b0] mt-1">{subtitle}</p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] text-sm">
           <thead>
-            <tr className="border-b border-white/5 text-left text-[10px] uppercase tracking-wider text-slate-500">
+            <tr className="border-b border-[#1e2240] text-left text-[10px] uppercase tracking-wider text-[#8892b0]">
               <th className="px-4 py-2 font-bold">Día</th>
               <th className="px-4 py-2 font-bold">Fecha</th>
               {CHANNEL_KEYS.map((k) => (
@@ -264,9 +264,9 @@ function DailyForm({
           </thead>
           <tbody>
             {days.map((d) => (
-              <tr key={d.day_number} className="border-b border-white/5 hover:bg-white/3">
-                <td className="px-4 py-1.5 font-semibold text-slate-200">{d.day_number}</td>
-                <td className="px-4 py-1.5 text-slate-400">{formatDate(d.date)}</td>
+              <tr key={d.day_number} className="border-b border-[#1e2240] hover:bg-white/3">
+                <td className="px-4 py-1.5 font-semibold text-[#e4e9f5]">{d.day_number}</td>
+                <td className="px-4 py-1.5 text-[#aab3cf]">{formatDate(d.date)}</td>
                 {CHANNEL_KEYS.map((k) => (
                   <td key={k} className="px-3 py-1.5">
                     <Input
@@ -275,7 +275,7 @@ function DailyForm({
                       disabled={!editable}
                       value={values[d.day_number]?.[k] ?? 0}
                       onChange={(e) => setCell(d.day_number, k, Number(e.target.value) || 0)}
-                      className="h-8 text-right bg-white/5 border-white/10 text-xs min-w-[90px]"
+                      className="h-8 text-right bg-white/5 border-[#2a2a4a] text-xs min-w-[90px]"
                     />
                   </td>
                 ))}
@@ -285,7 +285,7 @@ function DailyForm({
         </table>
       </div>
       {editable && (
-        <div className="border-t border-white/5 px-6 py-4 flex justify-end">
+        <div className="border-t border-[#1e2240] px-6 py-4 flex justify-end">
           <Button onClick={save} disabled={saving} className="bg-green-600 hover:bg-green-700 font-bold">
             <FontAwesomeIcon icon={faSave} className="mr-2" /> {saving ? "Guardando…" : "Guardar datos"}
           </Button>
@@ -298,7 +298,7 @@ function DailyForm({
 function Field({ label, className, children }: { label: string; className?: string; children: React.ReactNode }) {
   return (
     <label className={`flex flex-col gap-1.5 ${className ?? ""}`}>
-      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{label}</span>
+      <span className="text-[10px] font-bold uppercase tracking-wider text-[#8892b0]">{label}</span>
       {children}
     </label>
   );

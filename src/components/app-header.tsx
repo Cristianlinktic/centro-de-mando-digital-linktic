@@ -55,7 +55,7 @@ export function AppHeader() {
 
   return (
     <header
-      className="glass border-b border-border/60 flex items-center gap-4 px-4 md:px-6"
+      className="glass border-b border-[#1e2240] flex items-center gap-4 px-4 md:px-6"
       style={{ height: 60, position: "sticky", top: 0, zIndex: 10 }}
     >
       {(state === "collapsed" || isMobile) && <SidebarTrigger />}
@@ -64,13 +64,13 @@ export function AppHeader() {
         <LinkyIcon className="h-7 w-7 shrink-0" />
         <div className="min-w-0">
         <div className="flex items-center gap-2">
-            <h2 className="font-heading text-sm font-semibold truncate gradient-text">{meta.title}</h2>
+            <h2 className="text-sm font-bold truncate gradient-text">{meta.title}</h2>
             {role === "superadmin" ? (
                 <Badge variant="neon" className="text-[8px] h-4 px-1 font-black">SUPER</Badge>
             ) : role === "admin" ? (
-                <Badge className="bg-blue-600/10 text-blue-400 border-blue-500/20 text-[8px] h-4 px-1 font-black">ADMIN</Badge>
+                <Badge className="rounded-[4px] bg-[#0094ff]/12 text-[#75ddff] border-[#0094ff]/30 text-[8px] h-4 px-1 font-black">ADMIN</Badge>
             ) : (
-                <Badge className="bg-slate-600/10 text-slate-400 border-white/10 text-[8px] h-4 px-1 font-black">LECTOR</Badge>
+                <Badge className="rounded-[4px] bg-[#131a30] text-[#aab3cf] border-[#2a2a4a] text-[8px] h-4 px-1 font-black">LECTOR</Badge>
             )}
         </div>
         <p className="text-[11px] text-muted-foreground truncate hidden sm:block">By LinkTIC</p>
@@ -86,13 +86,13 @@ export function AppHeader() {
 
       <button 
         onClick={async () => await signOut()}
-        className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-white/5 text-slate-500 hover:text-red-400 transition-colors"
+        className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-white/5 text-[#8892b0] hover:text-red-400 transition-colors"
         title="Cerrar Sesión"
       >
         <LogOut className="h-4 w-4" />
       </button>
 
-      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-linktic-blue to-linktic-gold flex items-center justify-center text-[11px] font-bold text-white shrink-0 shadow-[0_0_14px_hsl(213_85%_55%/0.45)] ring-1 ring-white/10">
+      <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#0094ff] to-[#2709cd] flex items-center justify-center text-[11px] font-bold text-white shrink-0 shadow-[0_0_14px_#0094ff73] ring-1 ring-[#2a2a4a]">
         {role === "superadmin" ? "SA" : role === "admin" ? "AD" : "LC"}
       </div>
     </header>

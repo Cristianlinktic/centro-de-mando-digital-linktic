@@ -44,8 +44,8 @@ const icons: Record<string, React.ComponentType<{ className?: string }>> = {
 
 // Navegación unificada — Centro de Mando Digital LinkTIC
 const navItems = [
-  { path: "/mapa", label: "Mapa Global", icon: "Globe2", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
-  { path: "/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "hsl(213 60% 18%)", badgeText: "hsl(213 85% 62%)" },
+  { path: "/mapa", label: "Mapa Global", icon: "Globe2", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
+  { path: "/nacional", label: "Conversación Nacional", icon: "MapPinned", badge: "NEW", badgeBg: "#10142a", badgeText: "#75ddff" },
   { path: "/testigos", label: "Testigos Electorales", icon: "ShieldCheck" },
   { path: "/medios", label: "Conversación en Medios", icon: "Newspaper" },
   { path: "/social", label: "Conversación en Redes", icon: "Share2", badge: "LIVE", badgeBg: "#2eb88a", badgeText: "#fff" },
@@ -71,16 +71,16 @@ export function AppSidebar() {
   const visibleItems = navItems.filter((item) => canSee(item.path));
 
   return (
-    <Sidebar collapsible="icon" className="glass border-r border-border/60">
+    <Sidebar collapsible="icon" className="glass border-r border-[#1e2240] [&>[data-slot=sidebar-inner]]:bg-transparent">
       <SidebarHeader className="border-b border-border/40 px-4 py-4">
         <div className="flex items-center gap-2">
           {/* Cabecera estática: Centro de Mando Digital LinkTIC */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-linktic-blue shrink-0">
-              <Crosshair className="h-3 w-3 text-linktic-gold" />
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-[linear-gradient(90deg,#0094ff,#2709cd)] shrink-0 shadow-[0_0_12px_rgba(0,148,255,0.45)]">
+              <Crosshair className="h-3 w-3 text-white" />
             </div>
             <div className="flex flex-col items-start flex-1 min-w-0 group-data-[collapsible=icon]:hidden">
-              <span className="font-heading text-sm font-semibold text-foreground truncate max-w-full">Centro de Mando</span>
+              <span className="text-sm font-bold text-foreground truncate max-w-full">Centro de Mando</span>
               <span className="text-[10px] text-muted-foreground truncate max-w-full">Digital LinkTIC</span>
             </div>
           </div>
@@ -110,7 +110,7 @@ export function AppSidebar() {
                 className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${isActive && item.icon === "Instagram"
                     ? "active bg-[rgba(225,48,108,0.12)] text-[#E1306C] border-l-2 border-[#E1306C] pl-[calc(0.75rem-2px)] shadow-[0_0_16px_rgba(225,48,108,0.18)]"
                     : isActive
-                      ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)] shadow-[0_0_16px_hsl(213_85%_48%/0.18)]"
+                      ? "active bg-[#0094ff26] text-[#0094ff] border-l-2 border-[#0094ff] pl-[calc(0.75rem-2px)] shadow-[0_0_16px_#0094ff2e]"
                       : "text-muted-foreground hover:bg-accent hover:text-foreground"
                   }`}
               >
@@ -120,7 +120,7 @@ export function AppSidebar() {
                     className={`h-4 w-4 shrink-0 ${isActive ? "text-[#E1306C]" : ""}`}
                   />
                 ) : Icon ? (
-                  <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[hsl(213_85%_48%)]" : ""}`} />
+                  <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-[#0094ff]" : ""}`} />
                 ) : null}
                 <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">
                   {item.label}
@@ -151,11 +151,11 @@ export function AppSidebar() {
                 href="/admin/usuarios"
                 className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
                   pathname.startsWith("/admin/usuarios")
-                    ? "active bg-[hsl(213_85%_48%/0.15)] text-[hsl(213_85%_48%)] border-l-2 border-[hsl(213_85%_48%)] pl-[calc(0.75rem-2px)]"
+                    ? "active bg-[#0094ff26] text-[#0094ff] border-l-2 border-[#0094ff] pl-[calc(0.75rem-2px)]"
                     : "text-muted-foreground hover:bg-accent hover:text-foreground"
                 }`}
               >
-                <Users className={`h-4 w-4 shrink-0 ${pathname.startsWith("/admin/usuarios") ? "text-[hsl(213_85%_48%)]" : ""}`} />
+                <Users className={`h-4 w-4 shrink-0 ${pathname.startsWith("/admin/usuarios") ? "text-[#0094ff]" : ""}`} />
                 <span className="flex-1 truncate group-data-[collapsible=icon]:hidden">Usuarios</span>
               </Link>
             </nav>
