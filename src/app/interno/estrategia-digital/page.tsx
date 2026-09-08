@@ -29,7 +29,8 @@ import {
   Legend,
 } from "recharts";
 import { EmptyCampaign, LoadingCampaign } from "./_shared";
-import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
+import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR_LINE } from "@/lib/chart-theme";
+import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
 export default function EstrategiaDigitalPage() {
   const [data, setData] = useState<CampaignData | null | undefined>(undefined);
@@ -98,12 +99,25 @@ export default function EstrategiaDigitalPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-1 panel border border-[#1e2240] p-6 rounded-2xl">
           <h3 className="font-bold text-sm text-[#e4e9f5] mb-4 uppercase tracking-widest">Distribución por canal</h3>
-          <div className="h-56">
+          <div className="relative h-56">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={donut} dataKey="value" nameKey="name" innerRadius={55} outerRadius={80} paddingAngle={2}>
+                <ChartGradients colors={donut.map((d) => d.color)} />
+                <Pie
+                  data={donut}
+                  dataKey="value"
+                  nameKey="name"
+                  innerRadius={58}
+                  outerRadius={82}
+                  paddingAngle={3}
+                  cornerRadius={6}
+                  stroke="none"
+                  isAnimationActive
+                  animationDuration={700}
+                  animationEasing="ease-out"
+                >
                   {donut.map((d) => (
-                    <Cell key={d.name} fill={d.color} />
+                    <Cell key={d.name} fill={gradientFill(d.color)} style={{ filter: glowShadow(d.color, 6) }} />
                   ))}
                 </Pie>
                 <Tooltip
@@ -112,6 +126,10 @@ export default function EstrategiaDigitalPage() {
                 />
               </PieChart>
             </ResponsiveContainer>
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-[9px] uppercase tracking-widest text-[#8892b0]">Total</span>
+              <span className="text-base font-bold text-white">{formatCOPCompact(totals.plannedBudget)}</span>
+            </div>
           </div>
           <ul className="mt-2 space-y-2">
             {channels.map((c) => (
@@ -133,12 +151,14 @@ export default function EstrategiaDigitalPage() {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={area} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <ChartGradients colors={(["meta", "pilas", "youtube", "google_display"] as const).map((k) => CHANNELS[k].color)} />
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
                 <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} tickFormatter={(v) => formatCOPCompact(v)} />
                 <Tooltip
                   formatter={(v) => formatCOP(Number(v))}
                   contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE}
+                  cursor={TOOLTIP_CURSOR_LINE}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 {(["meta", "pilas", "youtube", "google_display"] as const).map((k) => (
@@ -149,8 +169,11 @@ export default function EstrategiaDigitalPage() {
                     name={CHANNELS[k].label}
                     stackId="1"
                     stroke={CHANNELS[k].color}
-                    fill={CHANNELS[k].color}
-                    fillOpacity={0.25}
+                    strokeWidth={2}
+                    fill={gradientFill(CHANNELS[k].color)}
+                    activeDot={{ r: 4, strokeWidth: 0, style: { filter: glowShadow(CHANNELS[k].color, 8) } }}
+                    animationDuration={700}
+                    animationEasing="ease-out"
                   />
                 ))}
               </AreaChart>

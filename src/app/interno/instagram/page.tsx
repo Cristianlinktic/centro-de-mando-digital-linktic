@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Post } from "@/lib/instagram-types";
 import { Dashboard } from "@/components/instagram/Dashboard";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 
 export default function PerfilesActoresPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -21,14 +22,7 @@ export default function PerfilesActoresPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="page-bg min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 rounded-full border-2 border-[#2a2a4a] border-t-pink-500 animate-spin" />
-          <p className="text-[#aab3cf] text-sm">Cargando conversación en redes…</p>
-        </div>
-      </div>
-    );
+    return <TabLoadingScreen section="Conversación en Redes" />;
   }
 
   if (error) {

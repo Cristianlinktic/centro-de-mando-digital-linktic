@@ -12,6 +12,7 @@ import { ColombiaMapEditor } from "@/components/colombia-map-editor";
 import { COLOMBIA_DEPARTAMENTOS } from "@/data/colombia-departamentos";
 import { LiveTicker } from "@/components/live-ticker";
 import { SentimentDonut } from "@/components/sentiment-donut";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faRotate, faArrowTrendUp, faArrowTrendDown, faLocationDot, faMapLocationDot, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -190,7 +191,7 @@ export default function MapaColombiaPage() {
     ];
   }, [data, sortedDeps]);
 
-  if (loading) return <div className="h-screen page-bg text-white flex justify-center items-center">Cargando mapa de Colombia...</div>;
+  if (loading) return <TabLoadingScreen section="Mapa de Colombia" />;
 
   return (
     <div className="flex flex-col p-6 gap-6 page-bg text-white">

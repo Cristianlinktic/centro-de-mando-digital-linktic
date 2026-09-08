@@ -25,7 +25,8 @@ import {
 import { EmptyCampaign, LoadingCampaign, round } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSave, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
+import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR } from "@/lib/chart-theme";
+import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
 const CHANNEL_KEYS = ["meta", "pilas", "youtube", "google_display"] as const;
 
@@ -129,12 +130,18 @@ function MiniBar({ data }: { data: { name: string; value: number; color: string 
     <div className="h-56">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+          <ChartGradients colors={data.map((d) => d.color)} />
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
           <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
           <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
-          <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
-          <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-            {data.map((d) => <Cell key={d.name} fill={d.color} />)}
+          <Tooltip
+            contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE}
+            cursor={TOOLTIP_CURSOR}
+          />
+          <Bar dataKey="value" radius={[8, 8, 0, 0]} isAnimationActive animationDuration={600} animationEasing="ease-out">
+            {data.map((d) => (
+              <Cell key={d.name} fill={gradientFill(d.color)} stroke={d.color} strokeWidth={1} style={{ filter: glowShadow(d.color, 5) }} />
+            ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>

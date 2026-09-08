@@ -10,8 +10,9 @@ import { fetchContentTracking, saveContentTracking } from "@/lib/campana/client-
 import { ADS_FIELDS, META_FIELDS, type ContentTrackingField } from "@/lib/campana/types";
 import { formatNumber } from "@/lib/campana/format";
 import { toast } from "@/components/ui/toast";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 const LABELS: Record<ContentTrackingField, string> = {
   total_pautados: "Total pautados",
@@ -43,11 +44,7 @@ export default function SeguimientoPage() {
   }, []);
 
   if (campaignId === undefined || !values) {
-    return (
-      <div className="h-64 flex items-center justify-center text-[#8892b0] font-mono tracking-widest uppercase text-sm">
-        <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-3" /> Cargando seguimiento…
-      </div>
-    );
+    return <TabLoadingScreen section="Seguimiento" fullScreen={false} />;
   }
   if (campaignId === null) {
     return (

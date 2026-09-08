@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "@/components/ui/toast";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import {
   faRotate,
   faSave,
@@ -371,7 +372,7 @@ export function PrensaSection() {
   );
 
   if (loading && !displayData) {
-    return <div className="h-64 text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Análisis de Prensa...</div>;
+    return <TabLoadingScreen section="Análisis de Prensa" fullScreen={false} />;
   }
 
   return (
@@ -379,9 +380,6 @@ export function PrensaSection() {
       {/* Header */}
       <div className="mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <div className="flex gap-2 mb-2">
-            <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">MONITOREO DE PRENSA</span>
-          </div>
           <h2 className="text-2xl font-bold mb-1 gradient-text text-glow-blue">Análisis de Prensa</h2>
           <p className="text-[#aab3cf] text-sm">Impacto, cobertura y sentimiento en medios de comunicación.</p>
         </div>

@@ -19,11 +19,6 @@ export default function EstrategiaDigitalLayout({ children }: { children: React.
   return (
     <div className="page-bg text-white p-6">
       <div className="mb-6">
-        <div className="flex gap-2 mb-2">
-          <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">
-            ESTRATEGIA PUBLICITARIA
-          </span>
-        </div>
         <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Estrategia Publicitaria</h1>
         <p className="text-[#aab3cf] text-sm">Planeación, seguimiento y pauta digital multicanal.</p>
       </div>

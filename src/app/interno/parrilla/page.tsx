@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -83,6 +84,13 @@ export default function ParrillaPage() {
 
   const [viewMode, setViewMode] = useState<ViewMode>("month");
   const [cursorDate, setCursorDate] = useState<Date>(() => new Date());
+  const [activePlatforms, setActivePlatforms] = useState<PlatformId[]>(PLATFORMS.map((p) => p.id));
+  const togglePlatform = (id: PlatformId) =>
+    setActivePlatforms((prev) => (prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]));
+  const filteredItems = useMemo(
+    () => items.filter((i) => activePlatforms.includes(i.platform)),
+    [items, activePlatforms]
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
@@ -338,11 +346,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
   }, [viewMode, cursorDate]);
 
   if (loading) {
-    return (
-      <div className="h-screen page-bg text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">
-        Cargando Parrilla de Contenidos...
-      </div>
-    );
+    return <TabLoadingScreen section="Parrilla de Contenidos" />;
   }
 
   return (
@@ -351,9 +355,6 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
         <div>
           <div className="flex gap-2 mb-2">
-            <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">
-              PLANIFICACIÓN DE CONTENIDO
-            </span>
             <span className="bg-[#1e2240] text-[#aab3cf] text-[10px] px-2 py-0.5 rounded-full border border-[#2a2a4a] uppercase">
               {editing ? "MODO EDITOR" : "MODO LECTOR"}
             </span>
@@ -451,21 +452,46 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
         </div>
       </div>
 
-      {/* Leyenda de plataformas */}
-      <div className="mb-4 flex flex-wrap gap-3">
-        {PLATFORMS.map((p) => (
-          <div key={p.id} className="flex items-center gap-1.5 text-[11px] font-bold text-[#aab3cf]">
-            <FontAwesomeIcon icon={p.icon} className="h-3 w-3" style={{ color: p.color }} />
-            {p.name}
-          </div>
-        ))}
+      {/* Filtro por red social */}
+      <p className="mb-2 text-[10px] uppercase tracking-[0.2em] text-[#8892b0]">
+        Filtra por red social — haz clic para mostrar u ocultar
+      </p>
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        {PLATFORMS.map((p) => {
+          const active = activePlatforms.includes(p.id);
+          return (
+            <button
+              key={p.id}
+              onClick={() => togglePlatform(p.id)}
+              className="flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold transition-all duration-200"
+              style={{
+                backgroundColor: active ? `${p.color}22` : "transparent",
+                border: `1px solid ${active ? `${p.color}66` : "#2a2a4a"}`,
+                color: active ? p.color : "#8892b0",
+                boxShadow: active ? `0 0 8px ${p.color}40` : undefined,
+              }}
+              title={active ? `Ocultar ${p.name}` : `Mostrar ${p.name}`}
+            >
+              <FontAwesomeIcon icon={p.icon} className="h-3 w-3" />
+              {p.name}
+            </button>
+          );
+        })}
+        {activePlatforms.length < PLATFORMS.length && (
+          <button
+            onClick={() => setActivePlatforms(PLATFORMS.map((p) => p.id))}
+            className="cursor-pointer px-2 text-[11px] font-bold text-[#8892b0] underline underline-offset-2 hover:text-white"
+          >
+            Mostrar todas
+          </button>
+        )}
       </div>
 
       {/* Vista de calendario */}
       {viewMode === "month" && (
         <MonthView
           cursorDate={cursorDate}
-          items={items}
+          items={filteredItems}
           onSelectDay={(d) => {
             setCursorDate(d);
             setViewMode("day");
@@ -476,7 +502,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {viewMode === "week" && (
         <WeekView
           cursorDate={cursorDate}
-          items={items}
+          items={filteredItems}
           editing={editing}
           now={now}
           onSelectDay={(d) => {
@@ -490,7 +516,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
       {viewMode === "day" && (
         <DayView
           date={cursorDate}
-          items={items}
+          items={filteredItems}
           editing={editing}
           now={now}
           onAddSlot={(hour) => openAddModal(cursorDate, hour)}

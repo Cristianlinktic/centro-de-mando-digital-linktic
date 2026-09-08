@@ -10,6 +10,7 @@ import { COLOMBIA_DEPARTAMENTOS } from "@/data/colombia-departamentos";
 import { LiveTicker } from "@/components/live-ticker";
 import { SentimentDonut } from "@/components/sentiment-donut";
 import { analyzerSupabase } from "@/lib/supabase-analyzer";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import {
   faRotate,
   faMapLocationDot, faLayerGroup,
@@ -383,11 +384,7 @@ export default function NacionalPage() {
   }, [data, sortedDeps, selectedTone, totalRaw]);
 
   if (loading) {
-    return (
-      <div className="h-screen page-bg text-white flex justify-center items-center">
-        Cargando conversación nacional...
-      </div>
-    );
+    return <TabLoadingScreen section="Conversación Nacional" />;
   }
 
   return (

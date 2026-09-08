@@ -86,17 +86,17 @@ export async function proxy(request: NextRequest) {
 
   // Tiene acceso pero está en /sin-acceso → a su pantalla.
   if (path.startsWith('/sin-acceso')) {
-    return NextResponse.redirect(new URL(landing ?? '/interno/nacional', request.url))
+    return NextResponse.redirect(new URL(landing ?? '/interno/mapa-colombia', request.url))
   }
 
   // Raíz → primera pantalla permitida.
   if (path === '/') {
-    return NextResponse.redirect(new URL(landing ?? '/interno/nacional', request.url))
+    return NextResponse.redirect(new URL(landing ?? '/interno/mapa-colombia', request.url))
   }
 
   // Gating fino por pantalla (incluye /admin solo-superadmin).
   if (!isPathAllowed(access, path)) {
-    return NextResponse.redirect(new URL(landing ?? '/interno/nacional', request.url))
+    return NextResponse.redirect(new URL(landing ?? '/interno/mapa-colombia', request.url))
   }
 
   return response

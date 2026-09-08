@@ -1,0 +1,80 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+}
+
+.rig {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: bob 850ms ease-in-out infinite;
+}
+
+.wingLeft {
+  animation: flapLeft 850ms ease-in-out infinite;
+}
+
+.wingRight {
+  animation: flapRight 850ms ease-in-out infinite;
+}
+
+.tail {
+  animation: tailSway 1700ms ease-in-out infinite;
+}
+
+/* Real wingbeats are asymmetric: a quick, powerful downstroke followed by a
+   slower recovery upstroke. The 32% keyframe (instead of 50%) gives that
+   snap-down / float-up feel instead of a mechanical back-and-forth. */
+@keyframes flapLeft {
+  0% {
+    transform: rotate(40deg);
+  }
+  32% {
+    transform: rotate(-14deg);
+  }
+  100% {
+    transform: rotate(40deg);
+  }
+}
+
+@keyframes flapRight {
+  0% {
+    transform: rotate(-40deg);
+  }
+  32% {
+    transform: rotate(14deg);
+  }
+  100% {
+    transform: rotate(-40deg);
+  }
+}
+
+@keyframes bob {
+  0% {
+    transform: translateY(-4px);
+  }
+  32% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Slower, gentler rudder-like sway — independent period from the wingbeat
+   so it doesn't read as mechanically locked to the flap. */
+@keyframes tailSway {
+  0% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  100% {
+    transform: rotate(-7deg);
+  }
+}

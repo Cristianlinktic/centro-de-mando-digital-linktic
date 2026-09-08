@@ -1,0 +1,81 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.layer {
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* Soft ambient glow behind everything, breathing in and out. */
+.glow {
+  inset: -14%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(168, 85, 247, 0.12) 55%, transparent 72%);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+
+/* Holographic comet-trail arc, slow and deliberate. */
+.trail {
+  inset: 12%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #a855f7 45deg,
+    #22d3ee 170deg,
+    #34d399 260deg,
+    transparent 320deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+  animation: spinReverse 3.6s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.65));
+}
+
+/* Thin static inner ring for depth. */
+.track {
+  inset: 26%;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+}
+
+/* Small glowing satellite orbiting on its own ring. */
+.orbitWrap {
+  inset: 12%;
+  animation: spin 2.8s linear infinite;
+}
+
+.orbitDot {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: #f0abfc;
+  box-shadow: 0 0 8px 3px rgba(240, 171, 252, 0.85);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}

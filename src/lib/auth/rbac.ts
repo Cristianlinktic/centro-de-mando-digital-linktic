@@ -35,9 +35,11 @@ export interface ScreenDef {
  *  autenticado — ver isPathAllowed). */
 const SCREENS: ScreenDef[] = [
   { key: "lt-tab:mapa", path: "/interno/mapa", title: "Mapa Global", group: "Interno" },
-  { key: "lt-tab:nacional", path: "/interno/nacional", title: "Conversación Nacional", group: "Interno" },
   { key: "lt-tab:medios", path: "/interno/medios", title: "Conversación en Medios", group: "Interno" },
-  { key: "lt-tab:actores-mapa", path: "/interno/mapa-colombia", title: "Mapa de Colombia", group: "Interno" },
+  // "Conversación Nacional" (globo por país) se retiró del menú; esta pantalla
+  // toma ahora ese nombre — conserva su clave para no invalidar los permisos
+  // ya concedidos en user_screen_access.
+  { key: "lt-tab:actores-mapa", path: "/interno/mapa-colombia", title: "Conversación Nacional", group: "Interno" },
   // La pantalla de Instagram pasa a ser "Conversación en Redes" (la anterior,
   // lt-tab:social, se retiró). Se conserva la clave para no invalidar los
   // permisos ya concedidos en user_screen_access.
@@ -107,9 +109,9 @@ export function hasAppAccess(access: Pick<UserAccess, "role" | "screens">): bool
 }
 
 /** Ruta de aterrizaje tras el login: primera pantalla permitida.
- *  superadmin → /interno/nacional. Sin pantallas (y no superadmin) → null (sin acceso). */
+ *  superadmin → /interno/mapa-colombia. Sin pantallas (y no superadmin) → null (sin acceso). */
 export function firstAllowedPath(access: Pick<UserAccess, "role" | "screens">): string | null {
-  if (access.role === "superadmin") return "/interno/nacional";
+  if (access.role === "superadmin") return "/interno/mapa-colombia";
   for (const s of SCREENS) {
     if (access.screens.includes(s.key)) return s.path;
   }

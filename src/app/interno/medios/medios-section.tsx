@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { AdminPopup } from "@/components/admin-popup";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import * as XLSX from 'xlsx';
 
 // Helper to get media icon based on name/type
@@ -250,7 +251,7 @@ export function MediosSection() {
     }));
   }, [profiles]);
 
-  if (loading) return <div className="h-64 text-white flex justify-center items-center font-mono tracking-widest uppercase animate-pulse">Cargando Conversación en Medios...</div>;
+  if (loading) return <TabLoadingScreen section="Conversación en Medios" fullScreen={false} />;
 
   return (
     <>
@@ -258,7 +259,6 @@ export function MediosSection() {
       <div className="mb-8 flex justify-between items-center">
         <div>
           <div className="flex gap-2 mb-2">
-              <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-0.5 rounded-full border border-[#0094ff]/20 uppercase font-black">MEDIOS DE COMUNICACIÓN</span>
               <span className="bg-[#1e2240] text-[#aab3cf] text-[10px] px-2 py-0.5 rounded-full border border-[#2a2a4a] uppercase">ACTUALIZADO {timeAgo}</span>
           </div>
           <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Conversación en Medios</h1>

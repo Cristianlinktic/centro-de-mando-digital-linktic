@@ -7,9 +7,10 @@ import { computeChannels, computeDaily, computeTotals } from "@/lib/campana/calc
 import { CHANNELS } from "@/lib/campana/constants";
 import { formatCOP, formatDate, formatDateShort, formatDecimal, formatNumber, formatPercent } from "@/lib/campana/format";
 import type { CampaignData } from "@/lib/campana/types";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { ResponsiveContainer, ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { EmptyCampaign, LoadingCampaign } from "../_shared";
-import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
+import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR_LINE } from "@/lib/chart-theme";
+import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
 export default function ProyeccionesPage() {
   const [data, setData] = useState<CampaignData | null | undefined>(undefined);
@@ -93,15 +94,31 @@ export default function ProyeccionesPage() {
         <p className="text-xs text-[#8892b0] mb-4">Todos los canales combinados</p>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chart} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            <ComposedChart data={chart} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <ChartGradients colors={["#a855f7", "#2eb88a"]} />
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
               <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
-              <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE} />
+              <Tooltip
+                contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE}
+                cursor={TOOLTIP_CURSOR_LINE}
+              />
               <Legend wrapperStyle={{ fontSize: 11 }} />
-              <Line type="monotone" dataKey="impresiones" stroke="#a855f7" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="clicks" stroke="#2eb88a" strokeWidth={2} dot={false} />
-            </LineChart>
+              <Area type="monotone" dataKey="impresiones" name="Impresiones" fill={gradientFill("#a855f7")} stroke="none" legendType="none" tooltipType="none" isAnimationActive animationDuration={700} />
+              <Area type="monotone" dataKey="clicks" name="Clicks" fill={gradientFill("#2eb88a")} stroke="none" legendType="none" tooltipType="none" isAnimationActive animationDuration={700} />
+              <Line
+                type="monotone" dataKey="impresiones" name="Impresiones" stroke="#a855f7" strokeWidth={2.5} dot={false}
+                style={{ filter: glowShadow("#a855f7", 5) }}
+                activeDot={{ r: 4, strokeWidth: 0, style: { filter: glowShadow("#a855f7", 9) } }}
+                animationDuration={700} animationEasing="ease-out"
+              />
+              <Line
+                type="monotone" dataKey="clicks" name="Clicks" stroke="#2eb88a" strokeWidth={2.5} dot={false}
+                style={{ filter: glowShadow("#2eb88a", 5) }}
+                activeDot={{ r: 4, strokeWidth: 0, style: { filter: glowShadow("#2eb88a", 9) } }}
+                animationDuration={700} animationEasing="ease-out"
+              />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </Card>

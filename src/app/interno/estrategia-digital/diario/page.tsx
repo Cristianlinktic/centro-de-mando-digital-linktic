@@ -9,7 +9,8 @@ import { formatCOP, formatDate, formatDateShort, formatDecimal, formatNumber } f
 import type { CampaignData } from "@/lib/campana/types";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { EmptyCampaign, LoadingCampaign } from "../_shared";
-import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE } from "@/lib/chart-theme";
+import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR_LINE } from "@/lib/chart-theme";
+import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
 const CHANNEL_KEYS = ["meta", "pilas", "youtube", "google_display"] as const;
 
@@ -44,16 +45,30 @@ export default function DiarioPage() {
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={area} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <ChartGradients colors={CHANNEL_KEYS.map((k) => CHANNELS[k].color)} />
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1e2240" />
               <XAxis dataKey="label" axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: "#aab3cf", fontSize: 10 }} />
               <Tooltip
                 formatter={(v) => formatCOP(Number(v))}
                 contentStyle={TOOLTIP_STYLE} labelStyle={TOOLTIP_LABEL_STYLE} itemStyle={TOOLTIP_ITEM_STYLE}
+                cursor={TOOLTIP_CURSOR_LINE}
               />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {CHANNEL_KEYS.map((k) => (
-                <Area key={k} type="monotone" dataKey={k} name={CHANNELS[k].label} stackId="1" stroke={CHANNELS[k].color} fill={CHANNELS[k].color} fillOpacity={0.25} />
+                <Area
+                  key={k}
+                  type="monotone"
+                  dataKey={k}
+                  name={CHANNELS[k].label}
+                  stackId="1"
+                  stroke={CHANNELS[k].color}
+                  strokeWidth={2}
+                  fill={gradientFill(CHANNELS[k].color)}
+                  activeDot={{ r: 4, strokeWidth: 0, style: { filter: glowShadow(CHANNELS[k].color, 8) } }}
+                  animationDuration={700}
+                  animationEasing="ease-out"
+                />
               ))}
             </AreaChart>
           </ResponsiveContainer>

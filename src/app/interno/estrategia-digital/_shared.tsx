@@ -1,14 +1,11 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileExcel, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
 
 export function LoadingCampaign() {
-  return (
-    <div className="h-64 flex items-center justify-center text-[#8892b0] font-mono tracking-widest uppercase text-sm">
-      <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-3" /> Cargando estrategia digital…
-    </div>
-  );
+  return <TabLoadingScreen section="Estrategia Publicitaria" fullScreen={false} />;
 }
 
 export function EmptyCampaign() {

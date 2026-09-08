@@ -5,8 +5,8 @@ import { MediosSection } from "./medios-section";
 import { PrensaSection } from "./prensa-section";
 
 const TABS = [
-  { key: "medios", label: "Medios" },
-  { key: "prensa", label: "Prensa" },
+  { key: "medios", label: "Panorama" },
+  { key: "prensa", label: "Análisis" },
 ] as const;
 
 type TabKey = (typeof TABS)[number]["key"];

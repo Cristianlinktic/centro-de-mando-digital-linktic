@@ -14,6 +14,7 @@ import { useRealtimeRefresh } from "@/hooks/use-realtime-refresh";
 import { useAuth } from "@/components/auth-provider";
 import { AdminPopup } from "@/components/admin-popup";
 import { Input } from "@/components/ui/input";
+import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import * as XLSX from "xlsx";
 import { faInstagram, faFacebook, faXTwitter, faTiktok } from "@fortawesome/free-brands-svg-icons";
 import { faRotate, faGlobe, faArrowTrendUp, faStar, faSave, faUpload, faPlus, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
@@ -695,7 +696,7 @@ export default function MapaPage() {
     ];
   }, [countriesData, selectedPlatform]);
 
-  if (loadingDb) return <div className="h-screen page-bg text-white flex justify-center items-center">Cargando base de datos global...</div>;
+  if (loadingDb) return <TabLoadingScreen section="Mapa Global" />;
 
   return (
     <div className="flex flex-col p-6 gap-6 page-bg text-white">
