@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { useAuth } from "./auth-provider";
+import { AvatarUploadModal } from "./avatar-upload-modal";
 import { LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { signOut } from "@/app/actions/auth";
 
 export function AppHeader() {
   const { state, isMobile } = useSidebar();
-  const { role } = useAuth();
+  const { role, avatarUrl } = useAuth();
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
+  const [avatarOpen, setAvatarOpen] = useState(false);
 
   useEffect(() => {
     function tick() {
@@ -72,17 +74,30 @@ export function AppHeader() {
           ) : (
               <Badge className="hidden sm:inline-flex rounded-[4px] bg-[#131a30] text-[#aab3cf] border-[#2a2a4a] text-[8px] h-4 px-1 font-black">LECTOR</Badge>
           )}
-          <div
-            className="h-8 w-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white shrink-0 ring-1 ring-[#2a2a4a]"
-            style={{
-              backgroundImage: "linear-gradient(135deg, var(--tab-accent), var(--tab-accent-2))",
-              boxShadow: "0 0 14px var(--tab-accent-glow)",
-            }}
+          <button
+            onClick={() => setAvatarOpen(true)}
+            title="Cambiar foto de perfil"
+            className="h-8 w-8 shrink-0 cursor-pointer overflow-hidden rounded-full ring-1 ring-[#2a2a4a] transition-transform hover:scale-105"
           >
-            {role === "superadmin" ? "SA" : role === "admin" ? "AD" : "LC"}
-          </div>
+            {avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={avatarUrl} alt="Foto de perfil" className="h-full w-full object-cover" />
+            ) : (
+              <div
+                className="flex h-full w-full items-center justify-center text-[11px] font-bold text-white"
+                style={{
+                  backgroundImage: "linear-gradient(135deg, var(--tab-accent), var(--tab-accent-2))",
+                  boxShadow: "0 0 14px var(--tab-accent-glow)",
+                }}
+              >
+                {role === "superadmin" ? "SA" : role === "admin" ? "AD" : "LC"}
+              </div>
+            )}
+          </button>
         </div>
       </div>
+
+      {avatarOpen && <AvatarUploadModal onClose={() => setAvatarOpen(false)} />}
     </header>
   );
 }

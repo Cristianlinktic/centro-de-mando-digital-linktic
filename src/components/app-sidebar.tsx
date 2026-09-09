@@ -39,8 +39,8 @@ const icons: Record<string, React.ComponentType<{ className?: string; style?: Re
 // paleta LinkTIC ya establecida, para reconocerlos de un vistazo.
 const navItems = [
   { path: "/interno/mapa", label: "Mapa Global", icon: "Globe2", accent: "#0094ff" },
-  { path: "/interno/medios", label: "Conversación en Medios", icon: "Newspaper", accent: "#a855f7" },
   { path: "/interno/mapa-colombia", label: "Conversación Nacional", icon: "Colombia", accent: "#f5b21e" },
+  { path: "/interno/medios", label: "Conversación en Medios", icon: "Newspaper", accent: "#a855f7" },
   { path: "/interno/instagram", label: "Conversación en Redes", icon: "MessagesSquare", accent: "#2eb88a" },
   { path: "/interno/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays", accent: "#75ddff" },
   { path: "/interno/estrategia-digital", label: "Estrategia Publicitaria", icon: "Target", accent: "#00e1ff" },
@@ -113,7 +113,7 @@ export function AppSidebar() {
 
       <SidebarContent className="px-2 py-3">
         <p className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground mb-2 px-2 group-data-[collapsible=icon]:hidden">
-          {activeGroup === "interno" ? "Centro de Mando Digital Interno" : "Centro de Mando Digital Externo"}
+          Paneles
         </p>
 
         {activeGroup === "interno" ? (

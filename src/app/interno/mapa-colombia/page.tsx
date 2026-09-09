@@ -8,13 +8,14 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/components/auth-provider";
 import { AdminPopup } from "@/components/admin-popup";
+import { canEdit } from "@/lib/auth/rbac";
 import { ColombiaMapEditor } from "@/components/colombia-map-editor";
 import { COLOMBIA_DEPARTAMENTOS } from "@/data/colombia-departamentos";
 import { LiveTicker } from "@/components/live-ticker";
 import { SentimentDonut } from "@/components/sentiment-donut";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faRotate, faArrowTrendUp, faArrowTrendDown, faLocationDot, faMapLocationDot, faLayerGroup } from "@fortawesome/free-solid-svg-icons";
+import { faRotate, faArrowTrendUp, faArrowTrendDown, faLocationDot, faMapLocationDot, faLayerGroup, faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Globe = dynamic(() => import("@/components/globe").then((m) => m.GlobeComponent), {
@@ -108,10 +109,11 @@ const DepartmentDetail = ({ dep }: { dep: any }) => {
 };
 
 export default function MapaColombiaPage() {
-  const { firstName } = useAuth();
+  const { firstName, role } = useAuth();
   const [data, setData] = useState<any[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editorOpen, setEditorOpen] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -196,9 +198,20 @@ export default function MapaColombiaPage() {
   return (
     <div className="flex flex-col p-6 gap-6 page-bg text-white">
       <div className="space-y-4">
-        <div>
-          <h1 className="font-heading text-4xl font-bold tracking-tight gradient-text text-glow-blue">Conversación Nacional — Centro de Mando Digital LinkTIC</h1>
-          <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="font-heading text-4xl font-bold tracking-tight gradient-text text-glow-blue">Conversación Nacional — Centro de Mando Digital LinkTIC</h1>
+            <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+          </div>
+          {canEdit(role) && (
+            <button
+              onClick={() => setEditorOpen(true)}
+              className="shrink-0 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#0094ff]/30 bg-[#0094ff]/10 px-3.5 py-2 text-xs font-bold text-[#75ddff] transition-colors hover:bg-[#0094ff]/20"
+            >
+              <FontAwesomeIcon icon={faGear} className="h-3.5 w-3.5" />
+              Editar
+            </button>
+          )}
         </div>
 
         {sortedDeps.length > 0 && (
@@ -349,7 +362,7 @@ export default function MapaColombiaPage() {
       </div>
 
       {/* Editor (solo admin): ingresar/editar datos de Instagram por departamento */}
-      <AdminPopup title="Editor · Mapa de Colombia (Instagram)">
+      <AdminPopup title="Editor · Mapa de Colombia (Instagram)" open={editorOpen} onOpenChange={setEditorOpen} hideTrigger>
         <ColombiaMapEditor data={data} onSaved={fetchData} />
       </AdminPopup>
     </div>

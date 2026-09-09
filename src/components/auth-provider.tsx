@@ -10,18 +10,24 @@ interface AuthContextType {
   user: any;
   role: Role;
   firstName: string;
+  /** URL pública de la foto de perfil (profiles.avatar_url), o null si no tiene. */
+  avatarUrl: string | null;
   /** screen_keys "lt-tab:*" permitidos para el usuario actual. */
   screens: string[];
   /** Re-lee sesión, perfil y pantallas (lo usa AccessSync ante cambios). */
   refresh: () => void;
+  /** Actualiza el avatar en el estado local sin re-consultar todo (tras subir uno nuevo). */
+  setAvatarUrl: (url: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   role: null,
   firstName: "",
+  avatarUrl: null,
   screens: [],
   refresh: () => {},
+  setAvatarUrl: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -30,6 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<Role>(null);
   const [firstName, setFirstName] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [screens, setScreens] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -50,12 +57,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setRole(null);
       setFirstName("");
+      setAvatarUrl(null);
       setScreens([]);
       return;
     }
     setUser(sessionUser);
     const [{ data: profile }, { data: rows }] = await Promise.all([
-      supabase.from("profiles").select("user_role, full_name").eq("id", sessionUser.id).single(),
+      supabase.from("profiles").select("user_role, full_name, avatar_url").eq("id", sessionUser.id).single(),
       supabase
         .from("user_screen_access")
         .select("screen_key")
@@ -64,6 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     ]);
     setRole(normalizeRole(profile?.user_role));
     setFirstName(resolveFirstName(sessionUser, profile));
+    setAvatarUrl(profile?.avatar_url ?? null);
     setScreens((rows ?? []).map((r: { screen_key: string }) => r.screen_key));
   }, []);
 
@@ -103,7 +112,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [loadFor, safeGetSession]);
 
   return (
-    <AuthContext.Provider value={{ user, role, firstName, screens, refresh }}>
+    <AuthContext.Provider value={{ user, role, firstName, avatarUrl, screens, refresh, setAvatarUrl }}>
       {!loading && children}
     </AuthContext.Provider>
   );

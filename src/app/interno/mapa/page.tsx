@@ -13,11 +13,12 @@ import { supabase } from "@/lib/supabase";
 import { useRealtimeRefresh } from "@/hooks/use-realtime-refresh";
 import { useAuth } from "@/components/auth-provider";
 import { AdminPopup } from "@/components/admin-popup";
+import { canEdit } from "@/lib/auth/rbac";
 import { Input } from "@/components/ui/input";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
 import * as XLSX from "xlsx";
 import { faInstagram, faFacebook, faXTwitter, faTiktok } from "@fortawesome/free-brands-svg-icons";
-import { faRotate, faGlobe, faArrowTrendUp, faStar, faSave, faUpload, faPlus, faWandMagicSparkles } from "@fortawesome/free-solid-svg-icons";
+import { faRotate, faGlobe, faArrowTrendUp, faStar, faSave, faUpload, faPlus, faWandMagicSparkles, faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Globe = dynamic(() => import("@/components/globe").then((m) => m.GlobeComponent), {
@@ -253,7 +254,7 @@ const countryNameToIso: Record<string, string> = {
 };
 
 export default function MapaPage() {
-  const { firstName } = useAuth();
+  const { firstName, role } = useAuth();
   const [selected, setSelected] = useState<string | null>("CO");
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const [countriesData, setCountriesData] = useState<any[]>([]);
@@ -706,9 +707,20 @@ export default function MapaPage() {
             <span className="inline-flex items-center gap-2 bg-[#0f291e] text-green-400 text-xs px-2.5 py-1 rounded-full border border-green-500/20"><span className="live-dot" style={{ background: "#34d399", boxShadow: "0 0 8px #34d399" }} /> EN TIEMPO REAL</span>
             <span className="bg-[#1e2240] text-[#aab3cf] text-xs px-2 py-1 rounded-full border border-[#8892b0]/20 uppercase">ACTUALIZADO {timeAgo}</span>
         </div>
-        <div>
-          <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Global — Centro de Mando Digital LinkTIC</h1>
-          <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias internacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Global — Centro de Mando Digital LinkTIC</h1>
+            <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias internacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+          </div>
+          {canEdit(role) && (
+            <button
+              onClick={() => setEditorOpen(true)}
+              className="shrink-0 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#0094ff]/30 bg-[#0094ff]/10 px-3.5 py-2 text-xs font-bold text-[#75ddff] transition-colors hover:bg-[#0094ff]/20"
+            >
+              <FontAwesomeIcon icon={faGear} className="h-3.5 w-3.5" />
+              Editar
+            </button>
+          )}
         </div>
 
         {sortedCountries.length > 0 && (
@@ -830,7 +842,7 @@ export default function MapaPage() {
         </div>
       </div>
       
-      <AdminPopup title="Editor de Mapa Global" open={editorOpen} onOpenChange={setEditorOpen}>
+      <AdminPopup title="Editor de Mapa Global" open={editorOpen} onOpenChange={setEditorOpen} hideTrigger>
         <div className="space-y-6">
             <div className="flex justify-between items-center panel-soft p-4 rounded-xl border border-[#1e2240]">
                 <div>
