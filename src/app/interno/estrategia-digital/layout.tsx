@@ -24,10 +24,10 @@ export default function EstrategiaDigitalLayout({ children }: { children: React.
   const tipo = useCategoria();
 
   return (
-    <div className="page-bg text-white p-6">
+    <div className="page-bg text-white page-pad">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Estrategia Publicitaria</h1>
+        <div className="min-w-0">
+          <h1 className="page-title font-heading font-bold mb-1 gradient-text text-glow-blue break-words">Estrategia Publicitaria</h1>
           <p className="text-[#aab3cf] text-sm">Planeación, seguimiento y pauta {tipo === "medios" ? "de medios" : "digital multicanal"}.</p>
         </div>
 

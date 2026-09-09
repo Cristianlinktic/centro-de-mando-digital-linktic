@@ -1046,6 +1046,45 @@
   }
 }
 
+/* ============================================================================
+   RESPONSIVE — TIPOGRAFÍA Y ESPACIADO FLUIDOS
+   ----------------------------------------------------------------------------
+   En vez de saltos por breakpoint (p.ej. text-2xl sm:text-3xl lg:text-4xl),
+   estas clases escalan de forma continua con clamp(): se ven bien tanto en
+   el Fold cerrado (~344-390px) como en el Fold desplegado (~700-850px) y en
+   desktop ancho, sin un punto de quiebre donde "decidir" en qué tamaño está
+   la pantalla. Pensadas para el contenedor raíz de cada pantalla (antes
+   p-6/gap-6 fijos) y su h1 principal (antes text-3xl/text-4xl fijos).
+   ============================================================================ */
+.page-title {
+  font-size: clamp(1.375rem, 1.05rem + 1.6vw, 2.5rem);
+  line-height: 1.15;
+}
+
+.page-pad {
+  padding: clamp(0.875rem, 0.4rem + 2.2vw, 1.5rem);
+}
+
+.page-gap {
+  gap: clamp(1rem, 0.6rem + 1.4vw, 1.5rem);
+}
+
+/* Aviso de scroll horizontal para tablas que no caben en móvil: en vez de
+   dejar que el contenido se vea "cortado" sin explicación, un desvanecido
+   en el borde derecho avisa que hay más columnas deslizando hacia el lado.
+   Va en un <div> HERMANO del contenedor con overflow-x-auto (no dentro ni
+   como ::after de ese mismo contenedor): un pseudo-elemento ahí hereda el
+   scroll horizontal y viaja con la tabla en vez de quedarse fijo al borde. */
+.scroll-fade-x-edge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 28px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(7, 10, 22, 0.85));
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -1053,10 +1092,12 @@
 
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
   }
 
   html {
     @apply font-sans;
+    overflow-x: hidden;
   }
 
   /* Los títulos del KV van en 700 con tracking cerrado (-2px sobre 48px). */

@@ -1,6 +1,9 @@
 import * as React from "react"
 
-const MOBILE_BREAKPOINT = 768
+// 700px, no 768: el Fold desplegado mide ~700-850px de ancho interior y
+// merece el sidebar acoplado tipo tablet, no el drawer de móvil — 768 lo
+// dejaría atrapado en el modo angosto en su orientación más común.
+const MOBILE_BREAKPOINT = 700
 
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)

@@ -15,8 +15,8 @@ export default function MediosPage() {
   const [tab, setTab] = useState<TabKey>("medios");
 
   return (
-    <div className="page-bg text-white p-6">
-      <nav className="flex gap-1 mb-6 border-b border-[#1e2240] pb-1 w-fit">
+    <div className="page-bg text-white page-pad">
+      <nav className="flex gap-1 mb-6 border-b border-[#1e2240] pb-1 w-fit max-w-full overflow-x-auto">
         {TABS.map((t) => (
           <button
             key={t.key}

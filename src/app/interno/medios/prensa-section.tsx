@@ -86,9 +86,9 @@ const TIER_COLORS = ["#fbbf24", "#c0c8de", "#78716c"];
 
 function KpiCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <Card className="panel border-[#1e2240] p-5 rounded-2xl">
+    <Card className="card-glass overflow-hidden p-5 rounded-2xl">
       <p className="text-[10px] font-bold text-[#8892b0] tracking-wider mb-2">{label.toUpperCase()}</p>
-      <p className="text-2xl font-bold text-[#0094ff]">{value}</p>
+      <p className="text-xl sm:text-2xl font-bold text-[#0094ff] truncate">{value}</p>
       {hint && <p className="text-[10px] text-[#8892b0] mt-1">{hint}</p>}
     </Card>
   );
@@ -430,7 +430,7 @@ export function PrensaSection() {
       ) : (
         <>
           {/* KPI Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <KpiCard label="Menciones" value={fmtNum(displayData?.menciones_totales)} hint={activeTab === "diario" ? "Del día" : "Total del mes"} />
             <KpiCard label="Audiencia Estimada" value={fmtNum(displayData?.audiencia_estimada)} hint="Alcance aproximado" />
             <KpiCard label="Share of Voice" value={`${displayData?.share_of_voice ?? 0}%`} />
@@ -482,7 +482,7 @@ export function PrensaSection() {
               <h3 className="text-[#75ddff] font-black mb-4 uppercase text-xs tracking-widest flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#0094ff]" /> Editar métricas — {selectedDate}
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {numField("menciones_totales", "Menciones Totales")}
                 {numField("audiencia_estimada", "Audiencia Estimada")}
                 {numField("share_of_voice", "Share of Voice %")}

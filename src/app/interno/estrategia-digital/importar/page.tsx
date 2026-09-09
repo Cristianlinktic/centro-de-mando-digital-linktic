@@ -79,7 +79,7 @@ export default function ImportarPage() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
       <div className="lg:col-span-2">
-        <Card className="panel border border-[#1e2240] p-6 rounded-2xl">
+        <Card className="panel border border-[#1e2240] p-4 sm:p-6 rounded-2xl">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">Subir plan de pauta</h3>
             <span className="rounded-full bg-[#0094ff]/12 text-[#75ddff] border border-[#0094ff]/30 text-[9px] font-black uppercase px-2 py-0.5">
@@ -95,7 +95,7 @@ export default function ImportarPage() {
             onDragLeave={() => setDragging(false)}
             onDrop={onDrop}
             onClick={() => inputRef.current?.click()}
-            className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-14 text-center transition-all ${
+            className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-4 py-10 text-center transition-all sm:px-6 sm:py-14 ${
               dragging ? "border-[#0094ff] bg-[#0094ff]/10" : "border-[#2a2a4a] bg-white/3 hover:border-[#0094ff]/50 hover:bg-[#0094ff]/5"
             }`}
           >

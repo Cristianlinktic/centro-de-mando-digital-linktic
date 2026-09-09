@@ -61,19 +61,17 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="h-screen w-full bg-background page-bg flex items-center justify-center font-sans antialiased relative overflow-hidden px-4">
+    <div className="min-h-screen w-full bg-background page-bg flex items-center justify-center font-sans antialiased relative overflow-x-hidden py-10 px-4">
       <BackdropOrbs grid />
       {introPhase !== "hidden" && (
         <div
-          className={`fixed inset-0 z-[60] flex items-center justify-center overflow-hidden well transition-opacity duration-700 ease-in ${
-            introPhase === "exiting" ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
+          className={`fixed inset-0 z-[60] flex items-center justify-center overflow-hidden well transition-opacity duration-700 ease-in ${introPhase === "exiting" ? "opacity-0 pointer-events-none" : "opacity-100"
+            }`}
         >
           {/* Palabras a la izquierda: al salir, se deslizan más hacia la izquierda mientras se desvanecen. */}
           <div
-            className={`absolute left-[6%] top-[20%] flex flex-col items-start gap-1.5 text-left transition-all duration-500 ease-in sm:left-[10%] ${
-              introPhase === "exiting" ? "opacity-0 -translate-x-10" : "opacity-100 translate-x-0"
-            }`}
+            className={`absolute left-[6%] top-[20%] flex flex-col items-start gap-1.5 text-left transition-all duration-500 ease-in sm:left-[10%] ${introPhase === "exiting" ? "opacity-0 -translate-x-10" : "opacity-100 translate-x-0"
+              }`}
           >
             {WORDS_LEFT.map((word, i) => (
               <ScrambleText
@@ -88,9 +86,8 @@ export default function LoginPage() {
 
           {/* Palabras a la derecha: al salir, se deslizan más hacia la derecha mientras se desvanecen. */}
           <div
-            className={`absolute right-[6%] bottom-[20%] flex flex-col items-end gap-1.5 text-right transition-all duration-500 ease-in sm:right-[10%] ${
-              introPhase === "exiting" ? "opacity-0 translate-x-10" : "opacity-100 translate-x-0"
-            }`}
+            className={`absolute right-[6%] bottom-[20%] flex flex-col items-end gap-1.5 text-right transition-all duration-500 ease-in sm:right-[10%] ${introPhase === "exiting" ? "opacity-0 translate-x-10" : "opacity-100 translate-x-0"
+              }`}
           >
             {WORDS_RIGHT.map((word, i) => (
               <ScrambleText
@@ -104,11 +101,10 @@ export default function LoginPage() {
           </div>
 
           <div
-            className={`flex flex-col items-center gap-4 transition-all duration-700 ease-in ${
-              introPhase === "exiting"
+            className={`flex flex-col items-center gap-4 transition-all duration-700 ease-in ${introPhase === "exiting"
                 ? "opacity-0 scale-75 -translate-x-28 translate-y-20"
                 : "opacity-100 scale-100 translate-x-0 translate-y-0"
-            }`}
+              }`}
           >
             <LinkyIcon className="intro-bird-enter h-24 w-auto drop-shadow-[0_0_40px_rgba(0,148,255,0.6)]" />
             <div className="flex flex-col items-center gap-1">
@@ -150,10 +146,10 @@ export default function LoginPage() {
         />
       </div>
 
-      <div className="neon-frame glass-strong rounded-3xl p-10 w-full max-w-md flex flex-col items-center z-10">
-        <h1 className="font-heading text-2xl font-semibold mb-1 tracking-tight gradient-text text-glow-blue">Centro de Mando Digital LinkTIC</h1>
-        <p className="text-[#aab3cf] mb-8 text-center text-sm">Ingresa tus credenciales para acceder al Centro de Mando Digital LinkTIC</p>
-        
+      <div className="neon-frame glass-strong rounded-3xl p-6 sm:p-10 w-full max-w-md flex flex-col items-center z-10">
+        <h1 className="font-heading text-xl sm:text-2xl font-semibold mb-1 tracking-tight gradient-text text-glow-blue text-center break-words">Centro de Mando Digital LinkTIC</h1>
+        <p className="text-[#aab3cf] mb-8 text-center text-sm">Ingresa tus credenciales para acceder</p>
+
         <form action={formAction} className="w-full space-y-4">
           <div className="space-y-2">
             <label className="text-[10px] text-[#aab3cf] uppercase tracking-widest font-bold px-1">Usuario</label>
@@ -184,23 +180,23 @@ export default function LoginPage() {
               />
             </div>
           </div>
-          
+
           {state?.error && (
             <div className="bg-red-500/10 border border-red-500/20 p-3 rounded-xl">
               <p className="text-red-400 text-xs font-semibold text-center">{state.error}</p>
             </div>
           )}
-          
+
           <Button
-              type="submit"
-              variant="neon"
-              disabled={isPending}
-              className="w-full h-12 mt-4"
+            type="submit"
+            variant="neon"
+            disabled={isPending}
+            className="w-full h-12 mt-4"
           >
             {isPending ? "Validando..." : "Ingresar al Tablero"}
           </Button>
         </form>
-        
+
         <div className="mt-8 text-[10px] text-[#8892b0] uppercase tracking-[0.2em] font-medium opacity-50">
           SISTEMA DE SEGURIDAD LINKTIC
         </div>

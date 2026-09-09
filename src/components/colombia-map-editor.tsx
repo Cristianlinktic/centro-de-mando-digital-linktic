@@ -260,7 +260,7 @@ export function ColombiaMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
               </span>
             </summary>
 
-            <div className="p-4 pt-2 border-t border-[#1e2240] grid grid-cols-2 gap-3">
+            <div className="p-4 pt-2 border-t border-[#1e2240] grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Field label="Menciones Instagram">
                 <Input type="number" className={inputCls} value={r.volumen ?? 0} onChange={(e) => update(r.id, "volumen", e.target.value)} />
               </Field>
@@ -284,7 +284,7 @@ export function ColombiaMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
                 </select>
               </Field>
 
-              <div className="col-span-2 grid grid-cols-3 gap-2">
+              <div className="sm:col-span-2 grid grid-cols-3 gap-2">
                 <Field label="% Positivo">
                   <DecimalInput className={inputCls} value={r.sentimientoPct?.positivo ?? 0} onChange={(v) => updatePct(r.id, "positivo", v)} />
                 </Field>
@@ -296,17 +296,17 @@ export function ColombiaMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
                 </Field>
               </div>
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <Field label="Tema principal">
                   <Input className={inputCls} value={r.tema || ""} onChange={(e) => update(r.id, "tema", e.target.value)} />
                 </Field>
               </div>
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <Field label="Keywords (separadas por coma)">
                   <Input className={inputCls} value={toText(r.keywords)} onChange={(e) => update(r.id, "keywords", toArr(e.target.value))} />
                 </Field>
               </div>
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <Field label="Top hashtags (separados por coma)">
                   <Input className={inputCls} value={toText(r.topHashtags)} onChange={(e) => update(r.id, "topHashtags", toArr(e.target.value))} />
                 </Field>
@@ -319,7 +319,7 @@ export function ColombiaMapEditor({ data, onSaved }: { data: any[]; onSaved: () 
                 <Input className={inputCls} value={r.updateTime || ""} onChange={(e) => update(r.id, "updateTime", e.target.value)} />
               </Field>
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <Field label="Resumen">
                   <textarea
                     className={`${inputCls} rounded-md p-2 min-h-[60px] resize-y`}

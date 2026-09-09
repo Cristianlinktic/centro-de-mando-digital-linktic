@@ -52,7 +52,7 @@ export default function SeguimientoPage() {
   }
   if (campaignId === null) {
     return (
-      <Card className="panel border border-[#1e2240] p-10 rounded-2xl text-center">
+      <Card className="panel border border-[#1e2240] p-6 sm:p-10 rounded-2xl text-center">
         <p className="text-[#aab3cf] text-sm">Aún no hay una campaña cargada. Importa un plan en la pestaña Importar.</p>
       </Card>
     );
@@ -77,7 +77,7 @@ export default function SeguimientoPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center gap-3">
         <p className="text-sm text-[#aab3cf]">Consolidado de piezas y campañas de contenido pautadas.</p>
         {canEdit(role) && (
           editing ? (
@@ -118,7 +118,7 @@ export default function SeguimientoPage() {
 
 function StatCard({ label, value, editing, accent, onChange }: { label: string; value: number; editing: boolean; accent?: boolean; onChange: (v: number) => void }) {
   return (
-    <Card className="panel border-[#1e2240] p-5 rounded-2xl" style={accent ? { borderTop: "3px solid #0094ff" } : undefined}>
+    <Card className="card-glass overflow-hidden p-5 rounded-2xl" style={accent ? { borderTop: "3px solid #0094ff" } : undefined}>
       <p className="text-[10px] font-bold uppercase tracking-wider text-[#8892b0]">{label}</p>
       {editing ? (
         <Input
@@ -130,7 +130,7 @@ function StatCard({ label, value, editing, accent, onChange }: { label: string; 
           style={{ color: accent ? "#0094ff" : undefined }}
         />
       ) : (
-        <p className="mt-2 text-3xl font-black tabular-nums" style={{ color: accent ? "#0094ff" : "#c0c8de" }}>
+        <p className="mt-2 break-words text-xl font-black tabular-nums sm:text-2xl lg:text-3xl" style={{ color: accent ? "#0094ff" : "#c0c8de" }}>
           {formatNumber(value)}
         </p>
       )}

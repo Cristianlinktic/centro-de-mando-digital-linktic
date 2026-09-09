@@ -3,10 +3,14 @@
 import { useState } from "react";
 import type { Post } from "@/lib/instagram-types";
 import { formatDate, formatNumber, typeLabel } from "@/lib/instagram-analytics";
+import { SOCIAL_PLATFORMS, type SocialPlatform } from "@/lib/social-platforms";
 
-export function ReachChart({ posts, onSelect }: { posts: Post[]; onSelect: (p: Post) => void }) {
+export function ReachChart({ posts, onSelect, platform }: { posts: Post[]; onSelect: (p: Post) => void; platform: SocialPlatform }) {
   const [hover, setHover] = useState<number | null>(null);
   if (posts.length === 0) return null;
+
+  const isInstagram = platform === "instagram";
+  const accent = SOCIAL_PLATFORMS[platform].accent;
 
   const ordered = [...posts].sort((a, b) => a.date.localeCompare(b.date));
   const max = Math.max(...ordered.map((p) => p.reach), 1);
@@ -20,7 +24,7 @@ export function ReachChart({ posts, onSelect }: { posts: Post[]; onSelect: (p: P
         {ordered.map((p, i) => {
           const h = (p.reach / max) * 38;
           const x = i * (bw + gap);
-          const isReel = p.type === "REELS";
+          const isReel = isInstagram && p.type === "REELS";
           return (
             <rect
               key={p.id}
@@ -30,8 +34,9 @@ export function ReachChart({ posts, onSelect }: { posts: Post[]; onSelect: (p: P
               height={h}
               rx={0.3}
               className={`cursor-pointer transition-opacity ${
-                isReel ? "fill-fuchsia-500" : "fill-[#00e1ff]"
+                isInstagram ? (isReel ? "fill-fuchsia-500" : "fill-[#00e1ff]") : ""
               } ${hover === null || hover === i ? "opacity-100" : "opacity-40"}`}
+              style={isInstagram ? undefined : { fill: accent }}
               onMouseEnter={() => setHover(i)}
               onMouseLeave={() => setHover(null)}
               onClick={() => onSelect(p)}
@@ -51,12 +56,20 @@ export function ReachChart({ posts, onSelect }: { posts: Post[]; onSelect: (p: P
       <div className="mt-2 flex items-center justify-between text-xs text-[#8892b0]">
         <span>{formatDate(ordered[0].date)}</span>
         <div className="flex gap-4">
-          <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-sm bg-fuchsia-500" /> Reel
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-sm bg-[#00e1ff]" /> Carrusel
-          </span>
+          {isInstagram ? (
+            <>
+              <span className="flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-sm bg-fuchsia-500" /> Reel
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-sm bg-[#00e1ff]" /> Carrusel
+              </span>
+            </>
+          ) : (
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-sm" style={{ background: accent }} /> {SOCIAL_PLATFORMS[platform].label}
+            </span>
+          )}
         </div>
         <span>{formatDate(ordered[ordered.length - 1].date)}</span>
       </div>

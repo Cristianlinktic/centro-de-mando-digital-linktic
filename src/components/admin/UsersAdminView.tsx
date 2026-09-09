@@ -40,12 +40,13 @@ function useNotes() {
     setTimeout(() => setNotes((n) => n.filter((x) => x.id !== id)), 4000);
   };
   const view = (
-    <div className="fixed bottom-6 right-6 z-[200] flex flex-col gap-2">
+    // Esquina inferior izquierda: la derecha ya la ocupa el botón flotante de Martha.
+    <div className="fixed bottom-4 left-4 z-[200] flex w-[min(20rem,calc(100vw-2rem))] flex-col gap-2 sm:bottom-6 sm:left-6">
       {notes.map((n) => (
         <div
           key={n.id}
           className={cn(
-            "rounded-xl px-4 py-3 text-sm font-semibold shadow-lg border max-w-xs",
+            "rounded-xl px-4 py-3 text-sm font-semibold shadow-lg border",
             n.kind === "success"
               ? "bg-emerald-500/10 text-emerald-200 border-emerald-500/30"
               : "bg-rose-500/10 text-rose-200 border-rose-500/30",
@@ -109,7 +110,7 @@ export function UsersAdminView() {
   };
 
   return (
-    <div className="space-y-8 p-6 pb-12 page-bg">
+    <div className="space-y-8 page-pad pb-12 page-bg">
       {notesView}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -294,7 +295,7 @@ function UserFormModal({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-6 panel border border-[#2a2a4a] shadow-2xl">
+      <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-4 sm:p-6 panel border border-[#2a2a4a] shadow-2xl">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-black text-white">{isEdit ? "Editar usuario" : "Nuevo usuario"}</h2>
           <button onClick={onClose} className="p-1.5 text-[#aab3cf] hover:text-white">

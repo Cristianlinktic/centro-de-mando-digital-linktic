@@ -36,7 +36,7 @@ export default function ProyeccionesPage() {
 
   return (
     <div className="space-y-6 pb-12">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Kpi label="Impresiones totales" value={formatNumber(totals.impressions)} color="#a855f7" />
         <Kpi label="Clicks totales" value={formatNumber(totals.clicks)} color="#2eb88a" />
         <Kpi label="Alcance único estimado" value={formatNumber(totals.reach)} hint="Suma de impresiones ÷ frecuencia" color="#0094ff" />
@@ -44,9 +44,11 @@ export default function ProyeccionesPage() {
       </div>
 
       <Card className="panel border border-[#1e2240] rounded-2xl overflow-hidden">
-        <div className="p-6 pb-3">
+        <div className="p-4 pb-3 sm:p-6 sm:pb-3">
           <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">Proyección consolidada por canal</h3>
         </div>
+        <p className="px-4 pb-2 text-[10px] text-[#8892b0] sm:hidden">Desliza para ver más →</p>
+        <div className="relative">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[820px] text-sm">
             <thead>
@@ -88,6 +90,8 @@ export default function ProyeccionesPage() {
               </tr>
             </tfoot>
           </table>
+        </div>
+        <div className="scroll-fade-x-edge sm:hidden" aria-hidden="true" />
         </div>
       </Card>
 
@@ -135,9 +139,9 @@ export default function ProyeccionesPage() {
 
 function Kpi({ label, value, hint, color }: { label: string; value: string; hint?: string; color: string }) {
   return (
-    <Card className="panel border-[#1e2240] p-5 rounded-2xl relative overflow-hidden">
+    <Card className="card-glass p-5 rounded-2xl overflow-hidden">
       <p className="text-[10px] font-bold text-[#8892b0] tracking-wider uppercase">{label}</p>
-      <p className="text-2xl font-bold mt-1" style={{ color }}>{value}</p>
+      <p className="text-xl sm:text-2xl font-bold mt-1 truncate" style={{ color }}>{value}</p>
       {hint && <p className="text-[10px] text-[#8892b0] mt-1">{hint}</p>}
       <div className="absolute bottom-0 left-0 w-full h-1" style={{ background: color, opacity: 0.6 }} />
     </Card>

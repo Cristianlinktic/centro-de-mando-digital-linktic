@@ -68,7 +68,7 @@ export function DayView({
                     return (
                       <div
                         key={item.id}
-                        className="w-56 rounded-lg p-2 cursor-pointer hover:brightness-110 transition-all"
+                        className="w-full sm:w-56 rounded-lg p-2 cursor-pointer hover:brightness-110 transition-all"
                         style={{ backgroundColor: "rgba(255,255,255,0.04)", borderLeft: `3px solid ${plat.color}` }}
                         onClick={(e) => {
                           e.stopPropagation();

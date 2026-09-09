@@ -63,10 +63,12 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon" className="glass border-r border-[#1e2240] [&>[data-slot=sidebar-inner]]:bg-transparent">
-      <SidebarHeader className="border-b border-[#1e2240] px-4 py-4">
-        <div className="flex items-center gap-2">
+      <SidebarHeader className="border-b border-[#1e2240] px-4 py-4 group-data-[collapsible=icon]:px-2">
+        {/* En modo colapsado (rail de 3rem) el header solo muestra el ave, centrada —
+            con el padding expandido (px-4) más el ícono (h-7) se pasaba del ancho del rail. */}
+        <div className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
           {/* Cabecera: ave LinkTIC + título dinámico Interno/Externo (única fuente — no se repite en el header). */}
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="flex items-center gap-3 flex-1 min-w-0 group-data-[collapsible=icon]:flex-none">
             <LinkyIcon className="h-7 w-7 shrink-0" />
             <div className="flex flex-col items-start flex-1 min-w-0 leading-tight group-data-[collapsible=icon]:hidden">
               <span className="text-[13px] font-semibold text-foreground truncate max-w-full">Centro de Mando Digital</span>
@@ -133,7 +135,7 @@ export function AppSidebar() {
                 <Link
                   key={item.path}
                   href={item.path}
-                  className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors border-l-2 ${
+                  className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors border-l-2 group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:mx-auto ${
                     isActive ? "active pl-[calc(0.75rem-2px)]" : "border-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
                   }`}
                   style={isActive ? { backgroundColor: `${accent}22`, color: accent, borderColor: accent } : undefined}
@@ -173,7 +175,7 @@ export function AppSidebar() {
                 return (
                   <Link
                     href="/admin/usuarios"
-                    className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors border-l-2 ${
+                    className={`sidebar-item flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors border-l-2 group-data-[collapsible=icon]:w-8 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:mx-auto ${
                       usersActive ? "active pl-[calc(0.75rem-2px)]" : "border-transparent text-muted-foreground hover:bg-accent hover:text-foreground"
                     }`}
                     style={usersActive ? { backgroundColor: `${accent}22`, color: accent, borderColor: accent } : undefined}

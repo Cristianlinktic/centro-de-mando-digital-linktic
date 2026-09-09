@@ -28,7 +28,7 @@ export function MonthView({
     <div className="panel border border-[#1e2240] rounded-2xl neon-frame overflow-hidden">
       <div className="grid grid-cols-7 border-b border-[#2a2a4a]">
         {WEEKDAY_LABELS.map((w) => (
-          <div key={w} className="p-2 text-center text-[10px] font-bold uppercase tracking-wide text-[#8892b0]">
+          <div key={w} className="p-1.5 sm:p-2 text-center text-[9px] sm:text-[10px] font-bold uppercase tracking-wide text-[#8892b0]">
             {w}
           </div>
         ))}
@@ -45,7 +45,7 @@ export function MonthView({
             <button
               key={idx}
               onClick={() => onSelectDay(day)}
-              className={`flex flex-col items-stretch border-b border-r border-[#1e2240] p-1.5 text-left transition-colors hover:bg-white/5 ${
+              className={`flex flex-col items-stretch border-b border-r border-[#1e2240] p-1 sm:p-1.5 text-left transition-colors hover:bg-white/5 ${
                 inMonth ? "" : "opacity-40"
               }`}
             >
@@ -71,7 +71,10 @@ export function MonthView({
                       className="flex items-center gap-1 rounded px-1 py-0.5 text-[10px] text-[#e4e9f5] hover:brightness-125"
                       style={{ backgroundColor: `${plat.color}22`, borderLeft: `2px solid ${plat.color}` }}
                     >
-                      <FontAwesomeIcon icon={plat.icon} className="h-2.5 w-2.5 shrink-0" style={{ color: plat.color }} />
+                      {/* En columnas muy angostas (Fold cerrado) el icono se oculta para
+                          dejarle todo el ancho al texto truncado — el borde de color y el
+                          punto de estado ya identifican la red y el estado sin el icono. */}
+                      <FontAwesomeIcon icon={plat.icon} className="h-2.5 w-2.5 shrink-0 max-[480px]:hidden" style={{ color: plat.color }} />
                       <span className="truncate flex-1">{item.time} {item.description}</span>
                       <span
                         className="h-1.5 w-1.5 shrink-0 rounded-full"

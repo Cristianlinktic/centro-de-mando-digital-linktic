@@ -35,20 +35,20 @@ const COLOMBIA_POV = { lat: 4.6, lng: -73.8, altitude: 0.6 };
 const sentimentColors: Record<string, string> = {
   positivo: "rgb(46, 184, 138)",
   negativo: "rgb(223, 58, 58)",
-  neutral:  "rgb(243, 177, 22)",
-  mixto:    "hsl(42 90% 52%)",
+  neutral: "rgb(243, 177, 22)",
+  mixto: "hsl(42 90% 52%)",
 };
 
 const toneColors: Record<string, string> = {
   Positivo: "rgb(46, 184, 138)",
   Negativo: "rgb(223, 58, 58)",
-  Neutro:   "rgb(243, 177, 22)",
+  Neutro: "rgb(243, 177, 22)",
 };
 
 const toneBadge: Record<string, string> = {
   Positivo: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   Negativo: "bg-rose-500/10 text-rose-400 border-rose-500/20",
-  Neutro:   "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  Neutro: "bg-amber-500/10 text-amber-400 border-amber-500/20",
 };
 
 // ─── Region → Dept ID mapping ─────────────────────────────────────────────────
@@ -305,13 +305,13 @@ export default function NacionalPage() {
       const total = arts.length;
       const posCount = tonos["Positivo"] || 0;
       const negCount = tonos["Negativo"] || 0;
-      const neuCount = tonos["Neutro"]   || 0;
+      const neuCount = tonos["Neutro"] || 0;
       const sentimientoPct = total > 0
         ? {
-            positivo: Math.round((posCount / total) * 100),
-            negativo: Math.round((negCount / total) * 100),
-            neutral:  Math.round((neuCount / total) * 100),
-          }
+          positivo: Math.round((posCount / total) * 100),
+          negativo: Math.round((negCount / total) * 100),
+          neutral: Math.round((neuCount / total) * 100),
+        }
         : { positivo: 0, negativo: 0, neutral: 0 };
 
       return {
@@ -368,18 +368,18 @@ export default function NacionalPage() {
     // Conteo real: artículos Positivo / total artículos con tono mapeado
     const totalPos = data.reduce((acc, d) => acc + (d.tonos["Positivo"] || 0), 0);
     const totalNeg = data.reduce((acc, d) => acc + (d.tonos["Negativo"] || 0), 0);
-    const totalNeu = data.reduce((acc, d) => acc + (d.tonos["Neutro"]   || 0), 0);
+    const totalNeu = data.reduce((acc, d) => acc + (d.tonos["Neutro"] || 0), 0);
     const totalToned = totalPos + totalNeg + totalNeu;
     const avgPos = totalToned > 0 ? Math.round((totalPos / totalToned) * 100) : 0;
     const top = sortedDeps[0];
     const fmt = (v: number) =>
       v >= 1_000_000 ? (v / 1_000_000).toFixed(1) + "M" :
-      v >= 1_000     ? (v / 1_000).toFixed(1) + "K"     : String(v);
+        v >= 1_000 ? (v / 1_000).toFixed(1) + "K" : String(v);
     return [
-      { label: "Artículos en prensa",          value: totalRaw.toLocaleString("es-CO"), delta: null, trend: "up" as const },
-      { label: "Departamentos con cobertura",  value: `${activos}/${data.length}`, delta: null, trend: "neutral" as const },
-      { label: "Cobertura positiva",           value: `${avgPos}%`,  delta: null, trend: avgPos > 50 ? ("up" as const) : ("down" as const) },
-      { label: "Departamento líder",           value: top ? (top.label ?? top.pais) : "---", delta: fmt(top ? volOf(top) : 0), trend: "up" as const },
+      { label: "Artículos en prensa", value: totalRaw.toLocaleString("es-CO"), delta: null, trend: "up" as const },
+      { label: "Departamentos con cobertura", value: `${activos}/${data.length}`, delta: null, trend: "neutral" as const },
+      { label: "Cobertura positiva", value: `${avgPos}%`, delta: null, trend: avgPos > 50 ? ("up" as const) : ("down" as const) },
+      { label: "Departamento líder", value: top ? (top.label ?? top.pais) : "---", delta: fmt(top ? volOf(top) : 0), trend: "up" as const },
     ];
   }, [data, sortedDeps, selectedTone, totalRaw]);
 
@@ -399,7 +399,7 @@ export default function NacionalPage() {
 
         <div>
           <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight gradient-text text-glow-blue break-words">
-            Conversación Nacional — Centro de Mando Digital LinkTIC
+            Conversación Nacional
           </h1>
           <p className="text-[#aab3cf] mt-2">
             Hola {firstName}, bienvenido. Cobertura de prensa por departamento. Haz clic en un departamento para ver los artículos.

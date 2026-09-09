@@ -49,7 +49,10 @@ export default function ConfiguracionPage() {
       )}
 
       <Tabs defaultValue="parametros">
-        <TabsList variant="line">
+        {/* w-full + flex-wrap: por defecto TabsList es `w-fit` sin wrap y con
+            4 etiquetas ("Impresiones reales" incluida) se sale del ancho en
+            el Fold cerrado — aquí sí necesita pasar a una segunda fila. */}
+        <TabsList variant="line" className="h-auto w-full flex-wrap justify-start">
           <TabsTrigger value="parametros">Parámetros</TabsTrigger>
           <TabsTrigger value="metricas">Métricas acumuladas</TabsTrigger>
           <TabsTrigger value="inversion">Inversión real</TabsTrigger>
@@ -247,10 +250,12 @@ function DailyForm({
 
   return (
     <Card className="panel border border-[#1e2240] rounded-2xl overflow-hidden">
-      <div className="p-6 pb-3">
+      <div className="p-4 pb-3 sm:p-6 sm:pb-3">
         <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">{title}</h3>
         <p className="text-xs text-[#8892b0] mt-1">{subtitle}</p>
       </div>
+      <p className="px-4 pb-2 text-[10px] text-[#8892b0] sm:hidden">Desliza para ver más →</p>
+      <div className="relative">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] text-sm">
           <thead>
@@ -288,6 +293,8 @@ function DailyForm({
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="scroll-fade-x-edge sm:hidden" aria-hidden="true" />
       </div>
       {editable && (
         <div className="border-t border-[#1e2240] px-6 py-4 flex justify-end">

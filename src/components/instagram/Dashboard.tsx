@@ -15,28 +15,38 @@ import {
 import { ReachChart } from "./ReachChart";
 import { PostDetail } from "./PostDetail";
 import { PostImage } from "./PostImage";
+import { SOCIAL_PLATFORMS, type SocialPlatform } from "@/lib/social-platforms";
 
 type SortKey = "date" | "reach" | "engagement" | "engagementRate" | "likes" | "comments";
-type TypeFilter = "ALL" | "REELS" | "CAROUSEL_ALBUM";
 type View = "gallery" | "table";
 
-const IG_PINK = "#E1306C";
+// Instagram conserva exactamente su filtro de siempre (Reel/Carrusel); para
+// las demás redes el filtro se arma con los tipos reales que traiga Windsor.
+const INSTAGRAM_TYPE_OPTIONS = ["ALL", "REELS", "CAROUSEL_ALBUM"];
 
 function KpiCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-2xl border border-[#1e2240] panel p-5">
+    <div className="card-glass overflow-hidden rounded-2xl p-5">
       <div className="text-sm text-[#aab3cf]">{label}</div>
-      <div className="mt-1 text-3xl font-semibold tracking-tight text-white">{value}</div>
+      <div className="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight text-white truncate">{value}</div>
       {sub && <div className="mt-1 text-xs text-[#8892b0]">{sub}</div>}
     </div>
   );
 }
 
-export function Dashboard({ posts, account }: { posts: Post[]; account: string }) {
-  const [typeFilter, setTypeFilter] = useState<TypeFilter>("ALL");
+export function Dashboard({ posts, account, platform }: { posts: Post[]; account: string; platform: SocialPlatform }) {
+  const isInstagram = platform === "instagram";
+  const cfg = SOCIAL_PLATFORMS[platform];
+
+  const [typeFilter, setTypeFilter] = useState<string>("ALL");
   const [sortKey, setSortKey] = useState<SortKey>("reach");
   const [selected, setSelected] = useState<Post | null>(null);
   const [view, setView] = useState<View>("gallery");
+
+  const typeOptions = useMemo(() => {
+    if (isInstagram) return INSTAGRAM_TYPE_OPTIONS;
+    return ["ALL", ...Array.from(new Set(posts.map((p) => p.type))).sort()];
+  }, [isInstagram, posts]);
 
   const filtered = useMemo(
     () => (typeFilter === "ALL" ? posts : posts.filter((p) => p.type === typeFilter)),
@@ -71,22 +81,22 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
   ];
 
   return (
-    <div className="p-6 text-white">
+    <div className="page-pad text-white">
       {/* Header */}
       <header className="mb-8">
         <div className="flex gap-2 flex-wrap mb-3">
           <span
             className="text-[10px] font-bold px-2 py-1 rounded-full border flex items-center gap-1"
-            style={{ background: "#2a1020", color: IG_PINK, borderColor: "rgba(225,48,108,0.2)" }}
+            style={{ background: cfg.accentBg, color: cfg.accent, borderColor: cfg.accentBorder }}
           >
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: IG_PINK }} />
-            INSTAGRAM
+            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: cfg.accent }} />
+            {cfg.label.toUpperCase()}
           </span>
           <span className="bg-[#1e2240] text-[#75ddff] text-[10px] px-2 py-1 rounded-full border border-[#0094ff]/20 font-bold uppercase">
             LINKTIC
           </span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h1 className="page-title font-bold tracking-tight text-white break-words">
           @{account}
         </h1>
         <p className="mt-1 text-[#aab3cf]">{dateRange} · {posts.length} publicaciones</p>
@@ -105,7 +115,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
       {/* Chart */}
       <section className="mb-8 rounded-2xl border border-[#1e2240] panel p-5">
         <h2 className="mb-4 text-lg font-semibold text-white">Alcance por publicación en el tiempo</h2>
-        <ReachChart posts={filtered} onSelect={setSelected} />
+        <ReachChart posts={filtered} onSelect={setSelected} platform={platform} />
         <p className="mt-3 text-xs text-[#8892b0]">Haz clic en una barra para ver el detalle de esa publicación.</p>
       </section>
 
@@ -131,7 +141,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
                       className="h-full rounded-full"
                       style={{
                         width: `${(t.avgReach / maxReach) * 100}%`,
-                        background: t.type === "REELS" ? IG_PINK : "rgb(56,189,248)",
+                        background: isInstagram ? (t.type === "REELS" ? cfg.accent : "rgb(56,189,248)") : cfg.accent,
                       }}
                     />
                   </div>
@@ -161,14 +171,14 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
       {/* Controls */}
       <section className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div className="flex gap-1.5">
-          {(["ALL", "REELS", "CAROUSEL_ALBUM"] as TypeFilter[]).map((t) => (
+          {typeOptions.map((t) => (
             <button
               key={t}
               onClick={() => setTypeFilter(t)}
               className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
                 typeFilter !== t ? "bg-white/5 text-[#c0c8de] hover:bg-white/10" : ""
               }`}
-              style={typeFilter === t ? { background: IG_PINK, color: "#fff" } : undefined}
+              style={typeFilter === t ? { background: cfg.accent, color: "#fff" } : undefined}
             >
               {t === "ALL" ? "Todas" : typeLabel(t)}
             </button>
@@ -196,7 +206,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
               className={`rounded-lg px-2.5 py-1 text-xs font-medium transition ${
                 sortKey !== s.key ? "bg-white/5 text-[#c0c8de] hover:bg-white/10" : ""
               }`}
-              style={sortKey === s.key ? { background: IG_PINK, color: "#fff" } : undefined}
+              style={sortKey === s.key ? { background: cfg.accent, color: "#fff" } : undefined}
             >
               {s.label}
             </button>
@@ -213,7 +223,7 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
               onClick={() => setSelected(p)}
               className="group overflow-hidden rounded-2xl border border-[#1e2240] panel text-left transition hover:border-[#2b62ff]/40"
             >
-              <PostImage post={p} className="aspect-square w-full" rounded="rounded-none" />
+              <PostImage post={p} platform={platform} className="aspect-square w-full" rounded="rounded-none" />
               <div className="p-3">
                 <div className="flex items-center justify-between text-xs text-[#8892b0]">
                   <span>{formatDate(p.date)}</span>
@@ -240,6 +250,8 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
       {/* Table */}
       {view === "table" && (
         <section className="overflow-hidden rounded-2xl border border-[#1e2240]">
+          <p className="px-4 pt-3 pb-1 text-[10px] text-[#8892b0] sm:hidden">Desliza para ver más →</p>
+          <div className="relative">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[720px] text-left text-sm">
               <thead className="panel text-xs uppercase tracking-wide text-[#aab3cf]">
@@ -268,9 +280,11 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
                       <span
                         className="rounded-full px-2 py-0.5 text-xs font-medium"
                         style={
-                          p.type === "REELS"
-                            ? { background: "rgba(225,48,108,0.15)", color: "#f9a8d4" }
-                            : { background: "rgba(56,189,248,0.12)", color: "#75ddff" }
+                          isInstagram
+                            ? p.type === "REELS"
+                              ? { background: "rgba(225,48,108,0.15)", color: "#f9a8d4" }
+                              : { background: "rgba(56,189,248,0.12)", color: "#75ddff" }
+                            : { background: `${cfg.accent}26`, color: cfg.accent }
                         }
                       >
                         {typeLabel(p.type)}
@@ -288,14 +302,16 @@ export function Dashboard({ posts, account }: { posts: Post[]; account: string }
               </tbody>
             </table>
           </div>
+          <div className="scroll-fade-x-edge sm:hidden" aria-hidden="true" />
+          </div>
         </section>
       )}
 
       <p className="mt-6 text-center text-xs text-[#8892b0]">
-        Datos agregados de Instagram vía Windsor.ai. Meta no expone la identidad de quienes dan like o comentan.
+        Datos agregados de {cfg.label} vía Windsor.ai. {cfg.disclaimerOwner} no expone la identidad de quienes dan like o comentan.
       </p>
 
-      <PostDetail post={selected} onClose={() => setSelected(null)} />
+      <PostDetail post={selected} platform={platform} onClose={() => setSelected(null)} />
     </div>
   );
 }

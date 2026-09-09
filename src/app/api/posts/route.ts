@@ -1,9 +1,16 @@
 export const runtime = "nodejs";
 
 import type { Post } from "@/lib/instagram-types";
+import type { SocialPlatform } from "@/lib/social-platforms";
 
-// Cache de 5 minutos — protege el límite de peticiones del plan free de Windsor.ai
-let cache: { at: number; posts: Post[] } | null = null;
+const VALID_PLATFORMS: SocialPlatform[] = ["instagram", "facebook", "tiktok"];
+
+function parsePlatform(value: string | null): SocialPlatform {
+  return VALID_PLATFORMS.includes(value as SocialPlatform) ? (value as SocialPlatform) : "instagram";
+}
+
+// Cache de 2h por red — protege el límite de peticiones del plan free de Windsor.ai
+const cache = new Map<SocialPlatform, { at: number; posts: Post[] }>();
 const TTL_MS = 2 * 60 * 60 * 1000;
 
 const FIELDS = [
@@ -42,13 +49,14 @@ function str(row: Record<string, unknown>, ...keys: string[]): string {
   return "";
 }
 
-async function fetchPosts(): Promise<Post[]> {
-  if (cache && Date.now() - cache.at < TTL_MS) return cache.posts;
+async function fetchPosts(platform: SocialPlatform): Promise<Post[]> {
+  const cached = cache.get(platform);
+  if (cached && Date.now() - cached.at < TTL_MS) return cached.posts;
 
   const key = process.env.WINDSOR_API_KEY;
   if (!key) throw new Error("WINDSOR_API_KEY no configurada en Vercel");
 
-  const url = `https://connectors.windsor.ai/instagram?api_key=${key}&date_preset=last_90d&fields=${FIELDS}`;
+  const url = `https://connectors.windsor.ai/${platform}?api_key=${key}&date_preset=last_90d&fields=${FIELDS}`;
 
   let res: Response;
   try {
@@ -73,7 +81,16 @@ async function fetchPosts(): Promise<Post[]> {
 
   // Log de campos disponibles para diagnóstico (solo en primer registro)
   if (rows.length > 0) {
-    console.log("[api/posts] Campos disponibles en Windsor.ai:", Object.keys(rows[0]));
+    console.log(`[api/posts] (${platform}) Campos disponibles en Windsor.ai:`, Object.keys(rows[0]));
+  }
+
+  // Windsor.ai a veces devuelve un aviso (ej. límite de cuentas del plan Free)
+  // disfrazado de fila de datos en vez de un error HTTP real — si se cuela,
+  // se vería como una publicación falsa con "Uh-oh..." de texto. Lo detectamos
+  // y lo tratamos como el error que en realidad es.
+  const warningRow = rows.find((r) => /windsor\.ai/i.test(str(r, "media_id", "media_type", "media_caption")));
+  if (warningRow) {
+    throw new Error(str(warningRow, "media_id", "media_type", "media_caption"));
   }
 
   const posts: Post[] = rows
@@ -104,17 +121,20 @@ async function fetchPosts(): Promise<Post[]> {
     .filter((p) => p.date)
     .sort((a, b) => b.date.localeCompare(a.date));
 
-  cache = { at: Date.now(), posts };
+  cache.set(platform, { at: Date.now(), posts });
   return posts;
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const platform = parsePlatform(searchParams.get("platform"));
+
   try {
-    const posts = await fetchPosts();
+    const posts = await fetchPosts(platform);
     return Response.json({ posts });
   } catch (e) {
     const message = (e as Error).message;
-    console.error(`[api/posts] ${message}`);
+    console.error(`[api/posts] (${platform}) ${message}`);
     return Response.json({ error: message }, { status: 500 });
   }
 }

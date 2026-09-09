@@ -3,15 +3,18 @@
 import { useState } from "react";
 import type { Post } from "@/lib/instagram-types";
 import { typeLabel } from "@/lib/instagram-analytics";
+import { SOCIAL_PLATFORMS, type SocialPlatform } from "@/lib/social-platforms";
 
 type Status = "loading" | "ok" | "error";
 
 export function PostImage({
   post,
+  platform,
   className = "",
   rounded = "rounded-xl",
 }: {
   post: Post;
+  platform: SocialPlatform;
   className?: string;
   rounded?: string;
 }) {
@@ -21,7 +24,7 @@ export function PostImage({
     <div className={`relative overflow-hidden bg-white/5 ${rounded} ${className}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={`/api/media/${post.id}`}
+        src={`/api/media/${post.id}?platform=${platform}`}
         alt={`Publicación ${post.date}`}
         loading="lazy"
         onLoad={() => setStatus("ok")}
@@ -51,7 +54,7 @@ export function PostImage({
               onClick={(e) => e.stopPropagation()}
               className="text-[10px] text-fuchsia-400 hover:underline"
             >
-              Ver en IG ↗
+              Ver en {SOCIAL_PLATFORMS[platform].label} ↗
             </a>
           )}
         </div>

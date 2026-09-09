@@ -256,15 +256,15 @@ export function MediosSection() {
   return (
     <>
       {/* Header Section */}
-      <div className="mb-8 flex justify-between items-center">
-        <div>
+      <div className="mb-8 flex flex-wrap justify-between items-start gap-4">
+        <div className="min-w-0">
           <div className="flex gap-2 mb-2">
               <span className="bg-[#1e2240] text-[#aab3cf] text-[10px] px-2 py-0.5 rounded-full border border-[#2a2a4a] uppercase">ACTUALIZADO {timeAgo}</span>
           </div>
-          <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Conversación en Medios</h1>
+          <h1 className="page-title font-heading font-bold mb-1 gradient-text text-glow-blue break-words">Conversación en Medios</h1>
           <p className="text-[#aab3cf] text-sm">Monitoreo de prensa, radio, TV y medios digitales.</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
             {canEdit(role) && (
                 !isEditing ? (
                     <Button variant="outline" size="sm" onClick={() => setIsEditing(true)} className="bg-[#0094ff]/10 text-[#75ddff] border-[#0094ff]/20 hover:bg-[#0094ff] hover:text-white transition-all">
@@ -288,9 +288,9 @@ export function MediosSection() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {kpis.map((kpi, i) => (
-              <Card key={kpi.id} className="panel border-[#1e2240] p-5 rounded-2xl relative overflow-hidden group">
+              <Card key={kpi.id} className="card-glass p-5 rounded-2xl overflow-hidden group">
                   <div className="flex justify-between items-start mb-2">
                       <p className="text-[10px] font-bold text-[#8892b0] tracking-wider">
                           {isEditing ? (
@@ -318,7 +318,7 @@ export function MediosSection() {
                         className="h-8 text-2xl font-bold text-[#0094ff] bg-white/5 border-[#2a2a4a] mb-2"
                       />
                   ) : (
-                      <p className="text-3xl font-bold text-[#0094ff]">{kpi.value}</p>
+                      <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0094ff] truncate">{kpi.value}</p>
                   )}
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-[#131a30]">
                       <div
@@ -504,10 +504,10 @@ export function MediosSection() {
 
       {/* Live Feed de Noticias */}
       <div className="panel border border-[#1e2240] rounded-2xl p-6 mb-20">
-        <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-3">
                 <span className="text-[#0094ff] font-bold text-xl">📰</span>
-                <h1 className="text-xl font-bold">Últimas Noticias y Titulares</h1>
+                <h2 className="text-xl font-bold">Últimas Noticias y Titulares</h2>
                 <span className="bg-[#0f291e] text-green-400 text-[10px] px-2 py-0.5 rounded-full border border-green-500/20">● ACTUALIZADO</span>
             </div>
             {isEditing && (

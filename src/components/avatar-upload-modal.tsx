@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faXmark, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "./auth-provider";
@@ -53,7 +54,11 @@ export function AvatarUploadModal({ onClose }: { onClose: () => void }) {
 
   const shown = preview ?? avatarUrl;
 
-  return (
+  // Portal a document.body: el header (`.glass`) usa backdrop-filter, y eso
+  // convierte cualquier position:fixed dentro de él en fijo respecto al
+  // header (60px) en vez de a toda la pantalla — el modal quedaba encajonado
+  // arriba. Montarlo fuera del árbol del header evita ese "containing block".
+  return createPortal(
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
       onClick={onClose}
@@ -130,6 +135,7 @@ export function AvatarUploadModal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

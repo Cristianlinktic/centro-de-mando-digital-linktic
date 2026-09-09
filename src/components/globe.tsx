@@ -1404,8 +1404,8 @@ export function GlobeComponent({
                 inset 0 18px 33.77px 10.1px rgba(20,117,212,0.10),
                 inset 0 1px 1px rgba(255,255,255,0.22),
                 0 10px 40px rgba(0,0,0,0.6);
-            min-width: 300px;
-            max-width: 340px;
+            min-width: min(300px, calc(100vw - 2rem));
+            max-width: min(340px, calc(100vw - 2rem));
             font-family: var(--font-nexa), ui-sans-serif, system-ui, sans-serif;
             pointer-events: none;
             backdrop-filter: blur(12px) saturate(160%);

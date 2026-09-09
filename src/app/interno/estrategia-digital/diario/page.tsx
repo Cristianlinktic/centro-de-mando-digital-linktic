@@ -78,9 +78,11 @@ export default function DiarioPage() {
       </Card>
 
       <Card className="panel border border-[#1e2240] rounded-2xl overflow-hidden">
-        <div className="p-6 pb-3">
+        <div className="p-4 pb-3 sm:p-6 sm:pb-3">
           <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">Detalle por día</h3>
         </div>
+        <p className="px-4 pb-2 text-[10px] text-[#8892b0] sm:hidden">Desliza para ver más →</p>
+        <div className="relative">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[920px] text-sm">
             <thead>
@@ -127,6 +129,8 @@ export default function DiarioPage() {
               </tr>
             </tfoot>
           </table>
+        </div>
+        <div className="scroll-fade-x-edge sm:hidden" aria-hidden="true" />
         </div>
         <div className="border-t border-[#1e2240] px-6 py-3 text-[11px] text-[#8892b0]">
           * Inversión diaria = presupuesto total × factor ÷ suma de factores.

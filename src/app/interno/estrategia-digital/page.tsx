@@ -71,7 +71,7 @@ export default function EstrategiaDigitalPage() {
         {campaign.name} · {formatDate(campaign.start_date)} → {formatDate(endDate)} · {campaign.duration_days} días
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Kpi
           label="Inversión"
           value={data.metrics?.inversion_acumulada ? formatCOP(data.metrics.inversion_acumulada) : "—"}
@@ -185,10 +185,57 @@ export default function EstrategiaDigitalPage() {
       </div>
 
       <Card className="panel border border-[#1e2240] rounded-2xl overflow-hidden">
-        <div className="p-6 pb-3">
+        <div className="p-4 pb-3 sm:p-6 sm:pb-3">
           <h3 className="font-bold text-sm text-[#e4e9f5] uppercase tracking-widest">Seguimiento real vs meta</h3>
         </div>
-        <div className="overflow-x-auto">
+        {/* Mobile: tarjetas por canal en vez de forzar la tabla angosta — 5 columnas de
+            cifras en pesos no caben legibles en el ancho de un teléfono. */}
+        <div className="space-y-2 p-4 pt-1 sm:hidden">
+          {channels.map((c) => (
+            <div key={c.channel} className="panel-soft rounded-xl border border-[#1e2240] p-3">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-semibold text-[#e4e9f5]">{CHANNELS[c.channel].label}</span>
+                <span className={`tabular-nums text-sm font-bold ${c.difference >= 0 ? "text-green-500" : "text-red-500"}`}>
+                  {formatCOP(c.difference)}
+                </span>
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <p className="text-[9px] uppercase tracking-wider text-[#8892b0]">Planeado</p>
+                  <p className="tabular-nums text-[#aab3cf]">{formatCOP(c.plannedBudget)}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] uppercase tracking-wider text-[#8892b0]">Real</p>
+                  <p className="tabular-nums text-[#e4e9f5]">{formatCOP(c.realInvestment)}</p>
+                </div>
+              </div>
+              <p className="mt-2 text-[10px] text-[#8892b0]">
+                % Ejecución <span className="tabular-nums text-[#aab3cf]">{formatPercent(c.executionPct, 0)}</span>
+              </p>
+            </div>
+          ))}
+          <div className="rounded-xl border border-[#2a2a4a] bg-white/5 p-3">
+            <div className="flex items-center justify-between gap-3">
+              <span className="font-bold text-white">Total</span>
+              <span className="tabular-nums text-sm font-bold text-white">{formatCOP(totals.difference)}</span>
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <p className="text-[9px] uppercase tracking-wider text-[#8892b0]">Planeado</p>
+                <p className="tabular-nums text-white">{formatCOP(totals.plannedBudget)}</p>
+              </div>
+              <div>
+                <p className="text-[9px] uppercase tracking-wider text-[#8892b0]">Real</p>
+                <p className="tabular-nums text-white">{formatCOP(totals.realInvestment)}</p>
+              </div>
+            </div>
+            <p className="mt-2 text-[10px] text-[#8892b0]">
+              % Ejecución <span className="tabular-nums text-white">{formatPercent(totals.executionPct, 0)}</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="hidden overflow-x-auto sm:block">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#1e2240] text-left text-[10px] uppercase tracking-wider text-[#8892b0]">
@@ -230,9 +277,9 @@ export default function EstrategiaDigitalPage() {
 
 function Kpi({ label, value, hint, color }: { label: string; value: string; hint: string; color: string }) {
   return (
-    <Card className="panel border-[#1e2240] p-5 rounded-2xl relative overflow-hidden">
+    <Card className="card-glass p-5 rounded-2xl overflow-hidden">
       <p className="text-[10px] font-bold text-[#8892b0] tracking-wider uppercase">{label}</p>
-      <p className="text-2xl font-bold mt-1" style={{ color }}>{value}</p>
+      <p className="text-xl sm:text-2xl font-bold mt-1 truncate" style={{ color }}>{value}</p>
       <p className="text-[10px] text-[#8892b0] mt-1">{hint}</p>
       <div className="absolute bottom-0 left-0 w-full h-1" style={{ background: color, opacity: 0.6 }} />
     </Card>

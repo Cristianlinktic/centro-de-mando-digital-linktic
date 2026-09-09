@@ -123,11 +123,11 @@ export function Analyst() {
       {/* Tooltip flotante antes de abrir */}
       {tooltip && !open && (
         <div
-          className="fixed bottom-[4.8rem] right-5 z-40 animate-in fade-in slide-in-from-bottom-2 duration-500"
+          className="fixed bottom-[4.8rem] right-5 z-40 max-w-[min(19rem,calc(100vw-2.5rem))] animate-in fade-in slide-in-from-bottom-2 duration-500"
           style={{ animationDelay: "800ms", animationFillMode: "both" }}
         >
           <div
-            className="relative rounded-2xl px-4 py-2.5 text-sm font-semibold text-[#131a30] shadow-xl whitespace-nowrap"
+            className="relative rounded-2xl px-4 py-2.5 text-sm font-semibold text-[#131a30] shadow-xl"
             style={{
               background: "#ffffff",
               border: "1px solid rgba(255,255,255,0.4)",
@@ -194,17 +194,17 @@ export function Analyst() {
               >
                 <RobotIcon size={22} />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-white tracking-wide">Martha</h3>
-                  <span className="flex items-center gap-1 text-[10px] text-emerald-400">
+                  <span className="flex shrink-0 items-center gap-1 text-[10px] text-emerald-400">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     activa
                   </span>
                 </div>
-                <p className="text-[10px] font-semibold text-[#f0abfc]">Analista de Instagram · IA</p>
+                <p className="truncate text-[10px] font-semibold text-[#f0abfc]">Analista de Instagram · IA</p>
               </div>
-              <span className="ml-auto text-[10px] text-[#8892b0] font-mono">Claude Opus 4.8</span>
+              <span className="ml-auto hidden shrink-0 text-[10px] text-[#8892b0] font-mono sm:inline">Claude Opus 4.8</span>
             </div>
           </div>
 

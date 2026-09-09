@@ -350,21 +350,21 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
   }
 
   return (
-    <div className="page-bg text-white p-6">
+    <div className="page-bg text-white page-pad">
       {/* Header */}
       <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
-        <div>
+        <div className="min-w-0">
           <div className="flex gap-2 mb-2">
             <span className="bg-[#1e2240] text-[#aab3cf] text-[10px] px-2 py-0.5 rounded-full border border-[#2a2a4a] uppercase">
               {editing ? "MODO EDITOR" : "MODO LECTOR"}
             </span>
           </div>
-          <h1 className="font-heading text-3xl font-bold mb-1 gradient-text text-glow-blue">Parrilla de Contenidos</h1>
+          <h1 className="page-title font-heading font-bold mb-1 gradient-text text-glow-blue break-words">Parrilla de Contenidos</h1>
           <p className="text-[#aab3cf] text-sm">
             Calendario de publicaciones en redes — Centro de Mando Digital LinkTIC.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {editing && (
             <Button variant="outline" size="sm" className="relative cursor-pointer bg-green-600/20 text-green-400 border-green-500/20">
               <FontAwesomeIcon icon={faUpload} className="mr-2" /> Excel
@@ -425,7 +425,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
 
       {/* Barra de navegación del calendario */}
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline" size="sm" onClick={goToday} className="panel border-[#2a2a4a] text-white">
             Hoy
           </Button>
@@ -435,7 +435,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
           <Button variant="outline" size="sm" onClick={goNext} className="panel border-[#2a2a4a] text-white h-8 w-8 p-0">
             <FontAwesomeIcon icon={faChevronRight} className="h-3 w-3" />
           </Button>
-          <h2 className="text-lg font-bold text-[#ffffff] ml-2 capitalize">{rangeLabel}</h2>
+          <h2 className="min-w-0 break-words text-lg font-bold text-[#ffffff] ml-2 capitalize">{rangeLabel}</h2>
         </div>
         <div className="flex gap-1 rounded-lg bg-white/5 p-1">
           {(["day", "week", "month"] as ViewMode[]).map((v) => (
@@ -640,7 +640,7 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
               </button>
             </div>
             <div className="p-5 space-y-4">
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="bg-white/5 rounded-lg p-3 border border-[#1e2240]">
                   <span className="text-[10px] font-bold uppercase text-[#8892b0] block">Plataforma</span>
                   <span className="text-sm capitalize">{platformById[viewItem.platform]?.name}</span>
@@ -681,9 +681,9 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
                     ))
                   )}
                 </div>
-                <div className="flex gap-2">
-                  <Input placeholder="Tu nombre" value={viewerName} onChange={(e) => setViewerName(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs w-32" />
-                  <Input placeholder="Comentario..." value={viewerComment} onChange={(e) => setViewerComment(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs flex-1" />
+                <div className="flex flex-wrap gap-2">
+                  <Input placeholder="Tu nombre" value={viewerName} onChange={(e) => setViewerName(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs w-full sm:w-32" />
+                  <Input placeholder="Comentario..." value={viewerComment} onChange={(e) => setViewerComment(e.target.value)} className="well border-[#2a2a4a] h-8 text-xs min-w-0 flex-1" />
                   <Button size="sm" onClick={addViewerComment} className="bg-[#0094ff] hover:bg-[#0080e6] h-8">
                     Enviar
                   </Button>

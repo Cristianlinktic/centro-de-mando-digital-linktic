@@ -196,11 +196,11 @@ export default function MapaColombiaPage() {
   if (loading) return <TabLoadingScreen section="Mapa de Colombia" />;
 
   return (
-    <div className="flex flex-col p-6 gap-6 page-bg text-white">
+    <div className="flex flex-col page-pad page-gap page-bg text-white">
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h1 className="font-heading text-4xl font-bold tracking-tight gradient-text text-glow-blue">Conversación Nacional — Centro de Mando Digital LinkTIC</h1>
+          <div className="min-w-0">
+            <h1 className="page-title font-heading font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Nacional</h1>
             <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
           </div>
           {canEdit(role) && (
@@ -251,7 +251,7 @@ export default function MapaColombiaPage() {
               globeMarkers={[]}
               sentimentColors={sentimentColors}
               platformColors={platformColors}
-              title="Conversación Nacional — Centro de Mando Digital LinkTIC"
+              title="Conversación Nacional"
               // Configuración geográfica: Colombia por departamentos
               geoUrl="/colombia-departamentos.geojson"
               regionNameProp="NOMBRE_DPT"

@@ -1,5 +1,13 @@
 export const runtime = "nodejs";
 
+import type { SocialPlatform } from "@/lib/social-platforms";
+
+const VALID_PLATFORMS: SocialPlatform[] = ["instagram", "facebook", "tiktok"];
+
+function parsePlatform(value: string | null): SocialPlatform {
+  return VALID_PLATFORMS.includes(value as SocialPlatform) ? (value as SocialPlatform) : "instagram";
+}
+
 interface MediaRow {
   media_id: string;
   media_type?: string;
@@ -7,16 +15,17 @@ interface MediaRow {
   media_thumbnail_url?: string | null;
 }
 
-let cache: { at: number; byId: Map<string, string> } | null = null;
+const cache = new Map<SocialPlatform, { at: number; byId: Map<string, string> }>();
 const TTL_MS = 15 * 60 * 1000;
 
-async function getFreshUrls(): Promise<Map<string, string>> {
-  if (cache && Date.now() - cache.at < TTL_MS) return cache.byId;
+async function getFreshUrls(platform: SocialPlatform): Promise<Map<string, string>> {
+  const cached = cache.get(platform);
+  if (cached && Date.now() - cached.at < TTL_MS) return cached.byId;
 
   const key = process.env.WINDSOR_API_KEY;
   if (!key) throw new Error("WINDSOR_API_KEY no está configurada en las variables de entorno de Vercel");
 
-  const url = `https://connectors.windsor.ai/instagram?api_key=${key}&date_preset=last_90d&fields=media_id,media_type,media_url,media_thumbnail_url`;
+  const url = `https://connectors.windsor.ai/${platform}?api_key=${key}&date_preset=last_90d&fields=media_id,media_type,media_url,media_thumbnail_url`;
 
   let res: Response;
   try {
@@ -42,30 +51,32 @@ async function getFreshUrls(): Promise<Map<string, string>> {
     const best = r.media_thumbnail_url || r.media_url;
     if (r.media_id && best) byId.set(String(r.media_id), best);
   }
-  cache = { at: Date.now(), byId };
+  cache.set(platform, { at: Date.now(), byId });
   return byId;
 }
 
-function weservUrl(instagramUrl: string): string {
-  const src = encodeURIComponent(instagramUrl.replace(/^https:\/\//, "ssl:"));
+function weservUrl(sourceUrl: string): string {
+  const src = encodeURIComponent(sourceUrl.replace(/^https:\/\//, "ssl:"));
   return `https://images.weserv.nl/?url=${src}&w=800&output=jpg`;
 }
 
-export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const { searchParams } = new URL(req.url);
+  const platform = parsePlatform(searchParams.get("platform"));
 
   let urls: Map<string, string>;
   try {
-    urls = await getFreshUrls();
+    urls = await getFreshUrls(platform);
   } catch (e) {
     const message = (e as Error).message;
-    console.error(`[api/media] Error al obtener URLs de Windsor.ai: ${message}`);
+    console.error(`[api/media] (${platform}) Error al obtener URLs de Windsor.ai: ${message}`);
     return Response.json({ error: message }, { status: 500 });
   }
 
   const target = urls.get(id);
   if (!target) {
-    return Response.json({ error: `media_id ${id} no encontrado en Windsor.ai` }, { status: 404 });
+    return Response.json({ error: `media_id ${id} no encontrado en Windsor.ai (${platform})` }, { status: 404 });
   }
 
   return Response.redirect(weservUrl(target), 302);

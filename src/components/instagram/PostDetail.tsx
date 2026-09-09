@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import type { Post } from "@/lib/instagram-types";
 import { formatDate, formatNumber, typeLabel, weekday, hashtags } from "@/lib/instagram-analytics";
 import { PostImage } from "./PostImage";
+import { SOCIAL_PLATFORMS, type SocialPlatform } from "@/lib/social-platforms";
 
 function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className="rounded-xl border border-[#1e2240] bg-white/5 px-4 py-3">
+    <div className="card-glass overflow-hidden rounded-xl px-4 py-3">
       <div className="text-xs text-[#aab3cf]">{label}</div>
       <div className={`mt-0.5 text-xl font-semibold ${accent ? "text-fuchsia-400" : "text-white"}`}>
         {value}
@@ -16,7 +17,7 @@ function Stat({ label, value, accent }: { label: string; value: string; accent?:
   );
 }
 
-export function PostDetail({ post, onClose }: { post: Post | null; onClose: () => void }) {
+export function PostDetail({ post, platform, onClose }: { post: Post | null; platform: SocialPlatform; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -25,6 +26,8 @@ export function PostDetail({ post, onClose }: { post: Post | null; onClose: () =
 
   if (!post) return null;
   const tags = hashtags(post.caption);
+  const isInstagram = platform === "instagram";
+  const cfg = SOCIAL_PLATFORMS[platform];
 
   return (
     <div
@@ -37,7 +40,10 @@ export function PostDetail({ post, onClose }: { post: Post | null; onClose: () =
       >
         <div className="flex items-start justify-between gap-4 border-b border-[#2a2a4a] p-5">
           <div>
-            <span className="inline-block rounded-full bg-fuchsia-500/15 px-2.5 py-0.5 text-xs font-medium text-fuchsia-300">
+            <span
+              className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${isInstagram ? "bg-fuchsia-500/15 text-fuchsia-300" : ""}`}
+              style={isInstagram ? undefined : { background: `${cfg.accent}26`, color: cfg.accent }}
+            >
               {typeLabel(post.type)}
             </span>
             <h3 className="mt-2 text-lg font-semibold text-white">
@@ -54,7 +60,7 @@ export function PostDetail({ post, onClose }: { post: Post | null; onClose: () =
         </div>
 
         <div className="px-5 pt-4">
-          <PostImage post={post} className="aspect-square w-full" rounded="rounded-xl" />
+          <PostImage post={post} platform={platform} className="aspect-square w-full" rounded="rounded-xl" />
         </div>
 
         <div className="grid grid-cols-2 gap-3 p-5 sm:grid-cols-4">
@@ -91,9 +97,10 @@ export function PostDetail({ post, onClose }: { post: Post | null; onClose: () =
               href={post.permalink}
               target="_blank"
               rel="noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-fuchsia-600 px-4 py-2 text-sm font-medium text-white hover:bg-fuchsia-500"
+              className={`mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-white transition ${isInstagram ? "bg-fuchsia-600 hover:bg-fuchsia-500" : "hover:opacity-90"}`}
+              style={isInstagram ? undefined : { background: cfg.accent }}
             >
-              Ver en Instagram ↗
+              Ver en {cfg.label} ↗
             </a>
           )}
         </div>

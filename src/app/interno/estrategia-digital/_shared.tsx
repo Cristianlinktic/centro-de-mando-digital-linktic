@@ -28,7 +28,7 @@ export function LoadingCampaign() {
 export function EmptyCampaign() {
   const tipo = useCategoria();
   return (
-    <Card className="panel border border-[#1e2240] p-10 rounded-2xl text-center">
+    <Card className="panel border border-[#1e2240] p-6 sm:p-10 rounded-2xl text-center">
       <FontAwesomeIcon icon={faFileExcel} className="text-4xl text-[#8892b0] mb-4" />
       <h3 className="text-lg font-bold text-[#e4e9f5] mb-2">Aún no hay una campaña cargada</h3>
       <p className="text-sm text-[#8892b0] mb-6">
