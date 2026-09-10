@@ -102,8 +102,8 @@ export default function LoginPage() {
 
           <div
             className={`flex flex-col items-center gap-4 transition-all duration-700 ease-in ${introPhase === "exiting"
-                ? "opacity-0 scale-75 -translate-x-28 translate-y-20"
-                : "opacity-100 scale-100 translate-x-0 translate-y-0"
+              ? "opacity-0 scale-75 -translate-x-28 translate-y-20"
+              : "opacity-100 scale-100 translate-x-0 translate-y-0"
               }`}
           >
             <LinkyIcon className="intro-bird-enter h-24 w-auto drop-shadow-[0_0_40px_rgba(0,148,255,0.6)]" />
@@ -196,10 +196,6 @@ export default function LoginPage() {
             {isPending ? "Validando..." : "Ingresar al Tablero"}
           </Button>
         </form>
-
-        <div className="mt-8 text-[10px] text-[#8892b0] uppercase tracking-[0.2em] font-medium opacity-50">
-          SISTEMA DE SEGURIDAD LINKTIC
-        </div>
       </div>
     </div>
   );

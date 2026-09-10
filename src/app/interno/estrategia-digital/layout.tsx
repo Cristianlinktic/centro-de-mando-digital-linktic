@@ -25,23 +25,21 @@ export default function EstrategiaDigitalLayout({ children }: { children: React.
 
   return (
     <div className="page-bg text-white page-pad">
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0">
-          <h1 className="page-title font-heading font-bold mb-1 gradient-text text-glow-blue break-words">Estrategia Publicitaria</h1>
-          <p className="text-[#aab3cf] text-sm">Planeación, seguimiento y pauta {tipo === "medios" ? "de medios" : "digital multicanal"}.</p>
-        </div>
+      <div className="mb-6">
+        <h1 className="page-title font-heading font-bold mb-1 gradient-text text-glow-blue break-words">Estrategia Publicitaria</h1>
+        <p className="text-[#aab3cf] text-sm mb-4">Planeación, seguimiento y pauta {tipo === "medios" ? "de medios" : "digital multicanal"}.</p>
 
         {/* RRSS / Medios: dos pautas independientes, cada una con su propia data. */}
-        <div className="flex gap-1 rounded-full bg-black/20 p-1 ring-1 ring-white/5">
+        <div className="flex gap-2 rounded-full bg-black/20 p-1.5 ring-1 ring-white/5 w-fit">
           {CATEGORIAS.map((c) => {
             const active = tipo === c.value;
             return (
               <Link
                 key={c.value}
                 href={`${pathname}?tipo=${c.value}`}
-                className={`rounded-full px-4 py-1.5 text-[11px] font-bold transition-all duration-200 ${
+                className={`rounded-full px-6 py-2 text-sm font-bold transition-all duration-200 ${
                   active
-                    ? "bg-gradient-to-r from-[#0094ff] to-[#00e1ff] text-white shadow-[0_0_12px_rgba(0,148,255,0.55)]"
+                    ? "bg-gradient-to-r from-[#0094ff] to-[#00e1ff] text-white shadow-[0_0_16px_rgba(0,148,255,0.6)]"
                     : "text-[#8892b0] hover:text-white hover:bg-white/5"
                 }`}
               >

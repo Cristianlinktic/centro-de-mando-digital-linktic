@@ -67,14 +67,11 @@ export function AppSidebar() {
         {/* En modo colapsado (rail de 3rem) el header solo muestra el ave, centrada —
             con el padding expandido (px-4) más el ícono (h-7) se pasaba del ancho del rail. */}
         <div className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
-          {/* Cabecera: ave LinkTIC + título dinámico Interno/Externo (única fuente — no se repite en el header). */}
+          {/* Cabecera: ave LinkTIC + título del centro de mando. */}
           <div className="flex items-center gap-3 flex-1 min-w-0 group-data-[collapsible=icon]:flex-none">
             <LinkyIcon className="h-7 w-7 shrink-0" />
             <div className="flex flex-col items-start flex-1 min-w-0 leading-tight group-data-[collapsible=icon]:hidden">
               <span className="text-[13px] font-semibold text-foreground truncate max-w-full">Centro de Mando Digital</span>
-              <span className="text-xs font-bold truncate max-w-full gradient-text">
-                {activeGroup === "externo" ? "Externo" : "Interno"}
-              </span>
             </div>
           </div>
 
