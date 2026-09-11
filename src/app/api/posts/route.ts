@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 
 import type { Post } from "@/lib/instagram-types";
 import type { SocialPlatform } from "@/lib/social-platforms";
+import { getServerAccess } from "@/lib/auth/access";
 
 const VALID_PLATFORMS: SocialPlatform[] = ["instagram", "facebook", "tiktok"];
 
@@ -126,6 +127,9 @@ async function fetchPosts(platform: SocialPlatform): Promise<Post[]> {
 }
 
 export async function GET(req: Request) {
+  const access = await getServerAccess();
+  if (!access) return Response.json({ error: "No autenticado." }, { status: 401 });
+
   const { searchParams } = new URL(req.url);
   const platform = parsePlatform(searchParams.get("platform"));
 

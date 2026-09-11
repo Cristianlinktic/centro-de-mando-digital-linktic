@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireSuperadmin } from "@/lib/auth/access";
-import { getServiceRoleSupabaseClient } from "@/lib/supabase";
+import { getServiceRoleSupabaseClient } from "@/lib/supabase-admin";
 
 /** POST: resetea la contraseña de un usuario (solo superadmin). */
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {

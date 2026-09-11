@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useLayoutEffect, useState } from "react";
+import { useActionState, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import Script from "next/script";
 import { signIn, type AuthState } from "@/app/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,26 @@ import { faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { LinkyIcon } from "@/components/linky-icon";
 import { ScrambleText } from "@/components/scramble-text";
 import { BackdropOrbs } from "@/components/backdrop-orbs";
+
+type TurnstileRenderOptions = {
+  sitekey: string;
+  theme?: "light" | "dark" | "auto";
+  callback?: () => void;
+  "expired-callback"?: () => void;
+  "error-callback"?: () => void;
+};
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: string | HTMLElement, options: TurnstileRenderOptions) => string;
+      reset: (widgetId?: string) => void;
+      remove: (widgetId?: string) => void;
+    };
+  }
+}
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const initialState: AuthState = {
   error: null,
@@ -38,6 +59,47 @@ export default function LoginPage() {
   // useActionState requiere que el tipo de initialState coincida con el retorno de la acción
   const [state, formAction, isPending] = useActionState(signIn, initialState);
   const [introPhase, setIntroPhase] = useState<IntroPhase>("intro");
+  // Sin site key no hay widget que esperar, así que el botón arranca habilitado.
+  const [captchaVerified, setCaptchaVerified] = useState(!TURNSTILE_SITE_KEY);
+  // El id real que Cloudflare asigna al renderizar — más confiable que pedirle
+  // a la API que lo busque de nuevo por el id del contenedor.
+  const widgetIdRef = useRef<string | null>(null);
+  const renderedRef = useRef(false);
+
+  const renderTurnstile = useCallback(() => {
+    if (renderedRef.current || !TURNSTILE_SITE_KEY || !window.turnstile) return;
+    renderedRef.current = true;
+    widgetIdRef.current = window.turnstile.render("#turnstile-widget", {
+      sitekey: TURNSTILE_SITE_KEY,
+      theme: "dark",
+      callback: () => setCaptchaVerified(true),
+      "expired-callback": () => setCaptchaVerified(false),
+      "error-callback": () => setCaptchaVerified(false),
+    });
+  }, []);
+
+  // Si el script ya estaba cargado (Fast Refresh en dev), Script.onLoad no
+  // vuelve a dispararse — por eso también lo intentamos al montar.
+  useEffect(() => {
+    renderTurnstile();
+  }, [renderTurnstile]);
+
+  // El token de Turnstile es de un solo uso: si el login falla hay que
+  // resetear el widget para que el usuario pueda reintentar con uno nuevo.
+  // Depende de `state` completo (no de `state.error`): el mensaje de error es
+  // siempre el mismo texto literal, así que dos fallos seguidos producen el
+  // mismo valor de `state.error` y React no vuelve a disparar el efecto — el
+  // objeto `state` en cambio es una referencia nueva en cada submit.
+  useEffect(() => {
+    if (state?.error && widgetIdRef.current) {
+      try {
+        window.turnstile?.reset(widgetIdRef.current);
+      } catch {
+        // El widget ya no existe; no hay nada que resetear.
+      }
+      setCaptchaVerified(false);
+    }
+  }, [state]);
 
   // La intro se reproduce SIEMPRE que carga la página (incluyendo recargas):
   // el servidor no tiene forma de saber si ya se mostró antes (no hay acceso
@@ -62,6 +124,9 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full bg-background page-bg flex items-center justify-center font-sans antialiased relative overflow-x-hidden py-10 px-4">
+      {TURNSTILE_SITE_KEY && (
+        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer onLoad={renderTurnstile} />
+      )}
       <BackdropOrbs grid />
       {introPhase !== "hidden" && (
         <div
@@ -181,6 +246,8 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {TURNSTILE_SITE_KEY && <div id="turnstile-widget" className="flex justify-center" />}
+
           {state?.error && (
             <div className="bg-red-500/10 border border-red-500/20 p-3 rounded-xl">
               <p className="text-red-400 text-xs font-semibold text-center">{state.error}</p>
@@ -190,7 +257,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             variant="neon"
-            disabled={isPending}
+            disabled={isPending || !captchaVerified}
             className="w-full h-12 mt-4"
           >
             {isPending ? "Validando..." : "Ingresar al Tablero"}

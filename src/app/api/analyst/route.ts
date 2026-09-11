@@ -1,7 +1,8 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 import postsData from "@/data/instagram-posts.json";
 import type { Post } from "@/lib/instagram-types";
 import { computeTotals, breakdownByType, topHashtags, typeLabel } from "@/lib/instagram-analytics";
+import { getServerAccess } from "@/lib/auth/access";
 
 const posts = postsData as Post[];
 const ACCOUNT = "actoreselectorales";
@@ -61,9 +62,12 @@ ${DATA_CONTEXT}`;
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const access = await getServerAccess();
+  if (!access) return Response.json({ error: "No autenticado." }, { status: 401 });
+
+  if (!process.env.OPENROUTER_API_KEY) {
     return Response.json(
-      { error: "Falta ANTHROPIC_API_KEY en el servidor (.env.local)." },
+      { error: "Falta OPENROUTER_API_KEY en el servidor (.env.local)." },
       { status: 500 }
     );
   }
@@ -82,25 +86,28 @@ export async function POST(req: Request) {
     return Response.json({ error: "No hay mensajes." }, { status: 400 });
   }
 
-  const client = new Anthropic();
+  // OpenRouter no soporta el formato nativo de Anthropic (/v1/messages), solo
+  // el formato compatible con OpenAI (/v1/chat/completions) — por eso se usa
+  // el SDK de OpenAI apuntando a su base URL, no @anthropic-ai/sdk.
+  const client = new OpenAI({
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL: "https://openrouter.ai/api/v1",
+  });
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const llm = client.messages.stream({
-          model: "claude-opus-4-8",
+        const llm = await client.chat.completions.create({
+          model: "anthropic/claude-opus-4.8",
           max_tokens: 2048,
-          thinking: { type: "adaptive" },
-          system: [
-            { type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } },
-          ],
-          messages,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
+          stream: true,
         });
-        llm.on("text", (delta) => {
-          controller.enqueue(encoder.encode(delta));
-        });
-        await llm.finalMessage();
+        for await (const chunk of llm) {
+          const delta = chunk.choices[0]?.delta?.content;
+          if (delta) controller.enqueue(encoder.encode(delta));
+        }
         controller.close();
       } catch (err) {
         const msg = err instanceof Error ? err.message : "Error desconocido";

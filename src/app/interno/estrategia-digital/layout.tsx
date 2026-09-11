@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/components/auth-provider";
+import { canEdit } from "@/lib/auth/rbac";
 import { useCategoria } from "./_shared";
 
 const TABS = [
@@ -10,6 +12,11 @@ const TABS = [
   { href: "/interno/estrategia-digital/canales", label: "Canales" },
   { href: "/interno/estrategia-digital/proyecciones", label: "Proyecciones" },
   { href: "/interno/estrategia-digital/seguimiento", label: "Seguimiento" },
+];
+
+// Solo quien puede editar la pauta ve estas — un viewer no debería ni
+// enterarse de que existen (además, "importar" reemplaza datos reales).
+const EDITOR_TABS = [
   { href: "/interno/estrategia-digital/configuracion", label: "Configuración" },
   { href: "/interno/estrategia-digital/importar", label: "Importar" },
 ];
@@ -22,6 +29,8 @@ const CATEGORIAS = [
 export default function EstrategiaDigitalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const tipo = useCategoria();
+  const { role } = useAuth();
+  const tabs = canEdit(role) ? [...TABS, ...EDITOR_TABS] : TABS;
 
   return (
     <div className="page-bg text-white page-pad">
@@ -51,7 +60,7 @@ export default function EstrategiaDigitalLayout({ children }: { children: React.
       </div>
 
       <nav className="flex flex-wrap gap-1 mb-6 border-b border-[#1e2240] pb-1">
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const isActive =
             tab.href === "/interno/estrategia-digital"
               ? pathname === tab.href

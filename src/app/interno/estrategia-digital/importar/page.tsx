@@ -3,12 +3,15 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { parsePautaWorkbook, ExcelParseError } from "@/lib/campana/excel";
 import { replaceCampaignFromPlan } from "@/lib/campana/client-data";
 import { formatCOP, formatDate } from "@/lib/campana/format";
+import { useAuth } from "@/components/auth-provider";
+import { canEdit } from "@/lib/auth/rbac";
 import { useCategoria } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileArrowUp, faCheck, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { faFileArrowUp, faCheck, faTriangleExclamation, faLock } from "@fortawesome/free-solid-svg-icons";
 
 type Status = "idle" | "uploading" | "success" | "error";
 
@@ -23,6 +26,7 @@ interface Summary {
 
 export default function ImportarPage() {
   const router = useRouter();
+  const { role } = useAuth();
   const tipo = useCategoria();
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<Status>("idle");
@@ -74,6 +78,19 @@ export default function ImportarPage() {
     setDragging(false);
     const file = e.dataTransfer.files?.[0];
     if (file) upload(file);
+  }
+
+  if (!canEdit(role)) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 py-24 text-center">
+        <FontAwesomeIcon icon={faLock} className="text-5xl text-red-500" />
+        <h2 className="text-xl font-bold text-[#e4e9f5]">Acceso No Autorizado</h2>
+        <p className="max-w-md text-sm text-[#aab3cf]">Importar reemplaza los datos reales de la campaña — esta acción está reservada para administradores.</p>
+        <Button variant="neon" onClick={() => router.push(`/interno/estrategia-digital?tipo=${tipo}`)}>
+          Volver al Tablero
+        </Button>
+      </div>
+    );
   }
 
   return (

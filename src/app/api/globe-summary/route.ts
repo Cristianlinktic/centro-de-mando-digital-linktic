@@ -1,4 +1,5 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
+import { getServerAccess } from "@/lib/auth/access";
 
 export const runtime = "nodejs";
 
@@ -43,9 +44,12 @@ function buildContext(c: Country): string {
 }
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const access = await getServerAccess();
+  if (!access) return Response.json({ error: "No autenticado." }, { status: 401 });
+
+  if (!process.env.OPENROUTER_API_KEY) {
     return Response.json(
-      { error: "Falta ANTHROPIC_API_KEY en el servidor (.env.local)." },
+      { error: "Falta OPENROUTER_API_KEY en el servidor (.env.local)." },
       { status: 500 }
     );
   }
@@ -72,12 +76,18 @@ export async function POST(req: Request) {
     "Eres un analista de escucha social del Centro de Mando Digital LinkTIC. Analizas la conversación internacional sobre LinkTIC. Respondes SIEMPRE en español, con tono institucional y sobrio, basándote únicamente en los datos entregados.";
 
   try {
-    const client = new Anthropic();
-    const msg = await client.messages.create({
-      model: "claude-opus-4-8",
+    // OpenRouter no soporta el formato nativo de Anthropic (/v1/messages),
+    // solo el compatible con OpenAI (/v1/chat/completions) — por eso el SDK
+    // de OpenAI apuntando a su base URL, no @anthropic-ai/sdk.
+    const client = new OpenAI({
+      apiKey: process.env.OPENROUTER_API_KEY,
+      baseURL: "https://openrouter.ai/api/v1",
+    });
+    const completion = await client.chat.completions.create({
+      model: "anthropic/claude-opus-4.8",
       max_tokens: mode === "narration" ? 120 : 512,
-      system,
       messages: [
+        { role: "system", content: system },
         {
           role: "user",
           content: `${instruction}\n\n=== DATOS DEL PAÍS ===\n${buildContext(country)}`,
@@ -85,11 +95,7 @@ export async function POST(req: Request) {
       ],
     });
 
-    const text = msg.content
-      .filter((b): b is Anthropic.TextBlock => b.type === "text")
-      .map((b) => b.text)
-      .join("")
-      .trim();
+    const text = completion.choices[0]?.message?.content?.trim() ?? "";
 
     return Response.json({ text });
   } catch (err) {

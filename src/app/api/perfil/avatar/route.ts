@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerAccess } from "@/lib/auth/access";
-import { getServiceRoleSupabaseClient } from "@/lib/supabase";
+import { getServiceRoleSupabaseClient } from "@/lib/supabase-admin";
 
 const BUCKET = "centro-mando-images";
 const MAX_BYTES = 3 * 1024 * 1024;

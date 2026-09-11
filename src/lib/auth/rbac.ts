@@ -109,9 +109,9 @@ export function hasAppAccess(access: Pick<UserAccess, "role" | "screens">): bool
 }
 
 /** Ruta de aterrizaje tras el login: primera pantalla permitida.
- *  superadmin → /interno/mapa-colombia. Sin pantallas (y no superadmin) → null (sin acceso). */
+ *  superadmin → /interno/mapa (Mapa Global). Sin pantallas (y no superadmin) → null (sin acceso). */
 export function firstAllowedPath(access: Pick<UserAccess, "role" | "screens">): string | null {
-  if (access.role === "superadmin") return "/interno/mapa-colombia";
+  if (access.role === "superadmin") return "/interno/mapa";
   for (const s of SCREENS) {
     if (access.screens.includes(s.key)) return s.path;
   }

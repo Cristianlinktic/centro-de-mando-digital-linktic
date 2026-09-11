@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireSuperadmin } from "@/lib/auth/access";
-import { getServiceRoleSupabaseClient } from "@/lib/supabase";
+import { getServiceRoleSupabaseClient } from "@/lib/supabase-admin";
 import { allScreens, SCREEN_PREFIX, type AppRole } from "@/lib/auth/rbac";
 
 const VALID_ROLES: AppRole[] = ["superadmin", "admin", "viewer"];
