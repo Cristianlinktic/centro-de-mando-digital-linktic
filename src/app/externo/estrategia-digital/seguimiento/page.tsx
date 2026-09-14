@@ -11,6 +11,7 @@ import { ADS_FIELDS, META_FIELDS, type ContentTrackingField } from "@/lib/campan
 import { formatNumber } from "@/lib/campana/format";
 import { toast } from "@/components/ui/toast";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { useCategoria } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
@@ -47,7 +48,11 @@ export default function SeguimientoPage() {
     }).catch(() => setCampaignId(null));
   }, [tipo]);
 
+  const stretchLoading = useMinLoadingDuration(campaignId === undefined || !values);
   if (campaignId === undefined || !values) {
+    return <TabLoadingScreen section={`Seguimiento · ${tipo === "medios" ? "Medios" : "RRSS"}`} fullScreen={false} />;
+  }
+  if (stretchLoading) {
     return <TabLoadingScreen section={`Seguimiento · ${tipo === "medios" ? "Medios" : "RRSS"}`} fullScreen={false} />;
   }
   if (campaignId === null) {

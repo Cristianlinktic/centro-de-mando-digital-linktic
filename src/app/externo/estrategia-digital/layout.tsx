@@ -7,18 +7,18 @@ import { canEdit } from "@/lib/auth/rbac";
 import { useCategoria } from "./_shared";
 
 const TABS = [
-  { href: "/interno/estrategia-digital", label: "Resumen" },
-  { href: "/interno/estrategia-digital/diario", label: "Diario" },
-  { href: "/interno/estrategia-digital/canales", label: "Canales" },
-  { href: "/interno/estrategia-digital/proyecciones", label: "Proyecciones" },
-  { href: "/interno/estrategia-digital/seguimiento", label: "Seguimiento" },
+  { href: "/externo/estrategia-digital", label: "Resumen" },
+  { href: "/externo/estrategia-digital/diario", label: "Diario" },
+  { href: "/externo/estrategia-digital/canales", label: "Canales" },
+  { href: "/externo/estrategia-digital/proyecciones", label: "Proyecciones" },
+  { href: "/externo/estrategia-digital/seguimiento", label: "Seguimiento" },
 ];
 
 // Solo quien puede editar la pauta ve estas — un viewer no debería ni
 // enterarse de que existen (además, "importar" reemplaza datos reales).
 const EDITOR_TABS = [
-  { href: "/interno/estrategia-digital/configuracion", label: "Configuración" },
-  { href: "/interno/estrategia-digital/importar", label: "Importar" },
+  { href: "/externo/estrategia-digital/configuracion", label: "Configuración" },
+  { href: "/externo/estrategia-digital/importar", label: "Importar" },
 ];
 
 const CATEGORIAS = [
@@ -62,7 +62,7 @@ export default function EstrategiaDigitalLayout({ children }: { children: React.
       <nav className="flex flex-wrap gap-1 mb-6 border-b border-[#1e2240] pb-1">
         {tabs.map((tab) => {
           const isActive =
-            tab.href === "/interno/estrategia-digital"
+            tab.href === "/externo/estrategia-digital"
               ? pathname === tab.href
               : pathname.startsWith(tab.href);
           return (

@@ -19,6 +19,7 @@ import { CHANNELS } from "@/lib/campana/constants";
 import { formatDate, formatPercent } from "@/lib/campana/format";
 import type { CampaignData, DailyActuals, DailyImpressions, DailyPlan } from "@/lib/campana/types";
 import { EmptyCampaign, LoadingCampaign, useCategoria } from "../_shared";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { toast } from "@/components/ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
@@ -34,7 +35,9 @@ export default function ConfiguracionPage() {
   const load = () => fetchCampaignData(tipo).then(setData).catch(() => setData(null));
   useEffect(() => { setData(undefined); load(); }, [tipo]);
 
+  const stretchLoading = useMinLoadingDuration(data === undefined);
   if (data === undefined) return <LoadingCampaign />;
+  if (stretchLoading) return <LoadingCampaign />;
   if (data === null) return <EmptyCampaign />;
 
   const pctSum = participationSum(data.channels);

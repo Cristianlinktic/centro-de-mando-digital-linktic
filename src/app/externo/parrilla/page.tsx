@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlus,
@@ -385,7 +386,8 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
     return formatDayLabel(cursorDate);
   }, [viewMode, cursorDate]);
 
-  if (loading) {
+  const showLoading = useMinLoadingDuration(loading);
+  if (showLoading) {
     return <TabLoadingScreen section="Parrilla de Contenidos" />;
   }
 

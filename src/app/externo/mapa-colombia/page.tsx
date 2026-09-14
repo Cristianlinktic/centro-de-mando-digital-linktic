@@ -14,6 +14,7 @@ import { COLOMBIA_DEPARTAMENTOS } from "@/data/colombia-departamentos";
 import { LiveTicker } from "@/components/live-ticker";
 import { SentimentDonut } from "@/components/sentiment-donut";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faRotate, faArrowTrendUp, faArrowTrendDown, faLocationDot, faMapLocationDot, faLayerGroup, faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -193,7 +194,8 @@ export default function MapaColombiaPage() {
     ];
   }, [data, sortedDeps]);
 
-  if (loading) return <TabLoadingScreen section="Mapa de Colombia" />;
+  const showLoading = useMinLoadingDuration(loading);
+  if (showLoading) return <TabLoadingScreen section="Mapa de Colombia" />;
 
   return (
     <div className="flex flex-col page-pad page-gap page-bg text-white">

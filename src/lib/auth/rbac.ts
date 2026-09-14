@@ -24,28 +24,30 @@ export interface UserAccess {
 /** Una "pantalla" gateable: clave estable + ruta navegable. */
 export interface ScreenDef {
   key: string; // p.ej. "lt-tab:mapa"
-  path: string; // p.ej. "/interno/nacional"
+  path: string; // p.ej. "/externo/nacional"
   title: string;
   group: string; // sección visible en la UI
 }
 
 /** Catálogo de todas las pantallas gateables de este tablero. Todas viven
- *  bajo /interno/* (la pestaña "Centro de Mando Digital Interno"); /externo
+ *  bajo /externo/* (la pestaña "Centro de Mando Digital Externo"); /interno
  *  todavía no tiene pantallas propias (placeholder, abierto a cualquier
- *  autenticado — ver isPathAllowed). */
+ *  autenticado — ver isPathAllowed). Las `key` se conservan estables aunque
+ *  el `path` haya cambiado de /interno a /externo, para no invalidar los
+ *  permisos ya concedidos en user_screen_access. */
 const SCREENS: ScreenDef[] = [
-  { key: "lt-tab:mapa", path: "/interno/mapa", title: "Mapa Global", group: "Interno" },
-  { key: "lt-tab:medios", path: "/interno/medios", title: "Conversación en Medios", group: "Interno" },
+  { key: "lt-tab:mapa", path: "/externo/mapa", title: "Mapa Global", group: "Externo" },
+  { key: "lt-tab:medios", path: "/externo/medios", title: "Conversación en Medios", group: "Externo" },
   // "Conversación Nacional" (globo por país) se retiró del menú; esta pantalla
   // toma ahora ese nombre — conserva su clave para no invalidar los permisos
   // ya concedidos en user_screen_access.
-  { key: "lt-tab:actores-mapa", path: "/interno/mapa-colombia", title: "Conversación Nacional", group: "Interno" },
+  { key: "lt-tab:actores-mapa", path: "/externo/mapa-colombia", title: "Conversación Nacional", group: "Externo" },
   // La pantalla de Instagram pasa a ser "Conversación en Redes" (la anterior,
   // lt-tab:social, se retiró). Se conserva la clave para no invalidar los
   // permisos ya concedidos en user_screen_access.
-  { key: "lt-tab:actores-perfiles", path: "/interno/instagram", title: "Conversación en Redes", group: "Interno" },
-  { key: "lt-tab:parrilla", path: "/interno/parrilla", title: "Parrilla de Contenidos", group: "Interno" },
-  { key: "lt-tab:estrategia-digital", path: "/interno/estrategia-digital", title: "Estrategia Publicitaria", group: "Interno" },
+  { key: "lt-tab:actores-perfiles", path: "/externo/instagram", title: "Conversación en Redes", group: "Externo" },
+  { key: "lt-tab:parrilla", path: "/externo/parrilla", title: "Parrilla de Contenidos", group: "Externo" },
+  { key: "lt-tab:estrategia-digital", path: "/externo/estrategia-digital", title: "Estrategia Publicitaria", group: "Externo" },
 ];
 
 export function allScreens(): ScreenDef[] {
@@ -109,9 +111,9 @@ export function hasAppAccess(access: Pick<UserAccess, "role" | "screens">): bool
 }
 
 /** Ruta de aterrizaje tras el login: primera pantalla permitida.
- *  superadmin → /interno/mapa (Mapa Global). Sin pantallas (y no superadmin) → null (sin acceso). */
+ *  superadmin → /externo/mapa (Mapa Global). Sin pantallas (y no superadmin) → null (sin acceso). */
 export function firstAllowedPath(access: Pick<UserAccess, "role" | "screens">): string | null {
-  if (access.role === "superadmin") return "/interno/mapa";
+  if (access.role === "superadmin") return "/externo/mapa";
   for (const s of SCREENS) {
     if (access.screens.includes(s.key)) return s.path;
   }

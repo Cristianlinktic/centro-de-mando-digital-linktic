@@ -9,14 +9,17 @@ import { AccessSync } from "@/components/auth/AccessSync";
 import { BackdropOrbs } from "@/components/backdrop-orbs";
 import { Analyst } from "@/components/instagram/Analyst";
 import { Toaster } from "@/components/ui/toast";
+import { useActiveSection } from "@/hooks/use-active-section";
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   // Páginas que se muestran sin el shell (sidebar/header).
   const isBarePage = pathname === "/login" || pathname === "/sin-acceso";
-  // Pestaña de alto nivel activa: cambia el acento --tab-accent* (azul en
-  // Interno, verde en Externo — ver [data-section="externo"] en globals.css).
-  const activeSection = pathname.startsWith("/externo") ? "externo" : "interno";
+  // Pestaña de alto nivel activa: cambia el acento --tab-accent* (verde en
+  // Interno, azul en Externo — ver [data-section="externo"] en globals.css).
+  // Rutas que no son de ninguna sección (/admin/usuarios, etc.) mantienen la
+  // última sección real visitada — ver useActiveSection.
+  const activeSection = useActiveSection();
 
   if (isBarePage) {
     return <>{children}</>;
@@ -26,7 +29,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     <AuthProvider>
       <AccessSync />
       <div data-section={activeSection} className="contents">
-        <BackdropOrbs fixed grid palette={activeSection === "externo" ? "verde" : "azul"} />
+        <BackdropOrbs fixed grid palette={activeSection === "externo" ? "azul" : "verde"} />
         <SidebarProvider className="h-screen overflow-hidden">
           <AppSidebar />
           <SidebarInset className="flex flex-col h-screen overflow-hidden bg-transparent">

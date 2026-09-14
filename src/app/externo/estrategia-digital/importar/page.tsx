@@ -155,7 +155,7 @@ export default function ImportarPage() {
         <FontAwesomeIcon icon={faLock} className="text-5xl text-red-500" />
         <h2 className="text-xl font-bold text-[#e4e9f5]">Acceso No Autorizado</h2>
         <p className="max-w-md text-sm text-[#aab3cf]">Importar reemplaza los datos reales de la campaña — esta acción está reservada para administradores.</p>
-        <Button variant="neon" onClick={() => router.push(`/interno/estrategia-digital?tipo=${tipo}`)}>
+        <Button variant="neon" onClick={() => router.push(`/externo/estrategia-digital?tipo=${tipo}`)}>
           Volver al Tablero
         </Button>
       </div>
@@ -224,7 +224,7 @@ export default function ImportarPage() {
                 <Item label="Canales" value={String(summary.channels)} />
                 <Item label="Días cargados" value={String(summary.days)} />
               </dl>
-              <a href={`/interno/estrategia-digital?tipo=${tipo}`} className="mt-4 inline-block rounded-xl bg-[#0094ff] hover:bg-[#0080e6] px-4 py-2 text-sm font-bold text-white transition-colors">
+              <a href={`/externo/estrategia-digital?tipo=${tipo}`} className="mt-4 inline-block rounded-xl bg-[#0094ff] hover:bg-[#0080e6] px-4 py-2 text-sm font-bold text-white transition-colors">
                 Ver dashboard
               </a>
             </div>

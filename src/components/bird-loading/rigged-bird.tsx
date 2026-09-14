@@ -24,7 +24,7 @@ export function RiggedBird({ size }: RiggedBirdProps) {
       style={{
         width: size,
         height,
-        filter: "drop-shadow(0 6px 10px rgba(15, 40, 30, 0.25))",
+        filter: "brightness(0) invert(1) drop-shadow(0 0 22px rgba(0, 148, 255, 0.55))",
       }}
     >
       <div className={styles.rig}>

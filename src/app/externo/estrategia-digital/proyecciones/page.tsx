@@ -9,6 +9,7 @@ import { formatCOP, formatDate, formatDateShort, formatDecimal, formatNumber, fo
 import type { CampaignData } from "@/lib/campana/types";
 import { ResponsiveContainer, ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { EmptyCampaign, LoadingCampaign, useCategoria } from "../_shared";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR_LINE } from "@/lib/chart-theme";
 import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
@@ -21,7 +22,9 @@ export default function ProyeccionesPage() {
     fetchCampaignData(tipo).then(setData).catch(() => setData(null));
   }, [tipo]);
 
+  const stretchLoading = useMinLoadingDuration(data === undefined);
   if (data === undefined) return <LoadingCampaign />;
+  if (stretchLoading) return <LoadingCampaign />;
   if (data === null) return <EmptyCampaign />;
 
   const channels = computeChannels(data);

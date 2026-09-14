@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "@/components/ui/toast";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import {
   faRotate,
   faSave,
@@ -371,7 +372,8 @@ export function PrensaSection() {
     </div>
   );
 
-  if (loading && !displayData) {
+  const showLoading = useMinLoadingDuration(loading && !displayData);
+  if (showLoading) {
     return <TabLoadingScreen section="Análisis de Prensa" fullScreen={false} />;
   }
 

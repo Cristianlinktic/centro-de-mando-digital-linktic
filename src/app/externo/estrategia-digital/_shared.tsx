@@ -35,7 +35,7 @@ export function EmptyCampaign() {
         Importa un plan de pauta en Excel para empezar a ver el dashboard de {tipo === "medios" ? "medios" : "RRSS"}.
       </p>
       <Link
-        href={`/interno/estrategia-digital/importar?tipo=${tipo}`}
+        href={`/externo/estrategia-digital/importar?tipo=${tipo}`}
         className="inline-flex items-center gap-2 bg-[#0094ff] hover:bg-[#0080e6] text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
       >
         Ir a Importar

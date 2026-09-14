@@ -23,6 +23,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { EmptyCampaign, LoadingCampaign, round, useCategoria } from "../_shared";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faSave, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR } from "@/lib/chart-theme";
@@ -38,7 +39,9 @@ export default function CanalesPage() {
   const load = () => fetchCampaignData(tipo).then(setData).catch(() => setData(null));
   useEffect(() => { setData(undefined); load(); }, [tipo]);
 
+  const stretchLoading = useMinLoadingDuration(data === undefined);
   if (data === undefined) return <LoadingCampaign />;
+  if (stretchLoading) return <LoadingCampaign />;
   if (data === null) return <EmptyCampaign />;
 
   const channels = computeChannels(data);

@@ -16,6 +16,7 @@ import { AdminPopup } from "@/components/admin-popup";
 import { canEdit } from "@/lib/auth/rbac";
 import { Input } from "@/components/ui/input";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { toast } from "@/components/ui/toast";
 import * as XLSX from "xlsx";
 import { faInstagram, faFacebook, faXTwitter, faTiktok } from "@fortawesome/free-brands-svg-icons";
@@ -515,7 +516,14 @@ export default function MapaPage() {
                 });
 
                 setCountriesData(updated);
-                toast.success("Excel procesado con éxito", `${updatedCount} países actualizados, ${addedCount} nuevos.`);
+                persistCountries(updated)
+                    .then(() => {
+                        toast.success("Excel importado y guardado", `${updatedCount} países actualizados, ${addedCount} nuevos.`);
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        toast.error("Excel cargado pero no se pudo guardar", "Los cambios se ven en pantalla pero no quedaron guardados. Usa 'Guardar Todos' para reintentar.");
+                    });
             } catch (err) {
                 console.error(err);
                 toast.error("Error procesando Excel", "Verifica los nombres de las columnas.");
@@ -549,32 +557,40 @@ export default function MapaPage() {
         }));
     };
 
+    // Compartida por "Guardar Todos" y la importación de Excel, para que
+    // importar deje los datos guardados de una vez y no se pierdan al
+    // recargar si el usuario no alcanza a darle a "Guardar Todos" después.
+    const persistCountries = async (rows: any[]) => {
+        for (const c of rows) {
+            // If we're upserting, we need all required DB columns or the mapped ones
+            const updateData = {
+                id: c.id,
+                pais: c.pais,
+                emoji: c.emoji || '🌍',
+                lat: c.lat || 0,
+                lng: c.lng || 0,
+                tema: c.tema || 'Nuevo',
+                keywords: c.keywords || [],
+                sentimiento: c.sentimiento,
+                sentimiento_pct: c.sentimientoPct || { positivo: 33, neutral: 33, negativo: 33 },
+                volumen: parseInt((c.volumen || 0).toString()),
+                plataforma_dominante: c.plataformaDominante || 'X',
+                plataformas: c.plataformas || { X: 0 },
+                resumen: c.resumen || '',
+                tendencia: c.tendencia || 'estable',
+                pct_cambio: parseFloat((c.pctCambio || 0).toString()),
+                top_hashtags: c.topHashtags || [],
+                update_time: c.updateTime || 'hace poco'
+            };
+            const { error } = await supabase.from('mapa_paises').upsert(updateData, { onConflict: 'id' });
+            if (error) throw error;
+        }
+    };
+
     const saveMapData = async () => {
         try {
             setLoadingDb(true);
-            for (const c of countriesData) {
-                // If we're upserting, we need all required DB columns or the mapped ones
-                const updateData = {
-                    id: c.id,
-                    pais: c.pais,
-                    emoji: c.emoji || '🌍',
-                    lat: c.lat || 0,
-                    lng: c.lng || 0,
-                    tema: c.tema || 'Nuevo',
-                    keywords: c.keywords || [],
-                    sentimiento: c.sentimiento,
-                    sentimiento_pct: c.sentimientoPct || { positivo: 33, neutral: 33, negativo: 33 },
-                    volumen: parseInt((c.volumen || 0).toString()),
-                    plataforma_dominante: c.plataformaDominante || 'X',
-                    plataformas: c.plataformas || { X: 0 },
-                    resumen: c.resumen || '',
-                    tendencia: c.tendencia || 'estable',
-                    pct_cambio: parseFloat((c.pctCambio || 0).toString()),
-                    top_hashtags: c.topHashtags || [],
-                    update_time: c.updateTime || 'hace poco'
-                };
-                await supabase.from('mapa_paises').upsert(updateData, { onConflict: 'id' });
-            }
+            await persistCountries(countriesData);
             toast.success("Datos del mapa guardados exitosamente");
             fetchMapData();
         } catch (err) {
@@ -710,7 +726,8 @@ export default function MapaPage() {
         ];
     }, [countriesData, selectedPlatform]);
 
-    if (loadingDb) return <TabLoadingScreen section="Mapa Global" />;
+    const showLoading = useMinLoadingDuration(loadingDb);
+    if (showLoading) return <TabLoadingScreen section="Mapa Global" />;
 
     return (
         <div className="flex flex-col page-pad page-gap page-bg text-white">

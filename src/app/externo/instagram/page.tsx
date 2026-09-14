@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { Post } from "@/lib/instagram-types";
 import { Dashboard } from "@/components/instagram/Dashboard";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { SOCIAL_PLATFORM_ORDER, SOCIAL_PLATFORMS, type SocialPlatform } from "@/lib/social-platforms";
 
 // Misma cuenta para las 3 redes por ahora — Instagram ya trae datos reales de
@@ -46,6 +47,7 @@ export default function PerfilesActoresPage() {
   }, [tab]);
 
   const current = data[tab];
+  const showLoading = useMinLoadingDuration(current.status === "idle" || current.status === "loading");
 
   return (
     <div className="page-bg min-h-screen">
@@ -69,7 +71,7 @@ export default function PerfilesActoresPage() {
         })}
       </nav>
 
-      {current.status === "idle" || current.status === "loading" ? (
+      {showLoading ? (
         <TabLoadingScreen section={`Conversación en Redes · ${SOCIAL_PLATFORMS[tab].label}`} fullScreen={false} />
       ) : current.status === "error" ? (
         <div className="flex items-center justify-center page-pad">

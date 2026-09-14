@@ -11,6 +11,7 @@ import { LiveTicker } from "@/components/live-ticker";
 import { SentimentDonut } from "@/components/sentiment-donut";
 import { analyzerSupabase } from "@/lib/supabase-analyzer";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import {
   faRotate,
   faMapLocationDot, faLayerGroup,
@@ -383,7 +384,8 @@ export default function NacionalPage() {
     ];
   }, [data, sortedDeps, selectedTone, totalRaw]);
 
-  if (loading) {
+  const showLoading = useMinLoadingDuration(loading);
+  if (showLoading) {
     return <TabLoadingScreen section="Conversación Nacional" />;
   }
 

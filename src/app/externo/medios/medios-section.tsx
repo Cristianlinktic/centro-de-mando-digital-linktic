@@ -31,6 +31,7 @@ import { AdminPopup } from "@/components/admin-popup";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import * as XLSX from 'xlsx';
 
 // Helper to get media icon based on name/type
@@ -251,7 +252,8 @@ export function MediosSection() {
     }));
   }, [profiles]);
 
-  if (loading) return <TabLoadingScreen section="Conversación en Medios" fullScreen={false} />;
+  const showLoading = useMinLoadingDuration(loading);
+  if (showLoading) return <TabLoadingScreen section="Conversación en Medios" fullScreen={false} />;
 
   return (
     <>

@@ -24,6 +24,7 @@ import { useAuth } from "@/components/auth-provider";
 import { screenKeyForPath } from "@/lib/auth/rbac";
 import { LinkyIcon } from "@/components/linky-icon";
 import { ColombiaIcon } from "@/components/colombia-icon";
+import { useActiveSection } from "@/hooks/use-active-section";
 
 const icons: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   Newspaper,
@@ -34,16 +35,16 @@ const icons: Record<string, React.ComponentType<{ className?: string; style?: Re
   Target,
 };
 
-// Navegación de la pestaña "Interno" — Centro de Mando Digital LinkTIC.
+// Navegación de la pestaña "Externo" — Centro de Mando Digital LinkTIC.
 // `accent` colorea el chip del ícono — cada módulo con su propio tono de la
 // paleta LinkTIC ya establecida, para reconocerlos de un vistazo.
 const navItems = [
-  { path: "/interno/mapa", label: "Mapa Global", icon: "Globe2", accent: "#0094ff" },
-  { path: "/interno/mapa-colombia", label: "Conversación Nacional", icon: "Colombia", accent: "#f5b21e" },
-  { path: "/interno/medios", label: "Conversación en Medios", icon: "Newspaper", accent: "#a855f7" },
-  { path: "/interno/instagram", label: "Conversación en Redes", icon: "MessagesSquare", accent: "#2eb88a" },
-  { path: "/interno/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays", accent: "#75ddff" },
-  { path: "/interno/estrategia-digital", label: "Estrategia Publicitaria", icon: "Target", accent: "#00e1ff" },
+  { path: "/externo/mapa", label: "Mapa Global", icon: "Globe2", accent: "#0094ff" },
+  { path: "/externo/mapa-colombia", label: "Conversación Nacional", icon: "Colombia", accent: "#f5b21e" },
+  { path: "/externo/medios", label: "Conversación en Medios", icon: "Newspaper", accent: "#a855f7" },
+  { path: "/externo/instagram", label: "Conversación en Redes", icon: "MessagesSquare", accent: "#2eb88a" },
+  { path: "/externo/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays", accent: "#75ddff" },
+  { path: "/externo/estrategia-digital", label: "Estrategia Publicitaria", icon: "Target", accent: "#00e1ff" },
 ];
 
 export function AppSidebar() {
@@ -51,7 +52,9 @@ export function AppSidebar() {
   const { toggleSidebar } = useSidebar();
   const { role, screens } = useAuth();
 
-  const activeGroup: "interno" | "externo" = pathname.startsWith("/externo") ? "externo" : "interno";
+  // Rutas que no son de ninguna sección (/admin/usuarios, etc.) mantienen la
+  // última sección real visitada — ver useActiveSection.
+  const activeGroup = useActiveSection();
 
   // El superadmin ve todo; el resto solo las pantallas que tiene asignadas.
   const canSee = (path: string) => {
@@ -86,26 +89,26 @@ export function AppSidebar() {
         {/* Pestañas de alto nivel: Interno / Externo */}
         <div className="mt-3 grid grid-cols-2 gap-1 rounded-full bg-black/20 p-1 ring-1 ring-white/5 group-data-[collapsible=icon]:hidden">
           <Link
-            href="/interno/mapa-colombia"
-            className={`flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-bold transition-all duration-200 ${
-              activeGroup === "interno"
-                ? "bg-gradient-to-r from-[var(--tab-accent)] to-[var(--tab-accent-2)] text-white shadow-[0_0_12px_var(--tab-accent-glow)]"
-                : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-            }`}
-          >
-            <Building2 className="h-3.5 w-3.5 shrink-0" />
-            <span>Interno</span>
-          </Link>
-          <Link
-            href="/externo"
+            href="/externo/mapa-colombia"
             className={`flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-bold transition-all duration-200 ${
               activeGroup === "externo"
                 ? "bg-gradient-to-r from-[var(--tab-accent)] to-[var(--tab-accent-2)] text-white shadow-[0_0_12px_var(--tab-accent-glow)]"
                 : "text-muted-foreground hover:text-foreground hover:bg-white/5"
             }`}
           >
-            <Globe2 className="h-3.5 w-3.5 shrink-0" />
+            <Building2 className="h-3.5 w-3.5 shrink-0" />
             <span>Externo</span>
+          </Link>
+          <Link
+            href="/interno"
+            className={`flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-bold transition-all duration-200 ${
+              activeGroup === "interno"
+                ? "bg-gradient-to-r from-[var(--tab-accent)] to-[var(--tab-accent-2)] text-white shadow-[0_0_12px_var(--tab-accent-glow)]"
+                : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+            }`}
+          >
+            <Globe2 className="h-3.5 w-3.5 shrink-0" />
+            <span>Interno</span>
           </Link>
         </div>
       </SidebarHeader>
@@ -115,7 +118,7 @@ export function AppSidebar() {
           Paneles
         </p>
 
-        {activeGroup === "interno" ? (
+        {activeGroup === "externo" ? (
           <nav className="space-y-1">
             {visibleItems.map((item) => {
               const Icon = icons[item.icon];
@@ -156,7 +159,7 @@ export function AppSidebar() {
           </nav>
         ) : (
           <p className="px-3 py-2 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
-            Todavía no hay módulos en Externo.
+            Todavía no hay módulos en Interno.
           </p>
         )}
 
