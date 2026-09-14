@@ -422,6 +422,30 @@ export function PrensaSection() {
         </div>
       </div>
 
+      {/* Inline edit form */}
+      {activeTab === "diario" && isEditing && (
+        <Card className="panel border border-[#1e2240] p-6 rounded-2xl mb-6 animate-in fade-in slide-in-from-top-4 duration-300">
+          <h3 className="text-[#75ddff] font-black mb-4 uppercase text-xs tracking-widest flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#0094ff]" /> Editar métricas — {selectedDate}
+          </h3>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {numField("menciones_totales", "Menciones Totales")}
+            {numField("audiencia_estimada", "Audiencia Estimada")}
+            {numField("share_of_voice", "Share of Voice %")}
+            {numField("valor_publicitario", "Valor Publicitario")}
+            {numField("sentimiento_positivo", "Sentimiento Positivo %")}
+            {numField("sentimiento_negativo", "Sentimiento Negativo %")}
+            {numField("cobertura_tv", "Cobertura TV")}
+            {numField("cobertura_digital", "Cobertura Digital")}
+            {numField("cobertura_radio", "Cobertura Radio")}
+            {numField("cobertura_impresos", "Cobertura Impresos")}
+            {numField("tier_1", "Tier 1")}
+            {numField("tier_2", "Tier 2")}
+            {numField("tier_3", "Tier 3")}
+          </div>
+        </Card>
+      )}
+
       {activeTab === "mensual" && !monthly ? (
         <Card className="panel border border-[#1e2240] p-12 rounded-2xl text-center">
           <p className="text-[#c0c8de] font-bold mb-1">No hay datos para este mes</p>
@@ -476,29 +500,6 @@ export function PrensaSection() {
             </div>
           </div>
 
-          {/* Inline edit form */}
-          {activeTab === "diario" && isEditing && (
-            <Card className="panel border border-[#1e2240] p-6 rounded-2xl mb-20 animate-in fade-in slide-in-from-top-4 duration-300">
-              <h3 className="text-[#75ddff] font-black mb-4 uppercase text-xs tracking-widest flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#0094ff]" /> Editar métricas — {selectedDate}
-              </h3>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {numField("menciones_totales", "Menciones Totales")}
-                {numField("audiencia_estimada", "Audiencia Estimada")}
-                {numField("share_of_voice", "Share of Voice %")}
-                {numField("valor_publicitario", "Valor Publicitario")}
-                {numField("sentimiento_positivo", "Sentimiento Positivo %")}
-                {numField("sentimiento_negativo", "Sentimiento Negativo %")}
-                {numField("cobertura_tv", "Cobertura TV")}
-                {numField("cobertura_digital", "Cobertura Digital")}
-                {numField("cobertura_radio", "Cobertura Radio")}
-                {numField("cobertura_impresos", "Cobertura Impresos")}
-                {numField("tier_1", "Tier 1")}
-                {numField("tier_2", "Tier 2")}
-                {numField("tier_3", "Tier 3")}
-              </div>
-            </Card>
-          )}
         </>
       )}
 

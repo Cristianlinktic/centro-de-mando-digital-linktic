@@ -16,9 +16,10 @@ import { AdminPopup } from "@/components/admin-popup";
 import { canEdit } from "@/lib/auth/rbac";
 import { Input } from "@/components/ui/input";
 import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
+import { toast } from "@/components/ui/toast";
 import * as XLSX from "xlsx";
 import { faInstagram, faFacebook, faXTwitter, faTiktok } from "@fortawesome/free-brands-svg-icons";
-import { faRotate, faGlobe, faArrowTrendUp, faStar, faSave, faUpload, faPlus, faWandMagicSparkles, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faRotate, faGlobe, faArrowTrendUp, faStar, faSave, faUpload, faDownload, faPlus, faWandMagicSparkles, faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Globe = dynamic(() => import("@/components/globe").then((m) => m.GlobeComponent), {
@@ -365,7 +366,7 @@ export default function MapaPage() {
                 }
             }
             setCountriesData(repaired);
-            alert(`✅ Coordenadas reparadas para ${missing.length} países.`);
+            toast.success(`Coordenadas reparadas para ${missing.length} países.`);
         } finally {
             setLookingUp(false);
         }
@@ -514,13 +515,25 @@ export default function MapaPage() {
                 });
 
                 setCountriesData(updated);
-                alert(`✅ Excel procesado con éxito.\n\n- Países actualizados: ${updatedCount}\n- Países nuevos: ${addedCount}`);
+                toast.success("Excel procesado con éxito", `${updatedCount} países actualizados, ${addedCount} nuevos.`);
             } catch (err) {
                 console.error(err);
-                alert("❌ Error procesando Excel. Verifica los nombres de las columnas.");
+                toast.error("Error procesando Excel", "Verifica los nombres de las columnas.");
             }
         };
         reader.readAsBinaryString(file);
+    };
+
+    // Mismas columnas que lee handleExcelUpload — así la plantilla siempre
+    // coincide con lo que el importador espera.
+    const downloadTemplate = () => {
+        const headers = ['Pais', 'Tema', 'TikTok', 'X', 'Instagram', 'Facebook', 'Positivo', 'Neutral', 'Negativo', 'Tendencia', 'PctCambio', 'Resumen', 'Hashtags', 'Keywords'];
+        const example = ['Colombia', 'Elecciones 2026', 12000, 8500, 15300, 4200, 45, 35, 20, 'creciente', 5.2, 'Resumen breve de la conversación en el país.', 'hashtag1 hashtag2', 'palabra clave 1, palabra clave 2'];
+        const ws = XLSX.utils.aoa_to_sheet([headers, example]);
+        ws['!cols'] = headers.map(() => ({ wch: 18 }));
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Plantilla');
+        XLSX.writeFile(wb, 'plantilla-mapa-global.xlsx');
     };
 
     const handleArrayChange = (id: string, field: string, value: string) => {
@@ -562,11 +575,11 @@ export default function MapaPage() {
                 };
                 await supabase.from('mapa_paises').upsert(updateData, { onConflict: 'id' });
             }
-            alert("Datos del mapa guardados exitosamente!");
+            toast.success("Datos del mapa guardados exitosamente");
             fetchMapData();
         } catch (err) {
             console.error(err);
-            alert("Error al guardar.");
+            toast.error("Error al guardar.");
         } finally {
             setLoadingDb(false);
         }
@@ -861,6 +874,9 @@ export default function MapaPage() {
                                 <FontAwesomeIcon icon={faUpload} className="mr-2" /> Importar Excel
                                 <input type="file" accept=".xlsx, .xls" className="hidden" onChange={handleExcelUpload} />
                             </label>
+                            <Button type="button" onClick={downloadTemplate} variant="outline" className="panel-soft border-[#2a2a4a] text-white">
+                                <FontAwesomeIcon icon={faDownload} className="mr-2" /> Descargar Plantilla
+                            </Button>
                             <Button type="button" onClick={saveMapData} className="bg-emerald-500 hover:bg-emerald-600 text-white">
                                 <FontAwesomeIcon icon={faSave} className="mr-2" /> Guardar Todos
                             </Button>

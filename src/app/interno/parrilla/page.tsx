@@ -15,6 +15,7 @@ import {
   faTrash,
   faSave,
   faUpload,
+  faDownload,
   faRotate,
   faXmark,
   faLayerGroup,
@@ -287,6 +288,45 @@ export default function ParrillaPage() {
     reader.readAsBinaryString(file);
   };
 
+  // Mismas columnas que lee handleExcelUpload — así la plantilla siempre
+  // coincide con lo que el importador espera.
+  const downloadTemplate = () => {
+    const headers = ["Fecha", "Hora", "Plataforma", "Tipo", "Estado", "Descripcion", "Duracion", "URL", "Comentarios", "KPI"];
+    const example = [
+      "2026-09-20",
+      "07:00",
+      "facebook",
+      "post",
+      "Programado",
+      "Copy o descripción de la publicación.",
+      60,
+      "https://ejemplo.com",
+      "Comentario interno de ejemplo",
+      "1000 likes",
+    ];
+    const wsData = XLSX.utils.aoa_to_sheet([headers, example]);
+    wsData["!cols"] = headers.map(() => ({ wch: 22 }));
+
+    // Segunda hoja con los valores exactos que acepta cada columna limitada
+    // (Plataforma/Tipo/Estado son case-sensitive en el importador).
+    const maxLen = Math.max(PLATFORMS.length, TYPE_OPTIONS.length, STATUS_OPTIONS.length);
+    const valuesRows = [
+      ["Plataforma", "Tipo", "Estado"],
+      ...Array.from({ length: maxLen }, (_, i) => [
+        PLATFORMS[i]?.id ?? "",
+        TYPE_OPTIONS[i] ?? "",
+        STATUS_OPTIONS[i] ?? "",
+      ]),
+    ];
+    const wsValues = XLSX.utils.aoa_to_sheet(valuesRows);
+    wsValues["!cols"] = [{ wch: 14 }, { wch: 20 }, { wch: 22 }];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, wsData, "Plantilla");
+    XLSX.utils.book_append_sheet(wb, wsValues, "Valores válidos");
+    XLSX.writeFile(wb, "plantilla-parrilla-contenidos.xlsx");
+  };
+
   const createCustomTab = async () => {
     if (!newTabLabel.trim()) return;
     const key = slugify(newTabLabel);
@@ -365,6 +405,11 @@ GRANT ALL ON centro_mando.${tableName} TO authenticated, service_role;`
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
+          {editing && (
+            <Button variant="outline" size="sm" onClick={downloadTemplate} className="panel border-[#2a2a4a] text-white">
+              <FontAwesomeIcon icon={faDownload} className="mr-2" /> Descargar Plantilla
+            </Button>
+          )}
           {editing && (
             <Button variant="outline" size="sm" className="relative cursor-pointer bg-green-600/20 text-green-400 border-green-500/20">
               <FontAwesomeIcon icon={faUpload} className="mr-2" /> Excel

@@ -11,7 +11,76 @@ import { useAuth } from "@/components/auth-provider";
 import { canEdit } from "@/lib/auth/rbac";
 import { useCategoria } from "../_shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileArrowUp, faCheck, faTriangleExclamation, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faFileArrowUp, faCheck, faTriangleExclamation, faLock, faDownload } from "@fortawesome/free-solid-svg-icons";
+import * as XLSX from "xlsx";
+
+// El parser (parsePautaWorkbook) lee celdas exactas, no encabezados de
+// columna — por eso la plantilla reproduce la misma posición de cada hoja
+// en vez de solo poner nombres de columna. Los nombres de hoja deben
+// contener "resumen" / "distribuci" / "diario" / "proyec" (findSheet en
+// src/lib/campana/excel.ts hace match por substring, sin importar mayúsculas).
+function downloadPautaTemplate() {
+  const resumen = XLSX.utils.aoa_to_sheet([
+    [],
+    ["", "Plan de Pauta - Ejemplo 2026"],
+    [], [], [],
+    ["", "", "", "Presupuesto Total", 50000000],
+    ["", "", "", "Duración (días)", 30],
+    ["", "", "Meta", "% Participación", 40],
+    ["", "", "Pilas", "% Participación", 20],
+    ["", "", "YouTube", "% Participación", 25],
+    ["", "", "Google Display", "% Participación", 15],
+    ["", "", "Meta", "CPM", 8000],
+    ["", "", "Pilas", "CPM", 6000],
+    ["", "", "YouTube", "CPM", 12000],
+    ["", "", "Google Display", "CPM", 5000],
+    ["", "", "Meta", "CTR %", 1.2],
+    ["", "", "Pilas", "CTR %", 0.8],
+    ["", "", "YouTube", "CTR %", 0.5],
+    ["", "", "Google Display", "CTR %", 0.3],
+  ]);
+  resumen["!cols"] = [{ wch: 4 }, { wch: 4 }, { wch: 16 }, { wch: 20 }, { wch: 14 }];
+
+  const distribucion = XLSX.utils.aoa_to_sheet([
+    [], [], [], [], [], [], [], [], [], [], [], [], [],
+    ["", "Canal", "Objetivo", "", "Público Objetivo", "", "", "", "", "", "KPI Principal"],
+    ["", "Meta", "Awareness", "", "Mujeres y hombres 18-45", "", "", "", "", "", "Alcance"],
+    ["", "Pilas", "Consideración", "", "Jóvenes 18-30", "", "", "", "", "", "Clics"],
+    ["", "YouTube", "Conversión", "", "Adultos 25-55", "", "", "", "", "", "Conversiones"],
+    ["", "Google Display", "Retargeting", "", "Visitantes web", "", "", "", "", "", "CTR"],
+  ]);
+  distribucion["!cols"] = [{ wch: 4 }, { wch: 16 }, { wch: 16 }, { wch: 4 }, { wch: 26 }, { wch: 4 }, { wch: 4 }, { wch: 4 }, { wch: 4 }, { wch: 4 }, { wch: 16 }];
+
+  const diario = XLSX.utils.aoa_to_sheet([
+    [], [], [], [],
+    ["", "Día #", "Fecha de Inicio (solo fila 6)", "Factor de Peso"],
+    ["", 1, new Date(2026, 8, 20), 1],
+    ["", 2, "", 1.2],
+    ["", 3, "", 0.8],
+    ["", 4, "", 1],
+    ["", 5, "", 1.5],
+    ["", 6, "", 0.9],
+    ["", 7, "", 1.1],
+  ]);
+  diario["!cols"] = [{ wch: 4 }, { wch: 8 }, { wch: 24 }, { wch: 14 }];
+
+  const proyecciones = XLSX.utils.aoa_to_sheet([
+    [], [], [], [], [],
+    ["", "", "", "", "", "", "", "Canal", "Frecuencia"],
+    ["", "", "", "", "", "", "", "Meta", 1.4],
+    ["", "", "", "", "", "", "", "Pilas", 1.2],
+    ["", "", "", "", "", "", "", "YouTube", 1.6],
+    ["", "", "", "", "", "", "", "Google Display", 1.1],
+  ]);
+  proyecciones["!cols"] = Array(7).fill({ wch: 4 }).concat([{ wch: 16 }, { wch: 12 }]);
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, resumen, "Resumen Ejecutivo");
+  XLSX.utils.book_append_sheet(wb, distribucion, "Distribución x Canal");
+  XLSX.utils.book_append_sheet(wb, diario, "Desglose Diario");
+  XLSX.utils.book_append_sheet(wb, proyecciones, "Proyecciones");
+  XLSX.writeFile(wb, "plantilla-plan-de-pauta.xlsx");
+}
 
 type Status = "idle" | "uploading" | "success" | "error";
 
@@ -176,6 +245,9 @@ export default function ImportarPage() {
           <div className="rounded-lg bg-amber-500/10 px-3 py-2.5 text-amber-400">
             Las métricas se <b>calculan</b> en el dashboard a partir de estos parámetros.
           </div>
+          <Button variant="outline" size="sm" onClick={downloadPautaTemplate} className="w-full panel-soft border-[#2a2a4a] text-white">
+            <FontAwesomeIcon icon={faDownload} className="mr-2" /> Descargar Plantilla
+          </Button>
         </div>
       </Card>
     </div>
