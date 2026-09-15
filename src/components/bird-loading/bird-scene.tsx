@@ -1,20 +1,16 @@
 "use client";
 
-import { RiggedBird } from "./rigged-bird";
-import { LoadingRing } from "./loading-ring";
+import { LoadingBird } from "./loading-bird";
 
 type BirdSceneProps = {
-  /** Ancho del ave en px; el anillo se escala proporcionalmente. */
+  /** Ancho del ave en px. */
   size?: number;
 };
 
 export function BirdScene({ size = 150 }: BirdSceneProps) {
-  const ringSize = size * 1.55;
-
   return (
-    <div className="relative flex items-center justify-center" style={{ width: ringSize, height: ringSize }}>
-      <LoadingRing size={ringSize} />
-      <RiggedBird size={size} />
+    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+      <LoadingBird size={size} />
     </div>
   );
 }

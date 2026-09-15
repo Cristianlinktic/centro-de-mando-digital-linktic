@@ -203,7 +203,7 @@ export default function MapaColombiaPage() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
             <h1 className="page-title font-heading font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Nacional</h1>
-            <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+            <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales de LinkTIC. Haz clic en un marcador para ver el detalle.</p>
           </div>
           {canEdit(role) && (
             <button

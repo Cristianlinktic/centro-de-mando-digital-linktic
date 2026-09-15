@@ -4,15 +4,16 @@ import { useEffect, useState } from "react";
 
 /**
  * Estira una pantalla de carga para que se muestre al menos `minMs`, aunque
- * el fetch real termine antes — así la animación del ave (~2.2s por aleteo)
- * alcanza a verse en vez de parpadear en conexiones rápidas.
+ * el fetch real termine antes — así la animación del ave (aleteo ~2.2s,
+ * llenado tipo reloj de arena ~2.3s) alcanza a verse un ciclo completo en
+ * vez de parpadear en conexiones rápidas.
  *
  * `isLoading` puede volver a `true` (cambio de pestaña, refetch) y el mínimo
  * se reinicia cada vez. El "encendido" se hace en el mismo render (patrón de
  * estado derivado de React) para que nunca haya un frame de por medio donde
  * ya se intente pintar contenido que todavía no llegó.
  */
-export function useMinLoadingDuration(isLoading: boolean, minMs = 1800) {
+export function useMinLoadingDuration(isLoading: boolean, minMs = 3000) {
   const [state, setState] = useState(() => ({ shown: isLoading, since: isLoading ? Date.now() : 0 }));
 
   if (isLoading && !state.shown) {
