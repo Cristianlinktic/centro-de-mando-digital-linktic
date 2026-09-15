@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { getServerAccess } from "@/lib/auth/access";
+import { requireAppAccess } from "@/lib/auth/access";
 
 export const runtime = "nodejs";
 
@@ -44,8 +44,8 @@ function buildContext(c: Country): string {
 }
 
 export async function POST(req: Request) {
-  const access = await getServerAccess();
-  if (!access) return Response.json({ error: "No autenticado." }, { status: 401 });
+  const guard = await requireAppAccess();
+  if ("error" in guard) return guard.error;
 
   if (!process.env.OPENROUTER_API_KEY) {
     return Response.json(

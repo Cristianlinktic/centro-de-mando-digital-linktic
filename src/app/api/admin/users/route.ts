@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireSuperadmin } from "@/lib/auth/access";
 import { getServiceRoleSupabaseClient } from "@/lib/supabase-admin";
-import { allScreens, type AppRole } from "@/lib/auth/rbac";
+import { allScreens, hasAppAccess, normalizeRole, type AppRole } from "@/lib/auth/rbac";
 
 const VALID_ROLES: AppRole[] = ["superadmin", "admin", "viewer"];
 
@@ -34,10 +34,6 @@ export async function GET() {
 
   const validKeys = new Set(allScreens().map((s) => s.key));
   const users = list.users
-    // Esta instancia de Supabase es compartida con otras apps (p.ej. "el
-    // analizador"): solo mostramos usuarios que tienen perfil en
-    // centro_mando, para no listar/exponer cuentas ajenas a este tablero.
-    .filter((u) => profMap.has(u.id))
     .map((u) => {
       const p = profMap.get(u.id);
       // Solo exponemos las pantallas de ESTE tablero (lt-tab:*).
@@ -45,11 +41,18 @@ export async function GET() {
       return {
         id: u.id,
         email: u.email ?? "",
-        role: (p?.user_role as string) ?? "viewer",
+        role: normalizeRole(p?.user_role),
         full_name: p?.full_name ?? "",
         screens,
       };
-    });
+    })
+    // Esta instancia de Supabase es compartida con otras apps: el trigger de
+    // auto-provisión crea fila en `profiles` para CUALQUIER alta en
+    // auth.users (de cualquier app), así que "tiene fila en profiles" ya no
+    // distingue cuentas ajenas (mismo hallazgo que llevó a `requireAppAccess`
+    // en access.ts). El criterio real es si de verdad tiene acceso a este
+    // tablero: superadmin, o al menos una pantalla lt-tab asignada.
+    .filter((u) => hasAppAccess(u));
 
   return NextResponse.json({ users, screens: allScreens() });
 }

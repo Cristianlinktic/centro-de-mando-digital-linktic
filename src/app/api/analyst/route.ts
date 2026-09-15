@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import postsData from "@/data/instagram-posts.json";
 import type { Post } from "@/lib/instagram-types";
 import { computeTotals, breakdownByType, topHashtags, typeLabel } from "@/lib/instagram-analytics";
-import { getServerAccess } from "@/lib/auth/access";
+import { requireAppAccess } from "@/lib/auth/access";
 
 const posts = postsData as Post[];
 const ACCOUNT = "actoreselectorales";
@@ -62,8 +62,8 @@ ${DATA_CONTEXT}`;
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  const access = await getServerAccess();
-  if (!access) return Response.json({ error: "No autenticado." }, { status: 401 });
+  const guard = await requireAppAccess();
+  if ("error" in guard) return guard.error;
 
   if (!process.env.OPENROUTER_API_KEY) {
     return Response.json(

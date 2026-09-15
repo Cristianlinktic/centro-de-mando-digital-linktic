@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getServerAccess } from "@/lib/auth/access";
+import { requireAppAccess } from "@/lib/auth/access";
 import { getServiceRoleSupabaseClient } from "@/lib/supabase-admin";
 
 const BUCKET = "centro-mando-images";
@@ -13,8 +13,9 @@ const ALLOWED: Record<string, string> = {
 
 /** POST: sube/reemplaza la foto de perfil del usuario logueado (sesión actual, no admin). */
 export async function POST(req: Request) {
-  const access = await getServerAccess();
-  if (!access) return NextResponse.json({ error: "No autenticado." }, { status: 401 });
+  const guard = await requireAppAccess();
+  if ("error" in guard) return guard.error;
+  const { access } = guard;
 
   const form = await req.formData().catch(() => null);
   const file = form?.get("file");

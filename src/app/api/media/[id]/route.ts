@@ -1,7 +1,7 @@
 export const runtime = "nodejs";
 
 import type { SocialPlatform } from "@/lib/social-platforms";
-import { getServerAccess } from "@/lib/auth/access";
+import { requireAppAccess } from "@/lib/auth/access";
 
 const VALID_PLATFORMS: SocialPlatform[] = ["instagram", "facebook", "tiktok"];
 
@@ -62,8 +62,8 @@ function weservUrl(sourceUrl: string): string {
 }
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
-  const access = await getServerAccess();
-  if (!access) return Response.json({ error: "No autenticado." }, { status: 401 });
+  const guard = await requireAppAccess();
+  if ("error" in guard) return guard.error;
 
   const { id } = await params;
   const { searchParams } = new URL(req.url);
