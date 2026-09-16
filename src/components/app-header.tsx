@@ -72,9 +72,7 @@ export function AppHeader() {
                 >
                   ADMIN
                 </Badge>
-            ) : (
-                <Badge className="inline-flex rounded-[4px] bg-[#131a30] text-[#aab3cf] border-[#2a2a4a] text-[8px] h-4 px-1 font-black">LECTOR</Badge>
-            )}
+            ) : null}
             {jobTitle && (
               <span className="text-[9px] font-semibold text-[#8892b0] leading-none truncate max-w-[140px]">
                 {jobTitle}
