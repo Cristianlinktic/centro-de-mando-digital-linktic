@@ -222,7 +222,7 @@ export function Analyst() {
               <div className="space-y-4">
                 <div>
                   <p className="text-sm font-bold text-white">
-                    ¡{getTimeGreeting()}{firstName ? `, ${firstName}` : ""}{jobTitle ? ` (${jobTitle})` : ""}! 👋
+                    ¡{getTimeGreeting()}{jobTitle ? `, ${jobTitle}` : ""}! 👋
                   </p>
                   <p className="mt-0.5 text-xs text-[#aab3cf]">
                     Soy Martha, tu analista del CMDL con IA. ¿Que tal todo?

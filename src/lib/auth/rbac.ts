@@ -29,12 +29,11 @@ export interface ScreenDef {
   group: string; // sección visible en la UI
 }
 
-/** Catálogo de todas las pantallas gateables de este tablero. Todas viven
- *  bajo /externo/* (la pestaña "Centro de Mando Digital Externo"); /interno
- *  todavía no tiene pantallas propias (placeholder, abierto a cualquier
- *  autenticado — ver isPathAllowed). Las `key` se conservan estables aunque
- *  el `path` haya cambiado de /interno a /externo, para no invalidar los
- *  permisos ya concedidos en user_screen_access. */
+/** Catálogo de todas las pantallas gateables de este tablero: las de
+ *  /externo/* (pestaña "Centro de Mando Digital Externo") y las de
+ *  /interno/* (pestaña "Interno"). Las `key` se conservan estables aunque
+ *  el `path` cambie, para no invalidar los permisos ya concedidos en
+ *  user_screen_access. */
 const SCREENS: ScreenDef[] = [
   { key: "lt-tab:mapa", path: "/externo/mapa", title: "Mapa Global", group: "Externo" },
   { key: "lt-tab:medios", path: "/externo/medios", title: "Conversación en Medios", group: "Externo" },
@@ -49,6 +48,10 @@ const SCREENS: ScreenDef[] = [
   { key: "lt-tab:parrilla", path: "/externo/parrilla", title: "Parrilla de Contenidos", group: "Externo" },
   { key: "lt-tab:estrategia-digital", path: "/externo/estrategia-digital", title: "Estrategia Publicitaria", group: "Externo" },
   { key: "lt-tab:mailing", path: "/externo/mailing", title: "Estrategia Mailing", group: "Externo" },
+  { key: "lt-tab:interno-instagram", path: "/interno/instagram", title: "Conversación en Redes", group: "Interno" },
+  { key: "lt-tab:interno-canales", path: "/interno/canales", title: "Conversación en Canales", group: "Interno" },
+  { key: "lt-tab:interno-mailing", path: "/interno/mailing", title: "Estrategia Mailing", group: "Interno" },
+  { key: "lt-tab:interno-mailing-prueba", path: "/interno/mailing-prueba", title: "Estrategia Mailing Prueba", group: "Interno" },
 ];
 
 export function allScreens(): ScreenDef[] {
