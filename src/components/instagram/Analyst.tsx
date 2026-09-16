@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { Markdown } from "./Markdown";
 import { useAuth } from "@/components/auth-provider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -54,6 +55,7 @@ const RobotIcon = ({ size }: { size: number }) => (
 
 export function Analyst() {
   const { firstName, jobTitle } = useAuth();
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [tooltip, setTooltip] = useState(true);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -95,7 +97,11 @@ export function Analyst() {
       const res = await fetch("/api/analyst", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        // El query string (ej. ?tipo=medios en Estrategia Publicitaria) se lee
+        // directo de window en vez de usePathname/useSearchParams, para no
+        // forzar un límite de Suspense en un componente global montado en
+        // todas las páginas.
+        body: JSON.stringify({ messages: next, pathname: `${pathname}${window.location.search}` }),
       });
       if (!res.ok || !res.body) {
         const e = await res.json().catch(() => ({ error: "Error de red" }));
