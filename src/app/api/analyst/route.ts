@@ -1,63 +1,76 @@
 import OpenAI from "openai";
-import postsData from "@/data/instagram-posts.json";
-import type { Post } from "@/lib/instagram-types";
-import { computeTotals, breakdownByType, topHashtags, typeLabel } from "@/lib/instagram-analytics";
 import { requireAppAccess } from "@/lib/auth/access";
 
-const posts = postsData as Post[];
-const ACCOUNT = "actoreselectorales";
+// La cuenta de Instagram de LinkTIC todavía se está conectando (Windsor.ai);
+// el dataset anterior (@actoreselectorales) era de otra cuenta y ya no se usa
+// acá — no hay que mezclar esos datos con el análisis de LinkTIC.
+const SYSTEM_PROMPT = `Eres Martha, la analista de redes sociales con IA del Centro de Mando Digital de LinkTIC. Respondes en español, de forma clara, concreta y accionable.
 
-function buildContext(): string {
-  const totals = computeTotals(posts);
-  const byType = breakdownByType(posts);
-  const tags = topHashtags(posts, 15);
-  const dates = posts.map((p) => p.date).sort();
-
-  const summary = [
-    `Cuenta de Instagram: @${ACCOUNT}`,
-    `Periodo: ${dates[0]} a ${dates[dates.length - 1]} · ${posts.length} publicaciones`,
-    `Totales: alcance=${totals.reach}, likes=${totals.likes}, comentarios=${totals.comments}, guardados=${totals.saved}, compartidos=${totals.shares}, engagement=${totals.engagement}`,
-    `Promedios por post: alcance=${totals.avgReach}, engagement rate=${totals.avgEngagementRate}%`,
-    "",
-    "Por tipo de contenido:",
-    ...byType.map(
-      (t) =>
-        `- ${typeLabel(t.type)}: ${t.count} posts, alcance promedio ${t.avgReach}, likes promedio ${t.avgLikes}, ER ${t.avgEngagementRate}%`
-    ),
-    "",
-    `Hashtags más usados: ${tags.map((h) => `${h.tag} (×${h.count})`).join(", ")}`,
-  ].join("\n");
-
-  const rows = posts.map((p) => ({
-    date: p.date,
-    type: p.type,
-    reach: p.reach,
-    likes: p.likes,
-    comments: p.comments,
-    saved: p.saved,
-    shares: p.shares,
-    engagement: p.engagement,
-    er: p.engagementRate,
-    caption: p.caption.replace(/\s+/g, " ").slice(0, 280),
-    link: p.permalink,
-  }));
-
-  return `${summary}\n\nDATOS COMPLETOS DE LAS PUBLICACIONES (JSON):\n${JSON.stringify(rows)}`;
-}
-
-const DATA_CONTEXT = buildContext();
-
-const SYSTEM_PROMPT = `Eres un analista de redes sociales experto, especializado en Instagram. Respondes en español, de forma clara, concreta y accionable.
-
-Tienes acceso a los datos reales de la cuenta @${ACCOUNT} (extraídos vía Windsor.ai). Responde SIEMPRE basándote en estos datos: cita cifras concretas, identifica publicaciones específicas por su fecha y describe su contenido cuando sea relevante.
+IMPORTANTE: la conexión con los datos reales de Instagram de LinkTIC está en proceso todavía — no tienes acceso a métricas ni publicaciones reales en este momento.
 
 Reglas:
-- Si te preguntan algo que los datos no contienen (p. ej. quiénes son las personas que dan like o comentan individualmente), explica que la API de Instagram/Meta no expone identidades individuales, solo métricas agregadas.
-- Da respuestas breves y bien estructuradas (usa listas y negritas cuando ayude). No inventes datos.
-- Cuando recomiendes acciones, fundaméntalas en los números que ves.
+- Si te preguntan por cifras, publicaciones o métricas concretas de Instagram, explica con claridad que la conexión de datos de LinkTIC está en proceso y que todavía no tienes esa información disponible. No inventes cifras ni publicaciones, y no menciones ni uses datos de ninguna otra cuenta (p. ej. @actoreselectorales).
+- Puedes ayudar con recomendaciones generales de buenas prácticas de contenido y estrategia en Instagram mientras la conexión queda lista.
+- Da respuestas breves y bien estructuradas (usa listas y negritas cuando ayude).`;
 
-=== DATOS DE LA CUENTA ===
-${DATA_CONTEXT}`;
+/* ============================================================================
+ * GUARDADO PARA CUANDO SE CONECTE LA CUENTA REAL DE INSTAGRAM DE LINKTIC
+ * ----------------------------------------------------------------------------
+ * Antes de este cambio, Martha sí tenía acceso a datos reales de publicaciones
+ * (cifras, captions, hashtags) y respondía citándolos — pero eran del dataset
+ * estático de OTRA cuenta (@actoreselectorales, ya borrado de src/data/).
+ *
+ * Cuando la cuenta de Instagram de LinkTIC quede conectada en Windsor.ai (hoy
+ * bloqueada: "2 cuentas conectadas, tu plan Free solo permite 1" — hay que
+ * resolver eso primero, desconectando una cuenta o subiendo de plan), traer
+ * de vuelta este patrón así:
+ *
+ * 1. En vez de leer un JSON estático, trae los posts reales igual que ya
+ *    hacen las pantallas de Instagram: GET a `/api/posts?platform=instagram`
+ *    (o, mejor, extrae el `fetchPosts()` de src/app/api/posts/route.ts a un
+ *    módulo compartido, ej. src/lib/windsor.ts, e impórtalo acá directo en
+ *    vez de hacerle fetch al propio endpoint).
+ * 2. Reusa computeTotals / breakdownByType / topHashtags / typeLabel de
+ *    "@/lib/instagram-analytics" (siguen existiendo, no se tocaron) para
+ *    armar el resumen.
+ * 3. Arma el SYSTEM_PROMPT con esos datos reales, ej.:
+ *
+ *   const posts = await fetchPosts("instagram"); // datos reales de LinkTIC
+ *   const totals = computeTotals(posts);
+ *   const byType = breakdownByType(posts);
+ *   const tags = topHashtags(posts, 15);
+ *   const dates = posts.map((p) => p.date).sort();
+ *
+ *   const summary = [
+ *     `Cuenta de Instagram: @linktic`, // reemplazar por el handle real
+ *     `Periodo: ${dates[0]} a ${dates[dates.length - 1]} · ${posts.length} publicaciones`,
+ *     `Totales: alcance=${totals.reach}, likes=${totals.likes}, comentarios=${totals.comments}, guardados=${totals.saved}, compartidos=${totals.shares}, engagement=${totals.engagement}`,
+ *     `Promedios por post: alcance=${totals.avgReach}, engagement rate=${totals.avgEngagementRate}%`,
+ *     "",
+ *     "Por tipo de contenido:",
+ *     ...byType.map((t) => `- ${typeLabel(t.type)}: ${t.count} posts, alcance promedio ${t.avgReach}, likes promedio ${t.avgLikes}, ER ${t.avgEngagementRate}%`),
+ *     "",
+ *     `Hashtags más usados: ${tags.map((h) => `${h.tag} (×${h.count})`).join(", ")}`,
+ *   ].join("\n");
+ *
+ *   const rows = posts.map((p) => ({
+ *     date: p.date, type: p.type, reach: p.reach, likes: p.likes, comments: p.comments,
+ *     saved: p.saved, shares: p.shares, engagement: p.engagement, er: p.engagementRate,
+ *     caption: p.caption.replace(/\s+/g, " ").slice(0, 280), link: p.permalink,
+ *   }));
+ *
+ *   const SYSTEM_PROMPT = `Eres Martha, la analista de redes sociales con IA de LinkTIC. Respondes en español, de forma clara, concreta y accionable.
+ *
+ *   Tienes acceso a los datos reales de Instagram de LinkTIC (extraídos vía Windsor.ai). Responde SIEMPRE basándote en estos datos: cita cifras concretas, identifica publicaciones específicas por su fecha y describe su contenido cuando sea relevante.
+ *
+ *   Reglas:
+ *   - Si te preguntan algo que los datos no contienen (p. ej. quiénes son las personas que dan like o comentan individualmente), explica que la API de Instagram/Meta no expone identidades individuales, solo métricas agregadas.
+ *   - Da respuestas breves y bien estructuradas (usa listas y negritas cuando ayude). No inventes datos.
+ *   - Cuando recomiendes acciones, fundaméntalas en los números que ves.
+ *
+ *   === DATOS DE LA CUENTA ===
+ *   ${summary}\n\nDATOS COMPLETOS DE LAS PUBLICACIONES (JSON):\n${JSON.stringify(rows)}`;
+ * ============================================================================ */
 
 export const runtime = "nodejs";
 
