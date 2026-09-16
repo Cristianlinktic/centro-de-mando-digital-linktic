@@ -10,7 +10,7 @@ import { signOut } from "@/app/actions/auth";
 
 export function AppHeader() {
   const { state, isMobile } = useSidebar();
-  const { role, jobTitle, avatarUrl } = useAuth();
+  const { role, fullName, jobTitle, avatarUrl } = useAuth();
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [avatarOpen, setAvatarOpen] = useState(false);
@@ -62,19 +62,27 @@ export function AppHeader() {
 
         {/* Rol + avatar agrupados: el badge describe a quién pertenece el círculo de al lado. */}
         <div className="flex items-center gap-2">
+          {role === "superadmin" ? (
+              <Badge variant="neon" className="hidden sm:inline-flex text-[8px] h-4 px-1 font-black">SUPER</Badge>
+          ) : role === "admin" ? (
+              <Badge
+                className="hidden sm:inline-flex rounded-[4px] border text-[8px] h-4 px-1 font-black"
+                style={{ backgroundColor: "var(--tab-accent-wash)", color: "var(--tab-accent-soft)", borderColor: "var(--tab-accent-ring)" }}
+              >
+                ADMIN
+              </Badge>
+          ) : null}
           <div className="hidden sm:flex flex-col items-end gap-0.5">
-            {role === "superadmin" ? (
-                <Badge variant="neon" className="inline-flex text-[8px] h-4 px-1 font-black">SUPER</Badge>
-            ) : role === "admin" ? (
-                <Badge
-                  className="inline-flex rounded-[4px] border text-[8px] h-4 px-1 font-black"
-                  style={{ backgroundColor: "var(--tab-accent-wash)", color: "var(--tab-accent-soft)", borderColor: "var(--tab-accent-ring)" }}
-                >
-                  ADMIN
-                </Badge>
-            ) : null}
+            {fullName && (
+              <span className="max-w-[160px] truncate text-[12px] font-bold leading-tight text-white">
+                {fullName}
+              </span>
+            )}
             {jobTitle && (
-              <span className="text-[9px] font-semibold text-[#8892b0] leading-none truncate max-w-[140px]">
+              <span
+                className="max-w-[160px] truncate rounded-[3px] px-1 text-[8.5px] font-bold uppercase leading-tight tracking-wider"
+                style={{ color: "var(--tab-accent-soft)", backgroundColor: "var(--tab-accent-wash)" }}
+              >
                 {jobTitle}
               </span>
             )}

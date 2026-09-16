@@ -10,6 +10,8 @@ interface AuthContextType {
   user: any;
   role: Role;
   firstName: string;
+  /** Nombre completo (profiles.full_name, sin recortar al primer nombre). */
+  fullName: string;
   /** Cargo del usuario en la organización (profiles.job_title), o null si no tiene. */
   jobTitle: string | null;
   /** URL pública de la foto de perfil (profiles.avatar_url), o null si no tiene. */
@@ -26,6 +28,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   role: null,
   firstName: "",
+  fullName: "",
   jobTitle: null,
   avatarUrl: null,
   screens: [],
@@ -39,13 +42,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<Role>(null);
   const [firstName, setFirstName] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
   const [jobTitle, setJobTitle] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [screens, setScreens] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Prioriza el nombre guardado en profiles.full_name; si no, metadata o email.
-  const resolveFirstName = (u: any, profile?: any) => {
+  // Prioriza el nombre guardado en profiles.full_name; si no, metadata o email
+  // (sin el dominio, si toca caer hasta ahí).
+  const resolveFullName = (u: any, profile?: any) => {
     const source =
       profile?.full_name ||
       u?.user_metadata?.full_name ||
@@ -53,14 +58,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       u?.user_metadata?.username ||
       u?.email ||
       "";
-    return source.split(/[\s@]/)[0] || "";
+    return source.split("@")[0].trim();
   };
+  const firstWord = (full: string) => full.split(/\s+/)[0] || "";
 
   const loadFor = useCallback(async (sessionUser: any | null) => {
     if (!sessionUser) {
       setUser(null);
       setRole(null);
       setFirstName("");
+      setFullName("");
       setJobTitle(null);
       setAvatarUrl(null);
       setScreens([]);
@@ -76,7 +83,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .like("screen_key", `${SCREEN_PREFIX}%`),
     ]);
     setRole(normalizeRole(profile?.user_role));
-    setFirstName(resolveFirstName(sessionUser, profile));
+    const full = resolveFullName(sessionUser, profile);
+    setFullName(full);
+    setFirstName(firstWord(full));
     setJobTitle(profile?.job_title ?? null);
     setAvatarUrl(profile?.avatar_url ?? null);
     setScreens((rows ?? []).map((r: { screen_key: string }) => r.screen_key));
@@ -118,7 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [loadFor, safeGetSession]);
 
   return (
-    <AuthContext.Provider value={{ user, role, firstName, jobTitle, avatarUrl, screens, refresh, setAvatarUrl }}>
+    <AuthContext.Provider value={{ user, role, firstName, fullName, jobTitle, avatarUrl, screens, refresh, setAvatarUrl }}>
       {!loading && children}
     </AuthContext.Provider>
   );
