@@ -110,7 +110,7 @@ const DepartmentDetail = ({ dep }: { dep: any }) => {
 };
 
 export default function MapaColombiaPage() {
-  const { firstName, role } = useAuth();
+  const { jobTitle, role } = useAuth();
   const [data, setData] = useState<any[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -203,7 +203,7 @@ export default function MapaColombiaPage() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
             <h1 className="page-title font-heading font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Nacional</h1>
-            <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias nacionales de LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+            <p className="text-[#aab3cf] mt-2">Hola{jobTitle ? ` ${jobTitle}` : ""}, bienvenido. Conoce la narrativa y las tendencias nacionales de LinkTIC. Haz clic en un marcador para ver el detalle.</p>
           </div>
           {canEdit(role) && (
             <button

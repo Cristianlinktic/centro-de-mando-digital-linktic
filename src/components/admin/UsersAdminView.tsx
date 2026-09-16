@@ -10,6 +10,7 @@ interface UserRow {
   email: string;
   role: string;
   full_name: string;
+  job_title: string;
   screens: string[];
 }
 
@@ -148,6 +149,7 @@ export function UsersAdminView() {
                 <tr>
                   <th className="px-4 py-3">Usuario</th>
                   <th className="px-4 py-3">Rol</th>
+                  <th className="px-4 py-3">Cargo</th>
                   <th className="px-4 py-3">Pantallas</th>
                   <th className="px-4 py-3 text-right">Acciones</th>
                 </tr>
@@ -163,6 +165,9 @@ export function UsersAdminView() {
                       <span className={cn("px-2.5 py-1 rounded-full text-xs font-bold border", roleBadgeClass(u.role))}>
                         {roleLabel(u.role)}
                       </span>
+                    </td>
+                    <td className="px-4 py-3 text-[#aab3cf] font-medium">
+                      {u.job_title || <span className="text-[#4a5578]">—</span>}
                     </td>
                     <td className="px-4 py-3 text-[#aab3cf] font-medium">
                       {u.role === "superadmin" ? "Todas" : `${u.screens.length}`}
@@ -226,6 +231,7 @@ function UserFormModal({
   const isEdit = !!editing;
   const [username, setUsername] = useState(editing?.email ?? "");
   const [fullName, setFullName] = useState(editing?.full_name ?? "");
+  const [jobTitle, setJobTitle] = useState(editing?.job_title ?? "");
   const [role, setRole] = useState<AppRole>((editing?.role as AppRole) ?? "viewer");
   const [password, setPassword] = useState("");
   const [selected, setSelected] = useState<Set<string>>(new Set(editing?.screens ?? []));
@@ -257,7 +263,7 @@ function UserFormModal({
         const res = await fetch(`/api/admin/users/${editing!.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ role, full_name: fullName, screens: Array.from(selected) }),
+          body: JSON.stringify({ role, full_name: fullName, job_title: jobTitle, screens: Array.from(selected) }),
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json.error);
@@ -275,7 +281,7 @@ function UserFormModal({
         const res = await fetch("/api/admin/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password, full_name: fullName, role, screens: Array.from(selected) }),
+          body: JSON.stringify({ username, password, full_name: fullName, job_title: jobTitle, role, screens: Array.from(selected) }),
         });
         const json = await res.json();
         if (!res.ok) throw new Error(json.error);
@@ -320,6 +326,15 @@ function UserFormModal({
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="ej: Cristian Sabogal"
+              className={inputCls}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-[#aab3cf] uppercase tracking-wider">Cargo</label>
+            <input
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+              placeholder="ej: Analista de Contenido"
               className={inputCls}
             />
           </div>

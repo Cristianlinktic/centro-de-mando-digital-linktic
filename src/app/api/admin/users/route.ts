@@ -17,8 +17,8 @@ export async function GET() {
   const ids = list.users.map((u) => u.id);
   const [{ data: profiles }, { data: access }] = await Promise.all([
     ids.length
-      ? admin.from("profiles").select("id, user_role, full_name").in("id", ids)
-      : Promise.resolve({ data: [] as { id: string; user_role: string; full_name: string }[] }),
+      ? admin.from("profiles").select("id, user_role, full_name, job_title").in("id", ids)
+      : Promise.resolve({ data: [] as { id: string; user_role: string; full_name: string; job_title: string | null }[] }),
     ids.length
       ? admin.from("user_screen_access").select("user_id, screen_key").in("user_id", ids)
       : Promise.resolve({ data: [] as { user_id: string; screen_key: string }[] }),
@@ -43,6 +43,7 @@ export async function GET() {
         email: u.email ?? "",
         role: normalizeRole(p?.user_role),
         full_name: p?.full_name ?? "",
+        job_title: p?.job_title ?? "",
         screens,
       };
     })
@@ -69,6 +70,7 @@ export async function POST(req: Request) {
   const password = String(body.password ?? "");
   const role = body.role as AppRole;
   const fullName = String(body.full_name ?? "").trim();
+  const jobTitle = String(body.job_title ?? "").trim();
   const screensIn: string[] = Array.isArray(body.screens) ? body.screens.map(String) : [];
 
   if (!usernameRaw || password.length < 6) {
@@ -96,7 +98,7 @@ export async function POST(req: Request) {
   const userId = created.user.id;
   // El trigger crea el perfil con rol 'reader'; fijamos el rol y nombre definitivos.
   await admin.from("profiles").upsert(
-    { id: userId, user_role: role, full_name: fullName || null },
+    { id: userId, user_role: role, full_name: fullName || null, job_title: jobTitle || null },
     { onConflict: "id" },
   );
   if (screens.length) {

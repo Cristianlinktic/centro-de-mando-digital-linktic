@@ -11,6 +11,8 @@ import {
   CalendarDays,
   Target,
   Building2,
+  Mail,
+  Hash,
 } from "lucide-react";
 import {
   Sidebar,
@@ -33,6 +35,8 @@ const icons: Record<string, React.ComponentType<{ className?: string; style?: Re
   MessagesSquare,
   CalendarDays,
   Target,
+  Mail,
+  Hash,
 };
 
 // Navegación de la pestaña "Externo" — Centro de Mando Digital LinkTIC.
@@ -45,6 +49,14 @@ const navItems = [
   { path: "/externo/instagram", label: "Conversación en Redes", icon: "MessagesSquare", accent: "#2eb88a" },
   { path: "/externo/parrilla", label: "Parrilla de Contenidos", icon: "CalendarDays", accent: "#75ddff" },
   { path: "/externo/estrategia-digital", label: "Estrategia Publicitaria", icon: "Target", accent: "#00e1ff" },
+  { path: "/externo/mailing", label: "Estrategia Mailing", icon: "Mail", accent: "#f5b21e" },
+];
+
+// Navegación de la pestaña "Interno".
+const internoNavItems = [
+  { path: "/interno/instagram", label: "Conversación en Redes", icon: "MessagesSquare", accent: "#2eb88a" },
+  { path: "/interno/canales", label: "Conversación en Canales", icon: "Hash", accent: "#75ddff" },
+  { path: "/interno/mailing", label: "Estrategia Mailing", icon: "Mail", accent: "#f5b21e" },
 ];
 
 export function AppSidebar() {
@@ -63,6 +75,12 @@ export function AppSidebar() {
     return key ? screens.includes(key) : true;
   };
   const visibleItems = navItems.filter((item) => canSee(item.path));
+  const visibleInternoItems = internoNavItems.filter((item) => canSee(item.path));
+  const items = activeGroup === "externo" ? visibleItems : visibleInternoItems;
+  // La pestaña "Interno" debe llevar directo al primer módulo con permisos
+  // (igual que "Externo" → /externo/mapa-colombia); si el usuario no tiene
+  // ningún módulo de Interno asignado, cae al placeholder de /interno.
+  const internoHref = visibleInternoItems[0]?.path ?? "/interno";
 
   return (
     <Sidebar collapsible="icon" className="glass border-r border-[#1e2240] [&>[data-slot=sidebar-inner]]:bg-transparent">
@@ -100,7 +118,7 @@ export function AppSidebar() {
             <span>Externo</span>
           </Link>
           <Link
-            href="/interno"
+            href={internoHref}
             className={`flex items-center justify-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11px] font-bold transition-all duration-200 ${
               activeGroup === "interno"
                 ? "bg-gradient-to-r from-[var(--tab-accent)] to-[var(--tab-accent-2)] text-white shadow-[0_0_12px_var(--tab-accent-glow)]"
@@ -118,9 +136,9 @@ export function AppSidebar() {
           Paneles
         </p>
 
-        {activeGroup === "externo" ? (
+        {items.length > 0 ? (
           <nav className="space-y-1">
-            {visibleItems.map((item) => {
+            {items.map((item) => {
               const Icon = icons[item.icon];
               const isActive =
                 pathname === item.path || pathname.startsWith(item.path + "/");

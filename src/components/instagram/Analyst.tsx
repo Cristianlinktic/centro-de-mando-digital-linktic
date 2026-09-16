@@ -11,6 +11,14 @@ interface Msg {
   content: string;
 }
 
+/** Saludo según la hora local: 5–11:59 días, 12–18:59 tardes, resto noches. */
+function getTimeGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return "Buenos días";
+  if (hour >= 12 && hour < 19) return "Buenas tardes";
+  return "Buenas noches";
+}
+
 const SUGGESTIONS = [
   "¿Qué tipo de contenido funciona mejor y por qué?",
   "¿Qué publicación tuvo mejor engagement y qué tenía?",
@@ -45,7 +53,7 @@ const RobotIcon = ({ size }: { size: number }) => (
 
 
 export function Analyst() {
-  const { firstName } = useAuth();
+  const { firstName, jobTitle } = useAuth();
   const [open, setOpen] = useState(false);
   const [tooltip, setTooltip] = useState(true);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -96,7 +104,7 @@ export function Analyst() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let acc = "";
-      for (;;) {
+      for (; ;) {
         const { done, value } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
@@ -163,20 +171,20 @@ export function Analyst() {
       <div className="fixed bottom-5 right-5 z-40">
         {!open && <span className="martha-glow" />}
         <button
-        onClick={handleOpen}
-        className="relative flex cursor-pointer items-center gap-2.5 rounded-full py-3 pl-3 pr-5 font-semibold text-white shadow-lg transition hover:opacity-90"
-        style={{ background: "linear-gradient(135deg, #E1306C 0%, #833ab4 100%)", boxShadow: "0 8px 32px rgba(131,58,180,0.45)" }}
-      >
-        {open ? (
-          "Cerrar"
-        ) : (
-          <>
-            <span className="martha-orbit relative flex h-6 w-6 items-center justify-center rounded-full bg-white/15">
-              <RobotIcon size={16} />
-            </span>
-            Martha
-          </>
-        )}
+          onClick={handleOpen}
+          className="relative flex cursor-pointer items-center gap-2.5 rounded-full py-3 pl-3 pr-5 font-semibold text-white shadow-lg transition hover:opacity-90"
+          style={{ background: "linear-gradient(135deg, #E1306C 0%, #833ab4 100%)", boxShadow: "0 8px 32px rgba(131,58,180,0.45)" }}
+        >
+          {open ? (
+            "Cerrar"
+          ) : (
+            <>
+              <span className="martha-orbit relative flex h-6 w-6 items-center justify-center rounded-full bg-white/15">
+                <RobotIcon size={16} />
+              </span>
+              Martha
+            </>
+          )}
         </button>
       </div>
 
@@ -214,10 +222,11 @@ export function Analyst() {
               <div className="space-y-4">
                 <div>
                   <p className="text-sm font-bold text-white">
-                    {firstName ? `Hola, ${firstName} 👋` : "Hola 👋"}
+                    ¡{getTimeGreeting()}{firstName ? `, ${firstName}` : ""}{jobTitle ? ` (${jobTitle})` : ""}! 👋
                   </p>
                   <p className="mt-0.5 text-xs text-[#aab3cf]">
-                    Soy Martha, tu analista de Instagram con IA. Pregúntame lo que quieras sobre tus publicaciones.
+                    Soy Martha, tu analista del CMDL con IA. ¿Que tal todo?
+                    Pregúntame lo que quieras sobre tus publicaciones y, de una, revisamos esos datos para sacarles todo el potencial. ¡Aquí estoy para ayudarte!
                   </p>
                 </div>
                 <div className="space-y-2">
@@ -238,9 +247,8 @@ export function Analyst() {
             {messages.map((m, i) => (
               <div key={i} className={m.role === "user" ? "flex justify-end" : "flex justify-start"}>
                 <div
-                  className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
-                    m.role === "user" ? "whitespace-pre-wrap text-white" : "bg-white/5 text-[#ffffff]"
-                  }`}
+                  className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${m.role === "user" ? "whitespace-pre-wrap text-white" : "bg-white/5 text-[#ffffff]"
+                    }`}
                   style={m.role === "user" ? { background: "#E1306C" } : undefined}
                 >
                   {m.role === "user" ? (

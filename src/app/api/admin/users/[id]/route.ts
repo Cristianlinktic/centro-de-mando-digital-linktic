@@ -37,6 +37,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (body.full_name !== undefined) {
     profileUpdate.full_name = String(body.full_name).trim() || null;
   }
+  if (body.job_title !== undefined) {
+    profileUpdate.job_title = String(body.job_title).trim() || null;
+  }
   if (Object.keys(profileUpdate).length) {
     const { error } = await admin.from("profiles").upsert({ id, ...profileUpdate }, { onConflict: "id" });
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });

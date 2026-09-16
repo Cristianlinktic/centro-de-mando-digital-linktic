@@ -48,6 +48,7 @@ const SCREENS: ScreenDef[] = [
   { key: "lt-tab:actores-perfiles", path: "/externo/instagram", title: "Conversación en Redes", group: "Externo" },
   { key: "lt-tab:parrilla", path: "/externo/parrilla", title: "Parrilla de Contenidos", group: "Externo" },
   { key: "lt-tab:estrategia-digital", path: "/externo/estrategia-digital", title: "Estrategia Publicitaria", group: "Externo" },
+  { key: "lt-tab:mailing", path: "/externo/mailing", title: "Estrategia Mailing", group: "Externo" },
 ];
 
 export function allScreens(): ScreenDef[] {

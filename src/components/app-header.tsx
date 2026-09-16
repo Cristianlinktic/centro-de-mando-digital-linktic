@@ -10,7 +10,7 @@ import { signOut } from "@/app/actions/auth";
 
 export function AppHeader() {
   const { state, isMobile } = useSidebar();
-  const { role, avatarUrl } = useAuth();
+  const { role, jobTitle, avatarUrl } = useAuth();
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [avatarOpen, setAvatarOpen] = useState(false);
@@ -62,18 +62,25 @@ export function AppHeader() {
 
         {/* Rol + avatar agrupados: el badge describe a quién pertenece el círculo de al lado. */}
         <div className="flex items-center gap-2">
-          {role === "superadmin" ? (
-              <Badge variant="neon" className="hidden sm:inline-flex text-[8px] h-4 px-1 font-black">SUPER</Badge>
-          ) : role === "admin" ? (
-              <Badge
-                className="hidden sm:inline-flex rounded-[4px] border text-[8px] h-4 px-1 font-black"
-                style={{ backgroundColor: "var(--tab-accent-wash)", color: "var(--tab-accent-soft)", borderColor: "var(--tab-accent-ring)" }}
-              >
-                ADMIN
-              </Badge>
-          ) : (
-              <Badge className="hidden sm:inline-flex rounded-[4px] bg-[#131a30] text-[#aab3cf] border-[#2a2a4a] text-[8px] h-4 px-1 font-black">LECTOR</Badge>
-          )}
+          <div className="hidden sm:flex flex-col items-end gap-0.5">
+            {role === "superadmin" ? (
+                <Badge variant="neon" className="inline-flex text-[8px] h-4 px-1 font-black">SUPER</Badge>
+            ) : role === "admin" ? (
+                <Badge
+                  className="inline-flex rounded-[4px] border text-[8px] h-4 px-1 font-black"
+                  style={{ backgroundColor: "var(--tab-accent-wash)", color: "var(--tab-accent-soft)", borderColor: "var(--tab-accent-ring)" }}
+                >
+                  ADMIN
+                </Badge>
+            ) : (
+                <Badge className="inline-flex rounded-[4px] bg-[#131a30] text-[#aab3cf] border-[#2a2a4a] text-[8px] h-4 px-1 font-black">LECTOR</Badge>
+            )}
+            {jobTitle && (
+              <span className="text-[9px] font-semibold text-[#8892b0] leading-none truncate max-w-[140px]">
+                {jobTitle}
+              </span>
+            )}
+          </div>
           <button
             onClick={() => setAvatarOpen(true)}
             title="Cambiar foto de perfil"

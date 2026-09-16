@@ -10,6 +10,8 @@ interface AuthContextType {
   user: any;
   role: Role;
   firstName: string;
+  /** Cargo del usuario en la organización (profiles.job_title), o null si no tiene. */
+  jobTitle: string | null;
   /** URL pública de la foto de perfil (profiles.avatar_url), o null si no tiene. */
   avatarUrl: string | null;
   /** screen_keys "lt-tab:*" permitidos para el usuario actual. */
@@ -24,6 +26,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   role: null,
   firstName: "",
+  jobTitle: null,
   avatarUrl: null,
   screens: [],
   refresh: () => {},
@@ -36,6 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<Role>(null);
   const [firstName, setFirstName] = useState<string>("");
+  const [jobTitle, setJobTitle] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [screens, setScreens] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,13 +61,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setRole(null);
       setFirstName("");
+      setJobTitle(null);
       setAvatarUrl(null);
       setScreens([]);
       return;
     }
     setUser(sessionUser);
     const [{ data: profile }, { data: rows }] = await Promise.all([
-      supabase.from("profiles").select("user_role, full_name, avatar_url").eq("id", sessionUser.id).single(),
+      supabase.from("profiles").select("user_role, full_name, avatar_url, job_title").eq("id", sessionUser.id).single(),
       supabase
         .from("user_screen_access")
         .select("screen_key")
@@ -72,6 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     ]);
     setRole(normalizeRole(profile?.user_role));
     setFirstName(resolveFirstName(sessionUser, profile));
+    setJobTitle(profile?.job_title ?? null);
     setAvatarUrl(profile?.avatar_url ?? null);
     setScreens((rows ?? []).map((r: { screen_key: string }) => r.screen_key));
   }, []);
@@ -112,7 +118,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [loadFor, safeGetSession]);
 
   return (
-    <AuthContext.Provider value={{ user, role, firstName, avatarUrl, screens, refresh, setAvatarUrl }}>
+    <AuthContext.Provider value={{ user, role, firstName, jobTitle, avatarUrl, screens, refresh, setAvatarUrl }}>
       {!loading && children}
     </AuthContext.Provider>
   );

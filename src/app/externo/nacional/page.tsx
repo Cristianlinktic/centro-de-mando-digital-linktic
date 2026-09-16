@@ -262,7 +262,7 @@ const DepartmentDetail = ({ dep, selectedTone }: { dep: DeptData; selectedTone: 
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function NacionalPage() {
-  const { firstName } = useAuth();
+  const { jobTitle } = useAuth();
   const [data, setData] = useState<DeptData[]>([]);
   const [totalRaw, setTotalRaw] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -404,7 +404,7 @@ export default function NacionalPage() {
             Conversación Nacional
           </h1>
           <p className="text-[#aab3cf] mt-2">
-            Hola {firstName}, bienvenido. Cobertura de prensa por departamento. Haz clic en un departamento para ver los artículos.
+            Hola{jobTitle ? ` ${jobTitle}` : ""}, bienvenido. Cobertura de prensa por departamento. Haz clic en un departamento para ver los artículos.
           </p>
         </div>
 

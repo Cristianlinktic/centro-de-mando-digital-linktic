@@ -15,7 +15,7 @@ type TabLoadingScreenProps = {
 /** Pantalla de carga con el ave animada de LinkTIC, usada al entrar a una
  *  pestaña mientras se resuelve su data inicial. Saluda al usuario logueado. */
 export function TabLoadingScreen({ section, fullScreen = true }: TabLoadingScreenProps) {
-  const { firstName } = useAuth();
+  const { jobTitle } = useAuth();
 
   return (
     <div
@@ -26,7 +26,7 @@ export function TabLoadingScreen({ section, fullScreen = true }: TabLoadingScree
       <BirdScene size={fullScreen ? 130 : 100} />
       <div className="flex flex-col items-center gap-1.5 text-center">
         <p className="font-heading text-lg font-bold text-white">
-          {firstName ? `Hola, ${firstName}` : "Hola"}
+          {jobTitle ? `Hola, ${jobTitle}` : "Hola"}
         </p>
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#aab3cf] animate-pulse">
           Cargando la información de {section}

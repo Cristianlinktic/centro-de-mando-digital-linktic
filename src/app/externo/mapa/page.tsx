@@ -256,7 +256,7 @@ const countryNameToIso: Record<string, string> = {
 };
 
 export default function MapaPage() {
-    const { firstName, role } = useAuth();
+    const { jobTitle, role } = useAuth();
     const [selected, setSelected] = useState<string | null>("CO");
     const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
     const [countriesData, setCountriesData] = useState<any[]>([]);
@@ -740,7 +740,7 @@ export default function MapaPage() {
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div className="min-w-0">
                         <h1 className="page-title font-heading font-bold tracking-tight gradient-text text-glow-blue break-words">Conversación Global</h1>
-                        <p className="text-[#aab3cf] mt-2">Hola {firstName}, bienvenido. Conoce la narrativa y las tendencias internacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
+                        <p className="text-[#aab3cf] mt-2">Hola{jobTitle ? ` ${jobTitle}` : ""}, bienvenido. Conoce la narrativa y las tendencias internacionales del Centro de Mando Digital LinkTIC. Haz clic en un marcador para ver el detalle.</p>
                     </div>
                     {canEdit(role) && (
                         <button
