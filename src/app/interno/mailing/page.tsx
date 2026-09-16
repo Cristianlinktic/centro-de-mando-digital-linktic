@@ -22,7 +22,9 @@ const FUNNEL_STAGES = [
 
 export default function InternoMailingPage() {
   const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
+  useEffect(() => {
+    Promise.resolve().then(() => setReady(true));
+  }, []);
   const showLoading = useMinLoadingDuration(!ready);
 
   if (showLoading) {

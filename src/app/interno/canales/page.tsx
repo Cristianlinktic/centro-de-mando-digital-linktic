@@ -50,7 +50,9 @@ const ORDER: ChannelKey[] = ["space", "ripor"];
 export default function InternoCanalesPage() {
   const [tab, setTab] = useState<ChannelKey>("space");
   const [ready, setReady] = useState(false);
-  useEffect(() => setReady(true), []);
+  useEffect(() => {
+    Promise.resolve().then(() => setReady(true));
+  }, []);
   const showLoading = useMinLoadingDuration(!ready);
   const cfg = CHANNELS[tab];
   const Icon = cfg.icon;
