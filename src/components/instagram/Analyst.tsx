@@ -210,7 +210,7 @@ export function Analyst() {
                     activa
                   </span>
                 </div>
-                <p className="truncate text-[10px] font-semibold text-[#f0abfc]">Analista de Instagram · IA</p>
+                <p className="truncate text-[10px] font-semibold text-[#f0abfc]">Analista de redes sociales</p>
               </div>
               <span className="ml-auto hidden shrink-0 text-[10px] text-[#8892b0] font-mono sm:inline">Claude Opus 4.8</span>
             </div>
