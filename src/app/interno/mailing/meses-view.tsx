@@ -53,7 +53,7 @@ export function MesesView({ meses }: { meses: MesResumen[] }) {
           {meses.map((m) => (
             <Link
               key={m.id}
-              href={`/interno/mailing-prueba/${m.id}`}
+              href={`/interno/mailing/${m.id}`}
               className="panel rounded-2xl border border-[#1e2240] p-5 transition-all hover:-translate-y-0.5"
               style={{ borderColor: "#1e2240" }}
               onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--tab-accent)")}

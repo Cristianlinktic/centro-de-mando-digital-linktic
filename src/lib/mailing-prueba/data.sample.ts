@@ -2,7 +2,8 @@
  * GENERADOR DE EJEMPLO — ya no alimenta la pantalla.
  *
  * Hasta septiembre de 2026 este archivo era `data.ts` y era la fuente de datos
- * de /interno/mailing-prueba. Ahora la pantalla lee de Supabase (ver data.ts);
+ * de /interno/mailing (entonces /interno/mailing-prueba). Ahora la pantalla
+ * lee de Supabase (ver data.ts);
  * esto se conserva para poder levantar la interfaz sin base de datos: demos sin
  * conexion, capturas, o depurar el front sin depender de que haya datos.
  *

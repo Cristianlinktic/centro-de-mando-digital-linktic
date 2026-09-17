@@ -13,7 +13,6 @@ import {
   Building2,
   Mail,
   Hash,
-  FlaskConical,
 } from "lucide-react";
 import {
   Sidebar,
@@ -38,7 +37,6 @@ const icons: Record<string, React.ComponentType<{ className?: string; style?: Re
   Target,
   Mail,
   Hash,
-  FlaskConical,
 };
 
 // Navegación de la pestaña "Externo" — Centro de Mando Digital LinkTIC.
@@ -59,7 +57,6 @@ const internoNavItems = [
   { path: "/interno/instagram", label: "Conversación en Redes", icon: "MessagesSquare", accent: "#2eb88a" },
   { path: "/interno/canales", label: "Conversación en Canales", icon: "Hash", accent: "#75ddff" },
   { path: "/interno/mailing", label: "Estrategia Mailing", icon: "Mail", accent: "#f5b21e" },
-  { path: "/interno/mailing-prueba", label: "Estrategia Mailing Prueba", icon: "FlaskConical", accent: "#10b981" },
 ];
 
 export function AppSidebar() {

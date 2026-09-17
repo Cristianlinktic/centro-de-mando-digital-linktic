@@ -44,7 +44,7 @@ export function CampanaView({ mes, c }: { mes: string; c: CampanaDetalle | null 
     return (
       <div className="page-bg flex min-h-screen flex-col items-center justify-center gap-3 text-center text-white">
         <p className="font-bold">No encontramos esa campaña.</p>
-        <Link href={`/interno/mailing-prueba/${mes}`} className="text-sm" style={{ color: ACCENT }}>
+        <Link href={`/interno/mailing/${mes}`} className="text-sm" style={{ color: ACCENT }}>
           ← Volver al mes
         </Link>
       </div>
@@ -99,7 +99,7 @@ export function CampanaView({ mes, c }: { mes: string; c: CampanaDetalle | null 
   return (
     <div className="page-bg min-h-screen">
       <div className="page-pad text-white">
-        <Link href={`/interno/mailing-prueba/${mes}`} className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
+        <Link href={`/interno/mailing/${mes}`} className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" /> Volver al mes
         </Link>
 

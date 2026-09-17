@@ -33,8 +33,7 @@ Externo — Centro de Mando Digital LinkTIC:
 Interno:
 - Conversación en Redes: mismo tipo de análisis de Instagram, para uso interno.
 - Conversación en Canales: mensajes en Space y banners en RIPOR — todavía sin integración de datos real.
-- Estrategia Mailing: igual que en Externo, sin integración real todavía.
-- Estrategia Mailing Prueba: flujo de ejemplo (mes → campaña → destinatarios) con datos simulados, para probar cómo se vería el módulo con datos reales de email marketing.
+- Estrategia Mailing: desempeño real de campañas de email marketing (medido vía SendGrid) — datos reales, ver arriba.
 Administración:
 - Usuarios: gestión de usuarios, roles (superadmin/admin/viewer) y permisos de acceso a cada pestaña — solo visible para superadmin.
 
@@ -294,10 +293,10 @@ async function buildScreenContext(rawPathname: string | undefined, access: UserA
     }
   }
 
-  if (matches(path, "/interno/mailing-prueba")) {
+  if (matches(path, "/interno/mailing")) {
     const NOTA = 'CONTEXTO DE LA PANTALLA ACTUAL (Estrategia Mailing — Interno) — son datos REALES de los envíos medidos en SendGrid. Las direcciones aparecen seudonimizadas (u<hash>@dominio): se puede seguir a la misma persona entre campañas, pero no se puede saber quién es.';
-    // path.split("/") de "/interno/mailing-prueba/<mes>/<campana>" da
-    // ["", "interno", "mailing-prueba", mes, campana] — hay que saltar 3.
+    // path.split("/") de "/interno/mailing/<mes>/<campana>" da
+    // ["", "interno", "mailing", mes, campana] — hay que saltar 3.
     const [, , , mesId, campanaId] = path.split("/");
 
     if (mesId && campanaId) {

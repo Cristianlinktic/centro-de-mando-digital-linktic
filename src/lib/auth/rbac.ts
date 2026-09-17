@@ -50,8 +50,12 @@ const SCREENS: ScreenDef[] = [
   { key: "lt-tab:mailing", path: "/externo/mailing", title: "Estrategia Mailing", group: "Externo" },
   { key: "lt-tab:interno-instagram", path: "/interno/instagram", title: "Conversación en Redes", group: "Interno" },
   { key: "lt-tab:interno-canales", path: "/interno/canales", title: "Conversación en Canales", group: "Interno" },
-  { key: "lt-tab:interno-mailing", path: "/interno/mailing", title: "Estrategia Mailing", group: "Interno" },
-  { key: "lt-tab:interno-mailing-prueba", path: "/interno/mailing-prueba", title: "Estrategia Mailing Prueba", group: "Interno" },
+  // "Estrategia Mailing Prueba" (con datos simulados) se convirtió en la
+  // Estrategia Mailing real de Interno, y absorbió la ruta del placeholder
+  // viejo (que usaba la clave lt-tab:interno-mailing, ya retirada). Se
+  // conserva ESTA clave (con "-prueba") para no invalidar los permisos ya
+  // concedidos en user_screen_access — ver supabase/10_mailing_interno_merge.sql.
+  { key: "lt-tab:interno-mailing-prueba", path: "/interno/mailing", title: "Estrategia Mailing", group: "Interno" },
 ];
 
 export function allScreens(): ScreenDef[] {

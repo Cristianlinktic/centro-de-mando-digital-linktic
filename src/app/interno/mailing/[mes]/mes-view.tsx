@@ -31,7 +31,7 @@ export function MesView({ mes, data }: { mes: string; data: MesDetalle | null })
     return (
       <div className="page-bg flex min-h-screen flex-col items-center justify-center gap-3 text-center text-white">
         <p className="font-bold">No encontramos ese mes.</p>
-        <Link href="/interno/mailing-prueba" className="text-sm" style={{ color: ACCENT }}>
+        <Link href="/interno/mailing" className="text-sm" style={{ color: ACCENT }}>
           ← Volver a Desempeño de correos
         </Link>
       </div>
@@ -56,7 +56,7 @@ export function MesView({ mes, data }: { mes: string; data: MesDetalle | null })
   return (
     <div className="page-bg min-h-screen">
       <div className="page-pad text-white">
-        <Link href="/interno/mailing-prueba" className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
+        <Link href="/interno/mailing" className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" /> Todos los meses
         </Link>
 
@@ -137,7 +137,7 @@ export function MesView({ mes, data }: { mes: string; data: MesDetalle | null })
                 {filas.map((c) => (
                   <tr
                     key={c.id}
-                    onClick={() => router.push(`/interno/mailing-prueba/${mes}/${c.id}`)}
+                    onClick={() => router.push(`/interno/mailing/${mes}/${c.id}`)}
                     className="cursor-pointer border-b border-[#1e2240] hover:bg-white/5"
                   >
                     <td className="px-3 py-2.5 text-[#aab3cf]">{c.fecha.slice(8)}/{c.fecha.slice(5, 7)}</td>
