@@ -1,45 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+/**
+ * Pintado del detalle de un mes. Recibe los datos ya resueltos del Server
+ * Component de al lado; sigue siendo cliente por la tabla ordenable, el
+ * buscador y las gráficas.
+ */
+import { useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Mail, Search } from "lucide-react";
 import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
-import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
-import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { Input } from "@/components/ui/input";
-import { getMes } from "@/lib/mailing-prueba/data";
+import type { MesDetalle } from "@/lib/mailing/data";
 import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR } from "@/lib/chart-theme";
 import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
 const ACCENT = "#10b981";
-const MIN_VOLUMEN = 20;
+const MIN_VOLUMEN = 100;
 
 type SortCol = "fecha" | "asunto" | "entregados" | "apertura" | "clics_unicos" | "ctr" | "no_entregados";
 
-export default function MailingPruebaMesPage() {
-  const { mes } = useParams<{ mes: string }>();
+export function MesView({ mes, data }: { mes: string; data: MesDetalle | null }) {
   const router = useRouter();
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    Promise.resolve().then(() => setReady(true));
-  }, []);
-  const showLoading = useMinLoadingDuration(!ready);
 
   const [q, setQ] = useState("");
   const [soloReales, setSoloReales] = useState(true);
   const [orden, setOrden] = useState<{ col: SortCol; asc: boolean }>({ col: "fecha", asc: true });
 
-  if (showLoading) {
-    return <TabLoadingScreen section="Estrategia Mailing · Prueba" fullScreen={false} />;
-  }
-
-  const data = getMes(mes);
   if (!data) {
     return (
       <div className="page-bg flex min-h-screen flex-col items-center justify-center gap-3 text-center text-white">
         <p className="font-bold">No encontramos ese mes.</p>
-        <Link href="/interno/mailing-prueba" className="text-sm" style={{ color: ACCENT }}>
+        <Link href="/interno/mailing" className="text-sm" style={{ color: ACCENT }}>
           ← Volver a Desempeño de correos
         </Link>
       </div>
@@ -64,7 +56,7 @@ export default function MailingPruebaMesPage() {
   return (
     <div className="page-bg min-h-screen">
       <div className="page-pad text-white">
-        <Link href="/interno/mailing-prueba" className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
+        <Link href="/interno/mailing" className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" /> Todos los meses
         </Link>
 
@@ -145,7 +137,7 @@ export default function MailingPruebaMesPage() {
                 {filas.map((c) => (
                   <tr
                     key={c.id}
-                    onClick={() => router.push(`/interno/mailing-prueba/${mes}/${c.id}`)}
+                    onClick={() => router.push(`/interno/mailing/${mes}/${c.id}`)}
                     className="cursor-pointer border-b border-[#1e2240] hover:bg-white/5"
                   >
                     <td className="px-3 py-2.5 text-[#aab3cf]">{c.fecha.slice(8)}/{c.fecha.slice(5, 7)}</td>

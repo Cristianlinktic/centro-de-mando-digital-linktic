@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+/**
+ * Pintado del detalle de campaña. Recibe los datos ya resueltos del Server
+ * Component de al lado; sigue siendo cliente por la dona interactiva, los
+ * filtros, la paginación y la descarga de CSV.
+ */
+import { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { ArrowLeft, Download, ImageOff, Search } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
-import { TabLoadingScreen } from "@/components/bird-loading/tab-loading-screen";
-import { useMinLoadingDuration } from "@/hooks/use-min-loading-duration";
 import { Input } from "@/components/ui/input";
-import { getCampana, type BucketDestinatario, type EventoEstado } from "@/lib/mailing-prueba/data";
+import type { BucketDestinatario, CampanaDetalle, EventoEstado } from "@/lib/mailing/data";
 
 const ACCENT = "#10b981";
 const POR_PAG = 10;
@@ -27,43 +29,34 @@ const DONUT_LABELS: Record<BucketDestinatario, string> = {
   no_entregado: "No entregado",
 };
 
-export default function MailingPruebaCampanaPage() {
-  const { mes, campana } = useParams<{ mes: string; campana: string }>();
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    Promise.resolve().then(() => setReady(true));
-  }, []);
-  const showLoading = useMinLoadingDuration(!ready);
-
+export function CampanaView({ mes, c }: { mes: string; c: CampanaDetalle | null }) {
   const [filtroBucket, setFiltroBucket] = useState<BucketDestinatario | null>(null);
   const [filtroEvento, setFiltroEvento] = useState<EventoEstado | "">("");
   const [pagEv, setPagEv] = useState(0);
   const [pagPe, setPagPe] = useState(0);
   const [buscarPe, setBuscarPe] = useState("");
+  // La miniatura cuelga del tablero estático. Si ese proyecto se renombra o se
+  // retira, la URL guardada deja de responder: con esto la pantalla vuelve al
+  // aviso en vez de mostrar el icono de imagen rota.
+  const [miniaturaFallo, setMiniaturaFallo] = useState(false);
 
-  if (showLoading) {
-    return <TabLoadingScreen section="Estrategia Mailing · Prueba" fullScreen={false} />;
-  }
-
-  const c = getCampana(mes, campana);
   if (!c) {
     return (
       <div className="page-bg flex min-h-screen flex-col items-center justify-center gap-3 text-center text-white">
         <p className="font-bold">No encontramos esa campaña.</p>
-        <Link href={`/interno/mailing-prueba/${mes}`} className="text-sm" style={{ color: ACCENT }}>
+        <Link href={`/interno/mailing/${mes}`} className="text-sm" style={{ color: ACCENT }}>
           ← Volver al mes
         </Link>
       </div>
     );
   }
 
-  const conClic = c.destinatarios.filter((d) => d.clic).length;
-  const abiertoSinClic = c.destinatarios.filter((d) => d.abrio && !d.clic).length;
-  const entregadoSinAbrir = c.destinatarios.filter((d) => d.entregado && !d.abrio).length;
-  const noEntregado = c.destinatarios.filter((d) => !d.entregado).length;
-  const total = c.destinatarios.length;
-
-  const donutValues: Record<BucketDestinatario, number> = { clic: conClic, abierto: abiertoSinClic, entregado: entregadoSinAbrir, no_entregado: noEntregado };
+  // El reparto viene guardado en la campaña, no se cuenta sobre los
+  // destinatarios: un envío masivo no trae detalle del que contar, y la resta
+  // "aperturas - clics" da mal porque hay gente que hace clic sin que se
+  // registre su apertura (imágenes bloqueadas, enlace pulsado).
+  const donutValues: Record<BucketDestinatario, number> = c.buckets;
+  const total = donutValues.clic + donutValues.abierto + donutValues.entregado + donutValues.no_entregado;
   const donutData = (Object.keys(donutValues) as BucketDestinatario[])
     .filter((k) => donutValues[k] > 0)
     .map((k) => ({ key: k, name: DONUT_LABELS[k], value: donutValues[k], color: DONUT_COLORS[k] }));
@@ -106,7 +99,7 @@ export default function MailingPruebaCampanaPage() {
   return (
     <div className="page-bg min-h-screen">
       <div className="page-pad text-white">
-        <Link href={`/interno/mailing-prueba/${mes}`} className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
+        <Link href={`/interno/mailing/${mes}`} className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8892b0] hover:text-white transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" /> Volver al mes
         </Link>
 
@@ -176,10 +169,39 @@ export default function MailingPruebaCampanaPage() {
 
           <div className="flex flex-col gap-3">
             <Caja label="No entregados" value={c.no_entregados.toLocaleString("es-CO")} />
-            <div className="panel flex flex-1 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-[#2a2a4a] p-6 text-center">
-              <ImageOff className="h-6 w-6 text-[#4a5578]" />
-              <p className="text-xs text-[#6b7280]">Vista previa del correo no disponible en este flujo de prueba — se completa al conectar la fuente de datos real.</p>
-            </div>
+            {c.miniaturaUrl && !miniaturaFallo ? (
+              // Las capturas son de 640px de ancho por 475 a 2.433 de alto: en
+              // esta columna estrecha una larga se volveria una tira ilegible.
+              // Se recorta a alto fijo anclado arriba, que es donde esta la
+              // cabecera del correo —la parte que lo identifica— y se enlaza la
+              // imagen completa.
+              <a
+                href={c.miniaturaUrl}
+                target="_blank"
+                rel="noreferrer"
+                title="Abrir la captura completa"
+                className="panel relative block min-h-[200px] flex-1 overflow-hidden rounded-2xl border border-[#1e2240] transition-colors hover:border-[#10b981]/60"
+              >
+                <img
+                  src={c.miniaturaUrl}
+                  alt={`Vista previa del correo "${c.asunto}"`}
+                  onError={() => setMiniaturaFallo(true)}
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0d1120] to-transparent px-3 pb-2 pt-6 text-[10px] font-semibold uppercase tracking-wider text-[#aab3cf]">
+                  Ver completo
+                </span>
+              </a>
+            ) : (
+              <div className="panel flex flex-1 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-[#2a2a4a] p-6 text-center">
+                <ImageOff className="h-6 w-6 text-[#4a5578]" />
+                <p className="text-xs text-[#6b7280]">
+                  {c.miniaturaUrl
+                    ? "No se pudo cargar la vista previa del correo."
+                    : "Esta campaña no tiene captura guardada."}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -202,6 +224,16 @@ export default function MailingPruebaCampanaPage() {
           <Caja label="Tasa de clics en correos" value={`${c.ctr}%`} big />
         </div>
 
+        {!c.detalleGuardado ? (
+          <div className="panel rounded-2xl border border-dashed border-[#2a2a4a] p-8 text-center">
+            <p className="text-sm font-semibold text-white">Sin detalle por destinatario</p>
+            <p className="mx-auto mt-2 max-w-xl text-xs text-[#8892b0]">
+              De los envíos masivos se conserva solo el agregado, que es lo que ves arriba y es
+              exacto. El registro individual de {c.base.toLocaleString("es-CO")} correos no se guarda
+              para no llenar la base con datos que casi nunca se consultan.
+            </p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="panel rounded-2xl border border-[#1e2240] p-5">
             <div className="mb-3 flex items-center justify-between gap-2">
@@ -302,6 +334,7 @@ export default function MailingPruebaCampanaPage() {
             <Paginador pagina={pagPe} total={destinatariosFiltrados.length} porPagina={POR_PAG} onChange={setPagPe} />
           </div>
         </div>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,15 @@
 /**
+ * GENERADOR DE EJEMPLO — ya no alimenta la pantalla.
+ *
+ * Hasta septiembre de 2026 este archivo era `data.ts` y era la fuente de datos
+ * de /interno/mailing (entonces /interno/mailing-prueba). Ahora la pantalla
+ * lee de Supabase (ver data.ts);
+ * esto se conserva para poder levantar la interfaz sin base de datos: demos sin
+ * conexion, capturas, o depurar el front sin depender de que haya datos.
+ *
+ * Para usarlo, cambiar el import en las paginas de "./data" a "./data.sample"
+ * — las firmas son las mismas salvo que estas son sincronas.
+ *
  * Datos de ejemplo para "Estrategia Mailing · Prueba" (Interno) — reproduce
  * el flujo de un dashboard de campañas de correo (mes → campaña → detalle
  * por destinatario) con cifras simuladas pero internamente consistentes:

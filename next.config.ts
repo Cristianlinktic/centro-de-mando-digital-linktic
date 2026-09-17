@@ -11,11 +11,20 @@ const supabaseWsUrl = supabaseUrl.replace(/^https:/, "wss:");
 // necesario aquí: Next.js inyecta su propio script inline de hidratación
 // (confirmado: `<script id="_R_">` sin src en el HTML servido) y la app usa
 // bastante `style={{...}}` inline de React.
+// OJO con https://correos-dashboard-puce.vercel.app en img-src: de ahi cuelgan
+// las capturas de los correos que muestra /interno/mailing. Ese host esta
+// escrito en DOS sitios y los dos tienen que coincidir:
+//   1. aqui, en img-src;
+//   2. la constante BASE_MINIATURAS de subir_supabase.py, el script en Python
+//      que llena la columna mailing_campanas.miniatura_url.
+// Si se cambia uno sin el otro, el navegador bloquea la imagen. Degrada bien
+// —la pantalla cae a su aviso por el onError— pero el sintoma no apunta a la
+// causa: se ve "no se pudo cargar la vista previa" y nada mas.
 const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
-  img-src 'self' blob: data: https://flagcdn.com https://unpkg.com https://images.weserv.nl ${supabaseUrl};
+  img-src 'self' blob: data: https://flagcdn.com https://unpkg.com https://images.weserv.nl https://correos-dashboard-puce.vercel.app ${supabaseUrl};
   font-src 'self';
   connect-src 'self' ${supabaseUrl} ${supabaseWsUrl} https://restcountries.com https://challenges.cloudflare.com;
   frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com;
