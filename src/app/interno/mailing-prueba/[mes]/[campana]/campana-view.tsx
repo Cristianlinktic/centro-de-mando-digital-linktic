@@ -35,6 +35,10 @@ export function CampanaView({ mes, c }: { mes: string; c: CampanaDetalle | null 
   const [pagEv, setPagEv] = useState(0);
   const [pagPe, setPagPe] = useState(0);
   const [buscarPe, setBuscarPe] = useState("");
+  // La miniatura cuelga del tablero estático. Si ese proyecto se renombra o se
+  // retira, la URL guardada deja de responder: con esto la pantalla vuelve al
+  // aviso en vez de mostrar el icono de imagen rota.
+  const [miniaturaFallo, setMiniaturaFallo] = useState(false);
 
   if (!c) {
     return (
@@ -165,10 +169,39 @@ export function CampanaView({ mes, c }: { mes: string; c: CampanaDetalle | null 
 
           <div className="flex flex-col gap-3">
             <Caja label="No entregados" value={c.no_entregados.toLocaleString("es-CO")} />
-            <div className="panel flex flex-1 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-[#2a2a4a] p-6 text-center">
-              <ImageOff className="h-6 w-6 text-[#4a5578]" />
-              <p className="text-xs text-[#6b7280]">Vista previa del correo no disponible — la miniatura vive hoy en el tablero estático y todavía no tiene una URL que este módulo pueda cargar.</p>
-            </div>
+            {c.miniaturaUrl && !miniaturaFallo ? (
+              // Las capturas son de 640px de ancho por 475 a 2.433 de alto: en
+              // esta columna estrecha una larga se volveria una tira ilegible.
+              // Se recorta a alto fijo anclado arriba, que es donde esta la
+              // cabecera del correo —la parte que lo identifica— y se enlaza la
+              // imagen completa.
+              <a
+                href={c.miniaturaUrl}
+                target="_blank"
+                rel="noreferrer"
+                title="Abrir la captura completa"
+                className="panel relative block min-h-[200px] flex-1 overflow-hidden rounded-2xl border border-[#1e2240] transition-colors hover:border-[#10b981]/60"
+              >
+                <img
+                  src={c.miniaturaUrl}
+                  alt={`Vista previa del correo "${c.asunto}"`}
+                  onError={() => setMiniaturaFallo(true)}
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0d1120] to-transparent px-3 pb-2 pt-6 text-[10px] font-semibold uppercase tracking-wider text-[#aab3cf]">
+                  Ver completo
+                </span>
+              </a>
+            ) : (
+              <div className="panel flex flex-1 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-[#2a2a4a] p-6 text-center">
+                <ImageOff className="h-6 w-6 text-[#4a5578]" />
+                <p className="text-xs text-[#6b7280]">
+                  {c.miniaturaUrl
+                    ? "No se pudo cargar la vista previa del correo."
+                    : "Esta campaña no tiene captura guardada."}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

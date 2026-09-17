@@ -87,6 +87,11 @@ export type CampanaDetalle = CampanaResumen & {
    *  `aperturas - clics` da mal — hay gente que hace clic sin que se registre
    *  su apertura (imágenes bloqueadas, enlace pulsado). */
   buckets: Record<BucketDestinatario, number>;
+  /** Captura del correo, o null si esa campaña no tenía una guardada. Es una
+   *  URL absoluta al tablero estático, donde las capturas ya viven publicadas:
+   *  no se copian a ningún otro sitio. Se guarda en la fila y no se compone
+   *  aquí, para que cambiar de host no obligue a desplegar la web. */
+  miniaturaUrl: string | null;
   eventos: EventoRow[];
   destinatarios: DestinatarioRow[];
 };
@@ -307,6 +312,7 @@ export async function getCampana(mesId: string, campanaId: string): Promise<Camp
     ctor: num(c.ctor),
     enlaces: c.enlaces === null || c.enlaces === undefined ? null : Boolean(c.enlaces),
     detalleGuardado,
+    miniaturaUrl: (c.miniatura_url as string | null) || null,
     buckets: {
       clic: num(c.bucket_clic),
       abierto: num(c.bucket_abierto),
