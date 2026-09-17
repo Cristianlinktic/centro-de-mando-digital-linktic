@@ -295,24 +295,29 @@ async function buildScreenContext(rawPathname: string | undefined, access: UserA
   }
 
   if (matches(path, "/interno/mailing-prueba")) {
-    const NOTA = 'CONTEXTO DE LA PANTALLA ACTUAL (Estrategia Mailing Prueba — Interno) — son DATOS DE EJEMPLO simulados, no reales: acláralo si el usuario pregunta.';
+    const NOTA = 'CONTEXTO DE LA PANTALLA ACTUAL (Estrategia Mailing — Interno) — son datos REALES de los envíos medidos en SendGrid. Las direcciones aparecen seudonimizadas (u<hash>@dominio): se puede seguir a la misma persona entre campañas, pero no se puede saber quién es.';
     // path.split("/") de "/interno/mailing-prueba/<mes>/<campana>" da
     // ["", "interno", "mailing-prueba", mes, campana] — hay que saltar 3.
     const [, , , mesId, campanaId] = path.split("/");
 
     if (mesId && campanaId) {
-      const c = getCampana(mesId, campanaId);
-      if (!c) return `${NOTA}\nNo se encontró esa campaña de ejemplo.`;
+      const c = await getCampana(mesId, campanaId);
+      if (!c) return `${NOTA}\nNo se encontró esa campaña.`;
       return [
         NOTA,
         `Campaña "${c.asunto}" (${c.envio}), remitente ${c.remitente}.`,
         `Base ${c.base}, entregados ${c.entregados}, no entregados ${c.no_entregados}, aperturas únicas ${c.aperturas_unicas} (${c.apertura}%), clics únicos ${c.clics_unicos} (CTR ${c.ctr}%, CTOR ${c.ctor}%).`,
-      ].join("\n");
+        c.enlaces === false
+          ? 'Este correo NO llevaba enlaces, así que un CTR de 0% es lo esperado y no un mal resultado.'
+          : c.enlaces === null
+            ? 'No se sabe si este correo llevaba enlaces (sin clics registrados no se puede distinguir "no tenía botón" de "nadie lo pulsó"): no interpretes su CTR como un fracaso.'
+            : '',
+      ].filter(Boolean).join("\n");
     }
 
     if (mesId) {
-      const mes = getMes(mesId);
-      if (!mes) return `${NOTA}\nNo se encontró ese mes de ejemplo.`;
+      const mes = await getMes(mesId);
+      if (!mes) return `${NOTA}\nNo se encontró ese mes.`;
       const lineas = mes.campanas.map((c) => `- ${c.fecha} · ${c.asunto}: ${c.entregados} entregados, apertura ${c.apertura}%, CTR ${c.ctr}%`);
       return [
         NOTA,
@@ -321,7 +326,7 @@ async function buildScreenContext(rawPathname: string | undefined, access: UserA
       ].join("\n");
     }
 
-    const meses = listMeses();
+    const meses = await listMeses();
     const lineas = meses.map((m) => `- ${m.label}: ${m.campanas} campañas, ${m.entregados} entregados, apertura ${m.apertura}%, CTR ${m.ctr}%`);
     return [NOTA, ...lineas].join("\n");
   }
