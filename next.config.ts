@@ -15,7 +15,7 @@ const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
-  img-src 'self' blob: data: https://flagcdn.com https://unpkg.com https://images.weserv.nl ${supabaseUrl};
+  img-src 'self' blob: data: https://flagcdn.com https://unpkg.com https://images.weserv.nl https://correos-dashboard-puce.vercel.app ${supabaseUrl};
   font-src 'self';
   connect-src 'self' ${supabaseUrl} ${supabaseWsUrl} https://restcountries.com https://challenges.cloudflare.com;
   frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com;
