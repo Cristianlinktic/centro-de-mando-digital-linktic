@@ -25,7 +25,7 @@ export function TabLoadingScreen({ section, fullScreen = true }: TabLoadingScree
     >
       <BirdScene size={fullScreen ? 130 : 100} />
       <div className="flex flex-col items-center gap-1.5 text-center">
-        <p className="font-heading text-lg font-bold text-white">
+        <p className="font-heading text-lg font-bold tracking-wide text-white">
           {jobTitle ? `Hola, ${jobTitle}` : "Hola"}
         </p>
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#aab3cf] animate-pulse">
