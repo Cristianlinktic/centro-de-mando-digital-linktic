@@ -7,7 +7,7 @@
  */
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import type { MesResumen } from "@/lib/mailing-prueba/data";
+import type { MesResumen } from "@/lib/mailing/data";
 
 export function MesesView({ meses }: { meses: MesResumen[] }) {
   if (!meses.length) {

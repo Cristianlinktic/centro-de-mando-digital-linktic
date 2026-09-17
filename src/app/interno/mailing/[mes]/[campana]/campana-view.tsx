@@ -10,7 +10,7 @@ import Link from "next/link";
 import { ArrowLeft, Download, ImageOff, Search } from "lucide-react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { Input } from "@/components/ui/input";
-import type { BucketDestinatario, CampanaDetalle, EventoEstado } from "@/lib/mailing-prueba/data";
+import type { BucketDestinatario, CampanaDetalle, EventoEstado } from "@/lib/mailing/data";
 
 const ACCENT = "#10b981";
 const POR_PAG = 10;

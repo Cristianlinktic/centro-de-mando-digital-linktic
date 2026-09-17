@@ -6,7 +6,7 @@
  *
  * El pintado vive en `meses-view.tsx` porque necesita handlers de ratón.
  */
-import { listMeses } from "@/lib/mailing-prueba/data";
+import { listMeses } from "@/lib/mailing/data";
 import { MesesView } from "./meses-view";
 
 export default async function MailingIndexPage() {

@@ -3,7 +3,7 @@
  * el resultado ya resuelto. Importa aquí porque el detalle de una sola campaña
  * puede ser de miles de filas y no tiene sentido mandarlas dentro del bundle.
  */
-import { getCampana } from "@/lib/mailing-prueba/data";
+import { getCampana } from "@/lib/mailing/data";
 import { CampanaView } from "./campana-view";
 
 export default async function MailingCampanaPage({

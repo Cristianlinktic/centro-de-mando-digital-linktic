@@ -13,7 +13,7 @@ import {
 import { computeChannels, computeTotals as computeCampaignTotals } from "@/lib/campana/calc";
 import { CHANNELS } from "@/lib/campana/constants";
 import type { Campaign, CampaignChannel, CampaignData, CampaignCategory } from "@/lib/campana/types";
-import { listMeses, getMes, getCampana } from "@/lib/mailing-prueba/data";
+import { listMeses, getMes, getCampana } from "@/lib/mailing/data";
 
 // El dataset anterior de Instagram (@actoreselectorales) era de otra cuenta y
 // se borró — no se debe mezclar con el análisis de LinkTIC. La cuenta real de

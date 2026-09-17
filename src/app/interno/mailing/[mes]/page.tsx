@@ -3,7 +3,7 @@
  * resuelto al componente de pintado, en vez de mandar los datos dentro del
  * bundle de JavaScript como hacía la versión con datos simulados.
  */
-import { getMes } from "@/lib/mailing-prueba/data";
+import { getMes } from "@/lib/mailing/data";
 import { MesView } from "./mes-view";
 
 export default async function MailingMesPage({ params }: { params: Promise<{ mes: string }> }) {

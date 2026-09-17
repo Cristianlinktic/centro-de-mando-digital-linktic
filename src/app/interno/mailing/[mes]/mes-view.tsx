@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Mail, Search } from "lucide-react";
 import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { Input } from "@/components/ui/input";
-import type { MesDetalle } from "@/lib/mailing-prueba/data";
+import type { MesDetalle } from "@/lib/mailing/data";
 import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR } from "@/lib/chart-theme";
 import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
