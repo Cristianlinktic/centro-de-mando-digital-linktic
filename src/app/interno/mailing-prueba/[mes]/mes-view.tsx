@@ -16,7 +16,7 @@ import { TOOLTIP_STYLE, TOOLTIP_LABEL_STYLE, TOOLTIP_ITEM_STYLE, TOOLTIP_CURSOR 
 import { ChartGradients, gradientFill, glowShadow } from "@/lib/chart-defs";
 
 const ACCENT = "#10b981";
-const MIN_VOLUMEN = 20;
+const MIN_VOLUMEN = 100;
 
 type SortCol = "fecha" | "asunto" | "entregados" | "apertura" | "clics_unicos" | "ctr" | "no_entregados";
 
